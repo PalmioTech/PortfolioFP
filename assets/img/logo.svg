@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 36" role="img" aria-label="FPdeveloper">
+  <text
+    x="55" y="28"
+    font-family="'Courier New', Courier, monospace"
+    font-size="28"
+    font-weight="900"
+    text-anchor="middle"
+    letter-spacing="-1">
+    <tspan fill="#FF6B35">&lt;</tspan><tspan fill="#f0f0f5">FP</tspan><tspan fill="#FF6B35">/&gt;</tspan>
+  </text>
+</svg>

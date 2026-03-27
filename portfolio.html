@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio — FPdeveloper | Progetti Web, WordPress e AI</title>
+  <meta name="description" content="Portfolio di progetti web: siti vetrina, landing page ad alta conversione, soluzioni WordPress avanzate e integrazioni AI. Risultati misurabili per ogni cliente.">
+  <link rel="canonical" href="portfolio.html">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .portfolio-page-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .result-strip {
+      background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-2) 100%);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: 3rem 0;
+      text-align: center;
+      margin: 4rem 0;
+    }
+    .result-strip__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+    .result-strip__value {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--color-accent);
+      display: block;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+    .result-strip__label {
+      font-size: 0.75rem;
+      color: var(--color-text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 500;
+    }
+    @media (max-width: 1024px) {
+      .portfolio-page-grid { grid-template-columns: repeat(2, 1fr); }
+      .result-strip__grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .portfolio-page-grid { grid-template-columns: 1fr; }
+      .result-strip__grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+  <script>(function(){var t=localStorage.getItem('fp-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar" role="banner">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__logo" aria-label="FPdeveloper - Home">
+        <img src="assets/img/logo.svg" alt="FPdeveloper" class="navbar__logo-img logo-dark">
+        <img src="assets/img/logo-light.svg" alt="" class="navbar__logo-img logo-light" aria-hidden="true">
+      </a>
+      <nav class="navbar__nav" aria-label="Navigazione principale">
+        <a href="index.html"    class="navbar__link">Home</a>
+        <a href="about.html"    class="navbar__link">Chi sono</a>
+        <a href="services.html" class="navbar__link">Servizi</a>
+        <a href="portfolio.html" class="navbar__link">Portfolio</a>
+        <a href="contact.html"  class="navbar__link">Contatti</a>
+      </nav>
+      <div class="navbar__actions">
+        <button class="navbar__theme-toggle" id="themeToggle" aria-label="Cambia tema">
+          <svg class="theme-icon theme-icon--moon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="theme-icon theme-icon--sun" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </button>
+        <a href="contact.html" class="btn btn--primary">Parliamo →</a>
+        <button class="navbar__burger" aria-label="Menu mobile">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <nav class="navbar__mobile" aria-label="Menu mobile">
+      <a href="index.html"    class="navbar__link">Home</a>
+      <a href="about.html"    class="navbar__link">Chi sono</a>
+      <a href="services.html" class="navbar__link">Servizi</a>
+      <a href="portfolio.html"class="navbar__link">Portfolio</a>
+      <a href="contact.html"  class="navbar__link">Contatti</a>
+      <a href="contact.html"  class="btn btn--primary">Parliamo →</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero" aria-labelledby="page-title">
+      <div class="page-hero__glow" aria-hidden="true"></div>
+      <div class="container">
+        <span class="section-label" style="justify-content:center; display:flex; margin-bottom:1rem;">Portfolio</span>
+        <h1 class="page-hero__title" id="page-title">Progetti che<br><span class="text-gradient">fanno la differenza</span></h1>
+        <p class="page-hero__subtitle">
+          Ogni progetto ha una storia, un obiettivo e un risultato misurabile. Qui trovi una selezione autentica del mio lavoro.
+        </p>
+      </div>
+    </section>
+
+    <!-- NUMBERS STRIP -->
+    <section aria-label="Risultati in numeri">
+      <div class="container">
+        <div class="result-strip reveal">
+          <div class="result-strip__grid">
+            <div>
+              <span class="result-strip__value" data-counter="50" data-suffix="+">50+</span>
+              <span class="result-strip__label">Progetti completati</span>
+            </div>
+            <div>
+              <span class="result-strip__value" data-counter="98" data-suffix="%">98%</span>
+              <span class="result-strip__label">Clienti soddisfatti</span>
+            </div>
+            <div>
+              <span class="result-strip__value" data-counter="240" data-suffix="%">240%</span>
+              <span class="result-strip__label">Crescita media traffico</span>
+            </div>
+            <div>
+              <span class="result-strip__value" data-counter="8" data-suffix="y">8y</span>
+              <span class="result-strip__label">Di esperienza</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO GRID -->
+    <section class="section" aria-labelledby="portfolio-grid-title">
+      <div class="container">
+        <div class="section-header section-header--center reveal" style="margin-bottom:2.5rem;">
+          <span class="section-label">Tutti i lavori</span>
+          <h2 class="section-title" id="portfolio-grid-title">Esplora i progetti</h2>
+        </div>
+
+        <!-- Filters -->
+        <div class="portfolio-filters reveal" role="group" aria-label="Filtra per categoria">
+          <button class="filter-btn active" data-filter="all">Tutti</button>
+          <button class="filter-btn" data-filter="wordpress">WordPress</button>
+          <button class="filter-btn" data-filter="landing">Landing Page</button>
+          <button class="filter-btn" data-filter="vetrina">Siti Vetrina</button>
+          <button class="filter-btn" data-filter="ai">AI & Automazione</button>
+          <button class="filter-btn" data-filter="custom">Custom Dev</button>
+        </div>
+
+        <div class="portfolio-page-grid">
+
+          <!-- 1 -->
+          <article class="portfolio-card reveal reveal-delay-1" data-category="wordpress">
+            <div class="portfolio-card__visual">
+              <div class="proj-thumb proj-thumb--1" aria-hidden="true">🏢</div>
+              <div class="portfolio-card__overlay" aria-hidden="true"></div>
+              <div class="portfolio-card__category">
+                <span class="badge badge--blue">WordPress</span>
+              </div>
+              <div class="portfolio-card__visual-meta">
+                <h3 class="portfolio-card__title">Studio Legale Martinelli</h3>
+              </div>
+            </div>
+            <div class="portfolio-card__body">
+              <div class="portfolio-card__body-inner">
+                <p class="portfolio-card__desc">Sito istituzionale premium con tema custom, blog specializzato, area clienti protetta e sistema di prenotazione consulenze integrato.</p>
+                <div class="portfolio-card__stack">
+                  <span class="badge badge--default">WordPress</span>
+                  <span class="badge badge--default">PHP</span>
+                  <span class="badge badge--default">ACF</span>
+                </div>
+                <div class="portfolio-card__footer">
+                  <div class="portfolio-card__result"><strong>+240%</strong> traffico organico</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 2 -->
+          <article class="portfolio-card reveal reveal-delay-2" data-category="landing">
+            <div class="portfolio-card__visual">
+              <div class="proj-thumb proj-thumb--2" aria-hidden="true">🚀</div>
+              <div class="portfolio-card__overlay" aria-hidden="true"></div>
+              <div class="portfolio-card__category">
+                <span class="badge badge--accent">Landing Page</span>
+              </div>
+              <div class="portfolio-card__visual-meta">
+                <h3 class="portfolio-card__title">Corso Online "Finanza Libera"</h3>
+              </div>
+            </div>
+            <div class="portfolio-card__body">
+              <div class="portfolio-card__body-inner">
+                <p class="portfolio-card__desc">Landing page ad alta conversione per un corso di educazione finanziaria. Video hero, countdown live, testimonianze e checkout integrato.</p>
+                <div class="portfolio-card__stack">
+                  <span class="badge badge--default">HTML/CSS</span>
+                  <span class="badge badge--default">JavaScript</span>
+                  <span class="badge badge--default">CRO</span>
+                </div>
+                <div class="portfolio-card__footer">
+                  <div class="portfolio-card__result"><strong>12.8%</strong> tasso di conversione</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 3 -->
+          <article class="portfolio-card reveal reveal-delay-3" data-category="ai">
+            <div class="portfolio-card__visual">
+              <div class="proj-thumb proj-thumb--3" aria-hidden="true">🤖</div>
+              <div class="portfolio-card__overlay" aria-hidden="true"></div>
+              <div class="portfolio-card__category">
+                <span class="badge badge--accent">AI Integration</span>
+              </div>
+              <div class="portfolio-card__visual-meta">
+                <h3 class="portfolio-card__title">ChatBot E-commerce VerdeModa</h3>
+              </div>
+            </div>
+            <div class="portfolio-card__body">
+              <div class="portfolio-card__body-inner">
+                <p class="portfolio-card__desc">Assistente virtuale AI integrato nel sito per supporto clienti 24/7, raccomandazioni prodotto personalizzate e gestione resi automatizzata.</p>
+                <div class="portfolio-card__stack">
+                  <span class="badge badge--accent">AI</span>
+                  <span class="badge badge--default">JavaScript</span>
+                  <span class="badge badge--default">OpenAI API</span>
+                </div>
+                <div class="portfolio-card__footer">
+                  <div class="portfolio-card__result"><strong>-65%</strong> richieste supporto</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 4 -->
+          <article class="portfolio-card reveal reveal-delay-1" data-category="vetrina">
+            <div class="portfolio-card__visual">
+              <div class="proj-thumb proj-thumb--4" aria-hidden="true">🍕</div>
+              <div class="portfolio-card__overlay" aria-hidden="true"></div>
+              <div class="portfolio-card__category">
+                <span class="badge badge--default">Sito Vetrina</span>
+              </div>
+              <div class="portfolio-card__visual-meta">
+                <h3 class="portfolio-card__title">Trattoria "Da Nonna Elvira"</h3>
+              </div>
+            </div>
+            <div class="portfolio-card__body">
+              <div class="portfolio-card__body-inner">
+                <p class="portfolio-card__desc">Sito per ristorante con menù digitale aggiornabile, galleria fotografica ottimizzata, integrazione Google Maps e sistema di prenotazioni tavoli.</p>
+                <div class="portfolio-card__stack">
+                  <span class="badge badge--default">HTML/CSS</span>
+                  <span class="badge badge--default">JavaScript</span>
+                  <span class="badge badge--default">PHP</span>
+                </div>
+                <div class="portfolio-card__footer">
+                  <div class="portfolio-card__result"><strong>+180%</strong> prenotazioni online</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 5 -->
+          <article class="portfolio-card reveal reveal-delay-2" data-category="wordpress">
+            <div class="portfolio-card__visual">
+              <div class="proj-thumb proj-thumb--5" aria-hidden="true">🏠</div>
+              <div class="portfolio-card__overlay" aria-hidden="true"></div>
+              <div class="portfolio-card__category">
+                <span class="badge badge--blue">WordPress</span>
+              </div>
+              <div class="portfolio-card__visual-meta">
+                <h3 class="portfolio-card__title">Agenzia Immobiliare CasaTop</h3>
+              </div>
+            </div>
+            <div class="portfolio-card__body">
+              <div class="portfolio-card__body-inner">
+                <p class="portfolio-card__desc">Portale immobiliare con ricerca avanzata, schede proprietà con gallery, mappe interattive e gestione annunci dal backend WordPress.</p>
+                <div class="portfolio-card__stack">
+                  <span class="badge badge--default">WordPress</span>
+                  <span class="badge badge--default">PHP</span>
+                  <span class="badge badge--default">MySQL</span>
+                </div>
+                <div class="portfolio-card__footer">
+                  <div class="portfolio-card__result"><strong>+320%</strong> richieste di contatto</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 6 -->
+          <article class="portfolio-card reveal reveal-delay-3" data-category="custom">
+            <div class="portfolio-card__visual">
+              <div class="proj-thumb proj-thumb--6" aria-hidden="true">💼</div>
+              <div class="portfolio-card__overlay" aria-hidden="true"></div>
+              <div class="portfolio-card__category">
+                <span class="badge badge--default">Custom Dev</span>
+              </div>
+              <div class="portfolio-card__visual-meta">
+                <h3 class="portfolio-card__title">Gestionale Prenota&amp;Vai</h3>
+              </div>
+            </div>
+            <div class="portfolio-card__body">
+              <div class="portfolio-card__body-inner">
+                <p class="portfolio-card__desc">Applicazione web per la gestione prenotazioni di un centro benessere. Calendario dinamico, notifiche email/SMS e pannello admin custom.</p>
+                <div class="portfolio-card__stack">
+                  <span class="badge badge--default">PHP 8</span>
+                  <span class="badge badge--default">JavaScript</span>
+                  <span class="badge badge--default">MySQL</span>
+                </div>
+                <div class="portfolio-card__footer">
+                  <div class="portfolio-card__result"><strong>-80%</strong> tempo gestione agenda</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 7 -->
+          <article class="portfolio-card reveal reveal-delay-1" data-category="landing">
+            <div class="portfolio-card__visual">
+              <div class="proj-thumb proj-thumb--2" aria-hidden="true">🏋️</div>
+              <div class="portfolio-card__overlay" aria-hidden="true"></div>
+              <div class="portfolio-card__category">
+                <span class="badge badge--accent">Landing Page</span>
+              </div>
+              <div class="portfolio-card__visual-meta">
+                <h3 class="portfolio-card__title">PalestraForce — Lead Generation</h3>
+              </div>
+            </div>
+            <div class="portfolio-card__body">
+              <div class="portfolio-card__body-inner">
+                <p class="portfolio-card__desc">Landing page per campagna Google Ads di una palestra. Ottimizzata per il mobile, con form contatti intelligente e integrazione CRM automatica.</p>
+                <div class="portfolio-card__stack">
+                  <span class="badge badge--default">HTML/CSS</span>
+                  <span class="badge badge--default">JavaScript</span>
+                  <span class="badge badge--default">PHP</span>
+                </div>
+                <div class="portfolio-card__footer">
+                  <div class="portfolio-card__result"><strong>8.4%</strong> tasso lead su visitatori</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 8 -->
+          <article class="portfolio-card reveal reveal-delay-2" data-category="ai">
+            <div class="portfolio-card__visual">
+              <div class="proj-thumb proj-thumb--3" aria-hidden="true">📊</div>
+              <div class="portfolio-card__overlay" aria-hidden="true"></div>
+              <div class="portfolio-card__category">
+                <span class="badge badge--accent">AI & Automazione</span>
+              </div>
+              <div class="portfolio-card__visual-meta">
+                <h3 class="portfolio-card__title">Report Automatico StudioFiscale</h3>
+              </div>
+            </div>
+            <div class="portfolio-card__body">
+              <div class="portfolio-card__body-inner">
+                <p class="portfolio-card__desc">Sistema di automazione per la generazione di report fiscali periodici: raccolta dati, elaborazione AI, invio automatico ai clienti tramite email.</p>
+                <div class="portfolio-card__stack">
+                  <span class="badge badge--accent">AI</span>
+                  <span class="badge badge--default">PHP</span>
+                  <span class="badge badge--default">Automazione</span>
+                </div>
+                <div class="portfolio-card__footer">
+                  <div class="portfolio-card__result"><strong>12h/settimana</strong> risparmiate</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 9 -->
+          <article class="portfolio-card reveal reveal-delay-3" data-category="vetrina">
+            <div class="portfolio-card__visual">
+              <div class="proj-thumb proj-thumb--1" aria-hidden="true">🎨</div>
+              <div class="portfolio-card__overlay" aria-hidden="true"></div>
+              <div class="portfolio-card__category">
+                <span class="badge badge--default">Sito Vetrina</span>
+              </div>
+              <div class="portfolio-card__visual-meta">
+                <h3 class="portfolio-card__title">Fotografa Alessia Bianchi</h3>
+              </div>
+            </div>
+            <div class="portfolio-card__body">
+              <div class="portfolio-card__body-inner">
+                <p class="portfolio-card__desc">Portfolio fotografico minimalista e impattante. Gallery full-screen con animazioni fluide, lightbox personalizzato e caricamento immagini ottimizzato.</p>
+                <div class="portfolio-card__stack">
+                  <span class="badge badge--default">HTML/CSS</span>
+                  <span class="badge badge--default">JavaScript</span>
+                  <span class="badge badge--default">Performance</span>
+                </div>
+                <div class="portfolio-card__footer">
+                  <div class="portfolio-card__result"><strong>98/100</strong> Google PageSpeed</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="container">
+      <div class="cta-section reveal">
+        <div class="cta-section__glow" aria-hidden="true"></div>
+        <h2 class="cta-section__title">Il prossimo progetto<br>eccellente è il <span class="text-gradient">tuo</span></h2>
+        <p class="cta-section__text">Hai visto il mio lavoro. Ora è il momento di costruire qualcosa insieme. Raccontami la tua idea.</p>
+        <div class="cta-section__actions">
+          <a href="contact.html" class="btn btn--primary btn--lg">Parliamo del tuo progetto →</a>
+          <a href="services.html" class="btn btn--outline btn--lg">Vedi i servizi</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <div class="footer__brand-logo">FP<span>dev</span></div>
+          <p class="footer__brand-text">Sviluppatore web freelance specializzato in soluzioni digitali moderne, performanti e orientate ai risultati.</p>
+          <div class="footer__socials">
+            <a href="#" class="footer__social" aria-label="LinkedIn">in</a>
+            <a href="#" class="footer__social" aria-label="GitHub">gh</a>
+            <a href="#" class="footer__social" aria-label="Twitter">𝕏</a>
+          </div>
+        </div>
+        <div>
+          <h3 class="footer__heading">Navigazione</h3>
+          <ul class="footer__links">
+            <li><a href="index.html"    class="footer__link">Home</a></li>
+            <li><a href="about.html"    class="footer__link">Chi sono</a></li>
+            <li><a href="services.html" class="footer__link">Servizi</a></li>
+            <li><a href="portfolio.html"class="footer__link">Portfolio</a></li>
+            <li><a href="contact.html"  class="footer__link">Contatti</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="footer__heading">Servizi</h3>
+          <ul class="footer__links">
+            <li><a href="services.html" class="footer__link">Siti Vetrina</a></li>
+            <li><a href="services.html" class="footer__link">Landing Page</a></li>
+            <li><a href="services.html" class="footer__link">WordPress</a></li>
+            <li><a href="services.html" class="footer__link">Integrazione AI</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="footer__heading">Contatti</h3>
+          <ul class="footer__links">
+            <li><span class="footer__link">📧 info@fpdeveloper.it</span></li>
+            <li><span class="footer__link">📱 +39 333 000 0000</span></li>
+            <li><span class="footer__link">📍 Italia (remoto)</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copy">© 2024 <span>FPdeveloper</span>. Tutti i diritti riservati.</p>
+        <p class="footer__copy">Realizzato con <span>❤</span> e codice pulito</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

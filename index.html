@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FPdeveloper — Sviluppatore Web Freelance | HTML, CSS, PHP, WordPress, AI</title>
+  <meta name="description" content="Sviluppo siti web moderni, performanti e orientati ai risultati. Specializzato in HTML, CSS, JavaScript, PHP, WordPress e integrazione di strumenti AI.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="index.html">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>(function(){var t=localStorage.getItem('fp-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar" role="banner">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__logo" aria-label="FPdeveloper - Home">
+        <img src="assets/img/logo.svg" alt="FPdeveloper" class="navbar__logo-img logo-dark">
+        <img src="assets/img/logo-light.svg" alt="" class="navbar__logo-img logo-light" aria-hidden="true">
+      </a>
+      <nav class="navbar__nav" aria-label="Navigazione principale">
+        <a href="index.html"    class="navbar__link">Home</a>
+        <a href="about.html"    class="navbar__link">Chi sono</a>
+        <a href="services.html" class="navbar__link">Servizi</a>
+        <a href="portfolio.html" class="navbar__link">Portfolio</a>
+        <a href="contact.html"  class="navbar__link">Contatti</a>
+      </nav>
+      <div class="navbar__actions">
+        <button class="navbar__theme-toggle" id="themeToggle" aria-label="Cambia tema">
+          <svg class="theme-icon theme-icon--moon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="theme-icon theme-icon--sun" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </button>
+        <a href="contact.html" class="btn btn--primary">Parliamo →</a>
+        <button class="navbar__burger" aria-label="Menu mobile" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <nav class="navbar__mobile" aria-label="Menu mobile">
+      <a href="index.html"    class="navbar__link">Home</a>
+      <a href="about.html"    class="navbar__link">Chi sono</a>
+      <a href="services.html" class="navbar__link">Servizi</a>
+      <a href="portfolio.html"class="navbar__link">Portfolio</a>
+      <a href="contact.html"  class="navbar__link">Contatti</a>
+      <a href="contact.html"  class="btn btn--primary">Parliamo →</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__bg">
+        <div class="hero__grid"></div>
+        <div class="hero__glow-1" aria-hidden="true"></div>
+        <div class="hero__glow-2" aria-hidden="true"></div>
+      </div>
+      <div class="hero__content">
+        <div class="hero__text">
+          <div class="hero__badge" aria-label="Disponibile per nuovi progetti">
+            <span class="hero__badge-dot" aria-hidden="true"></span>
+            Disponibile per nuovi progetti
+          </div>
+          <h1 class="hero__title" id="hero-title">
+            <span class="line"><span>Sviluppo web</span></span>
+            <span class="line"><span>che <span class="text-gradient typewriter-rotate" data-words='["converte","fidelizza","vende","impressiona"]'>converte</span><span class="type-cursor" aria-hidden="true"></span></span></span>
+            <span class="line"><span>e convince.</span></span>
+          </h1>
+          <p class="hero__description">
+            Creo siti web moderni, veloci ed eleganti per freelance, aziende e brand digitali.
+            Design curato, codice pulito, risultati misurabili.
+          </p>
+          <div class="hero__actions">
+            <a href="portfolio.htokml" class="btn btn--primary btn--lg">Scopri i progetti</a>
+            <a href="contact.html"   class="btn btn--outline btn--lg">Lavoriamo insieme</a>
+          </div>
+          <div class="hero__stats">
+            <div>
+              <span class="hero__stat-value" data-counter="50" data-suffix="+">50+</span>
+              <span class="hero__stat-label">Progetti completati</span>
+            </div>
+            <div>
+              <span class="hero__stat-value" data-counter="5" data-suffix="★">5★</span>
+              <span class="hero__stat-label">Valutazione media</span>
+            </div>
+            <div>
+              <span class="hero__stat-value" data-counter="8" data-suffix="y">8y</span>
+              <span class="hero__stat-label">Di esperienza</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Code Window Visual -->
+        <div class="hero__visual" aria-hidden="true">
+          <div class="hero__floating-badge hero__floating-badge--1">
+            ⚡ Performance 98/100
+          </div>
+          <div class="hero__code-window">
+            <div class="code-window__bar">
+              <span class="code-window__dot code-window__dot--red"></span>
+              <span class="code-window__dot code-window__dot--yellow"></span>
+              <span class="code-window__dot code-window__dot--green"></span>
+              <span class="code-window__title">portfolio.js</span>
+            </div>
+            <div class="code-window__body">
+              <div class="code-line"><span class="code-line__num">1</span><span class="code-line__content"><span class="c-comment">// Costruiamo qualcosa di straordinario</span></span></div>
+              <div class="code-line"><span class="code-line__num">2</span><span class="code-line__content"></span></div>
+              <div class="code-line"><span class="code-line__num">3</span><span class="code-line__content"><span class="c-keyword">const</span> <span class="c-var">developer</span> = {</span></div>
+              <div class="code-line"><span class="code-line__num">4</span><span class="code-line__content">&nbsp;&nbsp;<span class="c-prop">name</span>: <span class="c-string">'FPdeveloper'</span>,</span></div>
+              <div class="code-line"><span class="code-line__num">5</span><span class="code-line__content">&nbsp;&nbsp;<span class="c-prop">skills</span>: [<span class="c-string">'HTML'</span>, <span class="c-string">'CSS'</span>, <span class="c-string">'JS'</span>,</span></div>
+              <div class="code-line"><span class="code-line__num">6</span><span class="code-line__content">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-string">'PHP'</span>, <span class="c-string">'WordPress'</span>, <span class="c-string">'AI'</span>],</span></div>
+              <div class="code-line"><span class="code-line__num">7</span><span class="code-line__content">&nbsp;&nbsp;<span class="c-prop">focus</span>: <span class="c-string">'risultati concreti'</span>,</span></div>
+              <div class="code-line"><span class="code-line__num">8</span><span class="code-line__content">&nbsp;&nbsp;<span class="c-prop">available</span>: <span class="c-accent">true</span></span></div>
+              <div class="code-line"><span class="code-line__num">9</span><span class="code-line__content">};</span></div>
+              <div class="code-line"><span class="code-line__num">10</span><span class="code-line__content"></span></div>
+              <div class="code-line"><span class="code-line__num">11</span><span class="code-line__content"><span class="c-func">buildAmazing</span>(developer);</span></div>
+            </div>
+          </div>
+          <div class="hero__floating-badge hero__floating-badge--2">
+            🤖 AI-Enhanced
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TECH MARQUEE -->
+    <section class="marquee-section" aria-label="Tecnologie utilizzate">
+      <div class="marquee-track">
+        <span class="marquee-item">⚡ HTML5 & CSS3</span>
+        <span class="marquee-item">🟡 JavaScript</span>
+        <span class="marquee-item">🐘 PHP</span>
+        <span class="marquee-item">🔵 WordPress</span>
+        <span class="marquee-item">🤖 AI Integration</span>
+        <span class="marquee-item">🎨 UI/UX Design</span>
+        <span class="marquee-item">🚀 Performance</span>
+        <span class="marquee-item">📱 Responsive Design</span>
+        <span class="marquee-item">🔒 Web Security</span>
+        <span class="marquee-item">⚡ HTML5 & CSS3</span>
+        <span class="marquee-item">🟡 JavaScript</span>
+        <span class="marquee-item">🐘 PHP</span>
+        <span class="marquee-item">🔵 WordPress</span>
+        <span class="marquee-item">🤖 AI Integration</span>
+        <span class="marquee-item">🎨 UI/UX Design</span>
+        <span class="marquee-item">🚀 Performance</span>
+        <span class="marquee-item">📱 Responsive Design</span>
+        <span class="marquee-item">🔒 Web Security</span>
+      </div>
+    </section>
+
+    <!-- SERVICES PREVIEW -->
+    <section class="section" id="servizi" aria-labelledby="services-title">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">Cosa faccio</span>
+          <h2 class="section-title" id="services-title" data-split>Servizi su misura<br>per il tuo progetto</h2>
+          <p class="section-subtitle">
+            Dalla prima idea al lancio, copro ogni fase dello sviluppo web con attenzione al dettaglio e orientamento al risultato.
+          </p>
+        </div>
+        <div class="services-grid">
+          <article class="service-card reveal reveal-delay-1">
+            <div class="service-card__accent-line" aria-hidden="true"></div>
+            <span class="service-card__icon" aria-hidden="true">🌐</span>
+            <h3 class="service-card__title">Siti Vetrina</h3>
+            <p class="service-card__desc">
+              Siti istituzionali e di presentazione eleganti, veloci e ottimizzati per il posizionamento SEO. L'immagine che meriti online.
+            </p>
+            <div class="service-card__tags">
+              <span class="badge badge--default">HTML/CSS</span>
+              <span class="badge badge--default">JavaScript</span>
+              <span class="badge badge--default">SEO</span>
+            </div>
+          </article>
+          <article class="service-card reveal reveal-delay-2">
+            <div class="service-card__accent-line" aria-hidden="true"></div>
+            <span class="service-card__icon" aria-hidden="true">🎯</span>
+            <h3 class="service-card__title">Landing Page</h3>
+            <p class="service-card__desc">
+              Pagine di atterraggio ad alta conversione, progettate per catturare l'attenzione e trasformare i visitatori in clienti.
+            </p>
+            <div class="service-card__tags">
+              <span class="badge badge--default">Conversione</span>
+              <span class="badge badge--default">CRO</span>
+              <span class="badge badge--default">Analytics</span>
+            </div>
+          </article>
+          <article class="service-card reveal reveal-delay-3">
+            <div class="service-card__accent-line" aria-hidden="true"></div>
+            <span class="service-card__icon" aria-hidden="true">🔷</span>
+            <h3 class="service-card__title">WordPress Avanzato</h3>
+            <p class="service-card__desc">
+              Sviluppo WordPress su misura: temi custom, plugin dedicati, performance al massimo. Non il solito sito da template.
+            </p>
+            <div class="service-card__tags">
+              <span class="badge badge--default">WordPress</span>
+              <span class="badge badge--default">PHP</span>
+              <span class="badge badge--default">Custom Theme</span>
+            </div>
+          </article>
+          <article class="service-card reveal reveal-delay-1">
+            <div class="service-card__accent-line" aria-hidden="true"></div>
+            <span class="service-card__icon" aria-hidden="true">🤖</span>
+            <h3 class="service-card__title">Integrazione AI</h3>
+            <p class="service-card__desc">
+              Chatbot intelligenti, automazioni, API AI integrate nel tuo sito o workflow. Porta l'intelligenza artificiale nel tuo business.
+            </p>
+            <div class="service-card__tags">
+              <span class="badge badge--accent">AI</span>
+              <span class="badge badge--default">Automazione</span>
+              <span class="badge badge--default">API</span>
+            </div>
+          </article>
+          <article class="service-card reveal reveal-delay-2">
+            <div class="service-card__accent-line" aria-hidden="true"></div>
+            <span class="service-card__icon" aria-hidden="true">⚙️</span>
+            <h3 class="service-card__title">Frontend & Backend Custom</h3>
+            <p class="service-card__desc">
+              Personalizzazioni avanzate, funzionalità su misura, integrazioni con sistemi terzi. Il web come strumento strategico.
+            </p>
+            <div class="service-card__tags">
+              <span class="badge badge--default">JavaScript</span>
+              <span class="badge badge--default">PHP</span>
+              <span class="badge badge--default">REST API</span>
+            </div>
+          </article>
+          <article class="service-card reveal reveal-delay-3">
+            <div class="service-card__accent-line" aria-hidden="true"></div>
+            <span class="service-card__icon" aria-hidden="true">🔧</span>
+            <h3 class="service-card__title">Manutenzione & Restyling</h3>
+            <p class="service-card__desc">
+              Aggiornamenti, ottimizzazione performance, restyling grafico e risoluzione problemi. Il tuo sito sempre al massimo.
+            </p>
+            <div class="service-card__tags">
+              <span class="badge badge--default">Ottimizzazione</span>
+              <span class="badge badge--default">Speed</span>
+              <span class="badge badge--default">Sicurezza</span>
+            </div>
+          </article>
+        </div>
+        <div style="text-align:center; margin-top:3rem;">
+          <a href="services.html" class="btn btn--outline btn--lg">Tutti i servizi →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="section skills-section" id="skills" aria-labelledby="skills-title">
+      <div class="container">
+        <div class="section-header section-header--center reveal">
+          <span class="section-label">Stack Tecnico</span>
+          <h2 class="section-title" id="skills-title" data-split>Tecnologie che <span class="text-gradient">padroneggio</span></h2>
+          <p class="section-subtitle">
+            Un arsenale tecnico curato nel tempo, con un unico obiettivo: costruire prodotti digitali eccellenti.
+          </p>
+        </div>
+        <div class="skills-grid">
+          <div class="skill-item reveal"><span class="skill-item__icon">🌐</span><span class="skill-item__name">HTML5</span></div>
+          <div class="skill-item reveal reveal-delay-1"><span class="skill-item__icon">🎨</span><span class="skill-item__name">CSS3</span></div>
+          <div class="skill-item reveal reveal-delay-2"><span class="skill-item__icon">🟡</span><span class="skill-item__name">JavaScript</span></div>
+          <div class="skill-item reveal reveal-delay-3"><span class="skill-item__icon">🐘</span><span class="skill-item__name">PHP</span></div>
+          <div class="skill-item reveal reveal-delay-4"><span class="skill-item__icon">🔷</span><span class="skill-item__name">WordPress</span></div>
+          <div class="skill-item reveal reveal-delay-5"><span class="skill-item__icon">🤖</span><span class="skill-item__name">AI Tools</span></div>
+          <div class="skill-item reveal"><span class="skill-item__icon">🗄️</span><span class="skill-item__name">MySQL</span></div>
+          <div class="skill-item reveal reveal-delay-1"><span class="skill-item__icon">🐙</span><span class="skill-item__name">Git</span></div>
+          <div class="skill-item reveal reveal-delay-2"><span class="skill-item__icon">🎭</span><span class="skill-item__name">Figma</span></div>
+          <div class="skill-item reveal reveal-delay-3"><span class="skill-item__icon">⚡</span><span class="skill-item__name">Performance</span></div>
+          <div class="skill-item reveal reveal-delay-4"><span class="skill-item__icon">🔒</span><span class="skill-item__name">Sicurezza Web</span></div>
+          <div class="skill-item reveal reveal-delay-5"><span class="skill-item__icon">📊</span><span class="skill-item__name">SEO</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO PREVIEW -->
+    <section class="section" id="portfolio" aria-labelledby="portfolio-title">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">Progetti recenti</span>
+          <h2 class="section-title" id="portfolio-title" data-split>Lavori che parlano<br>da soli</h2>
+          <p class="section-subtitle">
+            Ogni progetto è una sfida diversa. Qui una selezione dei lavori che mi rendono più orgoglioso.
+          </p>
+        </div>
+        <div class="portfolio-grid">
+          <article class="portfolio-card reveal reveal-delay-1" data-category="wordpress">
+            <div class="portfolio-card__visual">
+              <div class="proj-thumb proj-thumb--1" aria-hidden="true">🏢</div>
+              <div class="portfolio-card__overlay" aria-hidden="true"></div>
+              <div class="portfolio-card__category">
+                <span class="badge badge--blue">WordPress</span>
+              </div>
+              <div class="portfolio-card__visual-meta">
+                <h3 class="portfolio-card__title">Studio Legale Martinelli</h3>
+              </div>
+            </div>
+            <div class="portfolio-card__body">
+              <div class="portfolio-card__body-inner">
+                <p class="portfolio-card__desc">Sito istituzionale premium con tema custom, blog, area clienti protetta e form intelligenti per la gestione dei contatti.</p>
+                <div class="portfolio-card__stack">
+                  <span class="badge badge--default">WordPress</span>
+                  <span class="badge badge--default">PHP</span>
+                  <span class="badge badge--default">CSS Avanzato</span>
+                </div>
+                <div class="portfolio-card__footer">
+                  <div class="portfolio-card__result"><strong>+240%</strong> visite organiche</div>
+                  <a href="portfolio.html" class="btn btn--ghost" style="font-size:0.8rem;">Dettagli →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="portfolio-card reveal reveal-delay-2" data-category="landing">
+            <div class="portfolio-card__visual">
+              <div class="proj-thumb proj-thumb--2" aria-hidden="true">🚀</div>
+              <div class="portfolio-card__overlay" aria-hidden="true"></div>
+              <div class="portfolio-card__category">
+                <span class="badge badge--accent">Landing Page</span>
+              </div>
+              <div class="portfolio-card__visual-meta">
+                <h3 class="portfolio-card__title">Corso Online "Finanza Libera"</h3>
+              </div>
+            </div>
+            <div class="portfolio-card__body">
+              <div class="portfolio-card__body-inner">
+                <p class="portfolio-card__desc">Landing page ottimizzata per la vendita di un corso online. Video hero, countdown, proof sociale e checkout integrato.</p>
+                <div class="portfolio-card__stack">
+                  <span class="badge badge--default">HTML/CSS</span>
+                  <span class="badge badge--default">JavaScript</span>
+                  <span class="badge badge--default">CRO</span>
+                </div>
+                <div class="portfolio-card__footer">
+                  <div class="portfolio-card__result"><strong>12.8%</strong> conversione</div>
+                  <a href="portfolio.html" class="btn btn--ghost" style="font-size:0.8rem;">Dettagli →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="portfolio-card reveal reveal-delay-3" data-category="ai">
+            <div class="portfolio-card__visual">
+              <div class="proj-thumb proj-thumb--3" aria-hidden="true">🤖</div>
+              <div class="portfolio-card__overlay" aria-hidden="true"></div>
+              <div class="portfolio-card__category">
+                <span class="badge badge--accent">AI Integration</span>
+              </div>
+              <div class="portfolio-card__visual-meta">
+                <h3 class="portfolio-card__title">ChatBot E-commerce VerdeModa</h3>
+              </div>
+            </div>
+            <div class="portfolio-card__body">
+              <div class="portfolio-card__body-inner">
+                <p class="portfolio-card__desc">Assistente virtuale AI integrato nel sito e-commerce per supporto clienti 24/7, raccomandazioni prodotto e gestione resi.</p>
+                <div class="portfolio-card__stack">
+                  <span class="badge badge--accent">AI</span>
+                  <span class="badge badge--default">JavaScript</span>
+                  <span class="badge badge--default">API</span>
+                </div>
+                <div class="portfolio-card__footer">
+                  <div class="portfolio-card__result"><strong>-65%</strong> richieste supporto</div>
+                  <a href="portfolio.html" class="btn btn--ghost" style="font-size:0.8rem;">Dettagli →</a>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div style="text-align:center; margin-top:3rem;">
+          <a href="portfolio.html" class="btn btn--primary btn--lg">Vedi tutti i progetti →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY CHOOSE ME -->
+    <section class="section skills-section" id="perche-scegliermi" aria-labelledby="why-title">
+      <div class="container">
+        <div class="split-layout" style="align-items:center;">
+          <div class="reveal-left">
+            <span class="section-label">Perché scegliermi</span>
+            <h2 class="section-title" id="why-title" data-split>Non solo codice.<br><span class="text-gradient">Strategia digitale.</span></h2>
+            <p class="section-subtitle" style="margin-bottom:2rem;">
+              Lavoro con te come un partner, non come un fornitore. Il tuo successo online è il mio obiettivo principale.
+            </p>
+            <a href="about.html" class="btn btn--outline">Scopri il mio approccio</a>
+          </div>
+          <div class="features-grid reveal-right">
+            <div class="feature-item">
+              <div class="feature-item__icon" aria-hidden="true">⚡</div>
+              <div>
+                <h3 class="feature-item__title">Velocità esecutiva</h3>
+                <p class="feature-item__text">Consegne rispettate, processi snelli, nessuna burocrazia inutile. Il tuo tempo vale.</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-item__icon" aria-hidden="true">🎯</div>
+              <div>
+                <h3 class="feature-item__title">Orientato ai risultati</h3>
+                <p class="feature-item__text">Ogni scelta tecnica è guidata dall'obiettivo finale: più conversioni, più visibilità, più valore.</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-item__icon" aria-hidden="true">🔍</div>
+              <div>
+                <h3 class="feature-item__title">Cura del dettaglio</h3>
+                <p class="feature-item__text">Dal pixel al codice, ogni elemento è pensato con precisione. Il dettaglio fa la differenza tra buono e eccellente.</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-item__icon" aria-hidden="true">🤖</div>
+              <div>
+                <h3 class="feature-item__title">Vantaggio AI</h3>
+                <p class="feature-item__text">Integro strumenti AI dove portano valore reale: automazioni, assistenti, ottimizzazioni intelligenti.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="section testimonials-section" id="testimonianze" aria-labelledby="testimonials-title">
+      <div class="container">
+        <div class="section-header section-header--center reveal">
+          <span class="section-label">Cosa dicono i clienti</span>
+          <h2 class="section-title" id="testimonials-title" data-split>Parole che contano</h2>
+        </div>
+        <div class="testimonials-grid">
+          <article class="testimonial-card reveal reveal-delay-1">
+            <div class="testimonial-card__stars" aria-label="5 stelle">★★★★★</div>
+            <p class="testimonial-card__quote">Ha trasformato il nostro sito WordPress in qualcosa di completamente diverso. Veloce, elegante, funzionale. Finalmente un sito di cui siamo orgogliosi.</p>
+            <div class="testimonial-card__author">
+              <div class="testimonial-card__avatar" aria-hidden="true">GR</div>
+              <div>
+                <div class="testimonial-card__name">Giulia Rossi</div>
+                <div class="testimonial-card__role">CEO, Studio Creativo Arco</div>
+              </div>
+            </div>
+          </article>
+          <article class="testimonial-card reveal reveal-delay-2">
+            <div class="testimonial-card__stars" aria-label="5 stelle">★★★★★</div>
+            <p class="testimonial-card__quote">La landing page che ha sviluppato per il nostro corso ha superato ogni aspettativa. Il tasso di conversione è più che raddoppiato nel primo mese.</p>
+            <div class="testimonial-card__author">
+              <div class="testimonial-card__avatar" aria-hidden="true">MC</div>
+              <div>
+                <div class="testimonial-card__name">Marco Cantoni</div>
+                <div class="testimonial-card__role">Formatore Online, AcademyPro</div>
+              </div>
+            </div>
+          </article>
+          <article class="testimonial-card reveal reveal-delay-3">
+            <div class="testimonial-card__stars" aria-label="5 stelle">★★★★★</div>
+            <p class="testimonial-card__quote">Integrazione AI straordinaria. Il chatbot che ha sviluppato ha rivoluzionato il nostro customer service. Un investimento che si è ripagato in 3 mesi.</p>
+            <div class="testimonial-card__author">
+              <div class="testimonial-card__avatar" aria-hidden="true">LF</div>
+              <div>
+                <div class="testimonial-card__name">Laura Ferretti</div>
+                <div class="testimonial-card__role">E-commerce Manager, VerdeModa</div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA FINALE -->
+    <div class="container">
+      <div class="cta-section reveal">
+        <div class="cta-section__glow" aria-hidden="true"></div>
+        <span class="section-label" style="justify-content:center; display:flex;">Inizia ora</span>
+        <h2 class="cta-section__title" data-split>Pronto a costruire<br>qualcosa di <span class="text-gradient">straordinario</span>?</h2>
+        <p class="cta-section__text">
+          Raccontami il tuo progetto. Insieme troviamo la soluzione giusta per portare il tuo business online al livello successivo.
+        </p>
+        <div class="cta-section__actions">
+          <a href="contact.html" class="btn btn--primary btn--lg">Iniziamo a parlare →</a>
+          <a href="portfolio.html" class="btn btn--outline btn--lg">Esplora i lavori</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <div class="footer__brand-logo">FP<span>dev</span></div>
+          <p class="footer__brand-text">
+            Sviluppatore web freelance specializzato in soluzioni digitali moderne, performanti e orientate ai risultati. Disponibile per collaborazioni in tutta Italia.
+          </p>
+          <div class="footer__socials">
+            <a href="#" class="footer__social" aria-label="LinkedIn" title="LinkedIn">in</a>
+            <a href="#" class="footer__social" aria-label="GitHub"   title="GitHub">gh</a>
+            <a href="#" class="footer__social" aria-label="Twitter"  title="Twitter">𝕏</a>
+          </div>
+        </div>
+        <div>
+          <h3 class="footer__heading">Navigazione</h3>
+          <ul class="footer__links">
+            <li><a href="index.html"    class="footer__link">Home</a></li>
+            <li><a href="about.html"    class="footer__link">Chi sono</a></li>
+            <li><a href="services.html" class="footer__link">Servizi</a></li>
+            <li><a href="portfolio.html"class="footer__link">Portfolio</a></li>
+            <li><a href="contact.html"  class="footer__link">Contatti</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="footer__heading">Servizi</h3>
+          <ul class="footer__links">
+            <li><a href="services.html" class="footer__link">Siti Vetrina</a></li>
+            <li><a href="services.html" class="footer__link">Landing Page</a></li>
+            <li><a href="services.html" class="footer__link">WordPress</a></li>
+            <li><a href="services.html" class="footer__link">Integrazione AI</a></li>
+            <li><a href="services.html" class="footer__link">Manutenzione</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="footer__heading">Contatti</h3>
+          <ul class="footer__links">
+            <li><span class="footer__link">📧 info@fpdeveloper.it</span></li>
+            <li><span class="footer__link">📱 +39 333 000 0000</span></li>
+            <li><span class="footer__link">📍 Italia (remoto)</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copy">© 2024 <span>FPdeveloper</span>. Tutti i diritti riservati.</p>
+        <p class="footer__copy">Realizzato con <span>❤</span> e codice pulito</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
