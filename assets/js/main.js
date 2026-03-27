@@ -316,12 +316,15 @@
     const words = JSON.parse(typeEl.dataset.words);
     let wIdx = 0, cIdx = words[0].length, deleting = false;
 
-    // Lock min-width to the longest word so the line never reflows
+    // Lock min-width to the longest word so the line never reflows.
+    // Deferred to fonts.ready so Syne is loaded before measuring.
     typeEl.style.display = 'inline-block';
     const longest = words.reduce((a, b) => a.length > b.length ? a : b);
-    typeEl.textContent = longest;
-    typeEl.style.minWidth = typeEl.offsetWidth + 'px';
-    typeEl.textContent = words[0];
+    document.fonts.ready.then(() => {
+      typeEl.textContent = longest;
+      typeEl.style.minWidth = typeEl.offsetWidth + 'px';
+      typeEl.textContent = words[0];
+    });
 
     function typeTick() {
       typeEl.textContent = words[wIdx].substring(0, cIdx);
