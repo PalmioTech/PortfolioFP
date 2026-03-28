@@ -623,17 +623,6 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 0;
 }
 
-.hero__grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-  background-size: 60px 60px;
-  background-position: var(--grid-x, 0px) var(--grid-y, 0px);
-  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
-  transition: background-position 0.05s linear;
-}
 
 .hero__glow-1 {
   position: absolute;
