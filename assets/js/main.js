@@ -486,4 +486,29 @@
     });
   })();
 
+  // ── SERVICE CARDS 3D TILT ─────────────────────────────────────
+  (function () {
+    if (window.matchMedia('(hover: none)').matches) return;
+
+    document.querySelectorAll('.service-card').forEach((card) => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const dx = (e.clientX - rect.left  - rect.width  / 2) / (rect.width  / 2);
+        const dy = (e.clientY - rect.top   - rect.height / 2) / (rect.height / 2);
+        card.style.transform = [
+          'perspective(600px)',
+          `rotateX(${(-dy * 7).toFixed(2)}deg)`,
+          `rotateY(${( dx * 7).toFixed(2)}deg)`,
+          'translateZ(6px)'
+        ].join(' ');
+        card.style.transition = 'transform 0.1s ease-out, filter 0.3s, border-color 0.3s';
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+        card.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s, border-color 0.3s';
+      });
+    });
+  })();
+
 })();
