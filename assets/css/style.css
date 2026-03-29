@@ -2743,7 +2743,7 @@ textarea.form-control {
 }
 
 /* Hero grid — dark lines on light bg */
-[data-theme="light"] .hero__grid {
+[data-theme="light"] .hero {
   background-image:
     linear-gradient(rgba(0, 0, 0, 0.045) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0, 0, 0, 0.045) 1px, transparent 1px);

@@ -476,7 +476,7 @@
       const cy = rect.top  + rect.height / 2;
       const dx = (e.clientX - cx) / (rect.width  / 2);
       const dy = (e.clientY - cy) / (rect.height / 2);
-      orbital.style.transform = `rotateY(${(dx * 8).toFixed(2)}deg) rotateX(${(-dy * 5).toFixed(2)}deg)`;
+      orbital.style.transform = `perspective(800px) rotateY(${(dx * 8).toFixed(2)}deg) rotateX(${(-dy * 5).toFixed(2)}deg)`;
       orbital.style.transition = 'transform 0.12s ease-out';
     });
 
