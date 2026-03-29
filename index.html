@@ -91,35 +91,38 @@
           </div>
         </div>
 
-        <!-- Code Window Visual -->
-        <div class="hero__visual" aria-hidden="true">
-          <div class="hero__floating-badge hero__floating-badge--1">
-            { performance: 98 }
+        <!-- Orbital Scene -->
+        <div class="hero__orbital" aria-hidden="true">
+          <!-- Particelle flottanti -->
+          <div class="orbital__particle"></div>
+          <div class="orbital__particle"></div>
+          <div class="orbital__particle"></div>
+          <div class="orbital__particle"></div>
+          <div class="orbital__particle"></div>
+          <div class="orbital__particle"></div>
+
+          <!-- Anello 1 — piatto, badge orange, raggio 100px -->
+          <div class="orbital__ring orbital__ring--1">
+            <div class="orbital__dot"><div class="orbital__pill pill--orange counter-r1">HTML/CSS</div></div>
+            <div class="orbital__dot"><div class="orbital__pill pill--orange counter-r1">JavaScript</div></div>
+            <div class="orbital__dot"><div class="orbital__pill pill--orange counter-r1">PHP</div></div>
           </div>
-          <div class="hero__code-window">
-            <div class="code-window__bar">
-              <span class="code-window__dot code-window__dot--red"></span>
-              <span class="code-window__dot code-window__dot--yellow"></span>
-              <span class="code-window__dot code-window__dot--green"></span>
-              <span class="code-window__title">portfolio.js</span>
-            </div>
-            <div class="code-window__body">
-              <div class="code-line"><span class="code-line__num">1</span><span class="code-line__content"><span class="c-comment">// Costruiamo qualcosa di straordinario</span></span></div>
-              <div class="code-line"><span class="code-line__num">2</span><span class="code-line__content"></span></div>
-              <div class="code-line"><span class="code-line__num">3</span><span class="code-line__content"><span class="c-keyword">const</span> <span class="c-var">developer</span> = {</span></div>
-              <div class="code-line"><span class="code-line__num">4</span><span class="code-line__content">&nbsp;&nbsp;<span class="c-prop">name</span>: <span class="c-string">'FPdeveloper'</span>,</span></div>
-              <div class="code-line"><span class="code-line__num">5</span><span class="code-line__content">&nbsp;&nbsp;<span class="c-prop">skills</span>: [<span class="c-string">'HTML'</span>, <span class="c-string">'CSS'</span>, <span class="c-string">'JS'</span>,</span></div>
-              <div class="code-line"><span class="code-line__num">6</span><span class="code-line__content">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-string">'PHP'</span>, <span class="c-string">'WordPress'</span>, <span class="c-string">'AI'</span>],</span></div>
-              <div class="code-line"><span class="code-line__num">7</span><span class="code-line__content">&nbsp;&nbsp;<span class="c-prop">focus</span>: <span class="c-string">'risultati concreti'</span>,</span></div>
-              <div class="code-line"><span class="code-line__num">8</span><span class="code-line__content">&nbsp;&nbsp;<span class="c-prop">available</span>: <span class="c-accent">true</span></span></div>
-              <div class="code-line"><span class="code-line__num">9</span><span class="code-line__content">};</span></div>
-              <div class="code-line"><span class="code-line__num">10</span><span class="code-line__content"></span></div>
-              <div class="code-line"><span class="code-line__num">11</span><span class="code-line__content"><span class="c-func">buildAmazing</span>(developer);</span></div>
-            </div>
+
+          <!-- Anello 2 — inclinato, badge lime, raggio 145px -->
+          <div class="orbital__ring orbital__ring--2">
+            <div class="orbital__dot"><div class="orbital__pill pill--lime counter-r2">WordPress</div></div>
+            <div class="orbital__dot"><div class="orbital__pill pill--lime counter-r2">AI Tools</div></div>
+            <div class="orbital__dot"><div class="orbital__pill pill--lime counter-r2">MySQL</div></div>
           </div>
-          <div class="hero__floating-badge hero__floating-badge--2">
-            ai_enhanced: true
+
+          <!-- Anello 3 — più inclinato, badge muted, raggio 190px -->
+          <div class="orbital__ring orbital__ring--3">
+            <div class="orbital__dot"><div class="orbital__pill pill--muted counter-r3">UI/UX Design</div></div>
+            <div class="orbital__dot"><div class="orbital__pill pill--muted counter-r3">Performance</div></div>
           </div>
+
+          <!-- Sfera centrale -->
+          <div class="orbital__sphere"></div>
         </div>
       </div>
     </section>
