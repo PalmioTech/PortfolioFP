@@ -2436,6 +2436,7 @@ textarea.form-control {
   .hero__actions { justify-content: center; }
   .hero__stats { justify-content: center; }
   .hero__visual { display: none; }
+  .hero__orbital { display: none; }
 
   .features-grid { grid-template-columns: 1fr; }
 
@@ -2452,6 +2453,52 @@ textarea.form-control {
   .contact-layout {
     grid-template-columns: 1fr;
     gap: var(--space-10);
+  }
+}
+
+@media (max-width: 900px) {
+  .hero__orbital {
+    max-width: 320px;
+  }
+
+  .orbital__sphere {
+    width: 90px;
+    height: 90px;
+  }
+
+  .orbital__ring--1 {
+    width: 150px;
+    height: 150px;
+    margin-top: -75px;
+    margin-left: -75px;
+  }
+  .orbital__ring--2 {
+    width: 220px;
+    height: 220px;
+    margin-top: -110px;
+    margin-left: -110px;
+  }
+  .orbital__ring--3 {
+    width: 290px;
+    height: 290px;
+    margin-top: -145px;
+    margin-left: -145px;
+  }
+
+  .orbital__ring--1 .orbital__dot:nth-child(1) { transform: translate(-50%, calc(-75px - 50%)); }
+  .orbital__ring--1 .orbital__dot:nth-child(2) { transform: translate(calc(75px - 50%), -50%); }
+  .orbital__ring--1 .orbital__dot:nth-child(3) { transform: translate(-50%, calc(75px - 50%)); }
+
+  .orbital__ring--2 .orbital__dot:nth-child(1) { transform: translate(-50%, calc(-110px - 50%)); }
+  .orbital__ring--2 .orbital__dot:nth-child(2) { transform: translate(calc(110px - 50%), -50%); }
+  .orbital__ring--2 .orbital__dot:nth-child(3) { transform: translate(-50%, calc(110px - 50%)); }
+
+  .orbital__ring--3 .orbital__dot:nth-child(1) { transform: translate(-50%, calc(-145px - 50%)); }
+  .orbital__ring--3 .orbital__dot:nth-child(2) { transform: translate(calc(145px - 50%), -50%); }
+
+  .orbital__pill {
+    font-size: 0.48rem;
+    padding: 3px 8px;
   }
 }
 
