@@ -461,4 +461,29 @@
     }
   }
 
+  // ── ORBITAL PARALLAX ─────────────────────────────────────
+  (function () {
+    const orbital = document.querySelector('.hero__orbital');
+    const heroSection = document.querySelector('.hero');
+    if (!orbital || !heroSection) return;
+
+    // Skip on touch devices
+    if (window.matchMedia('(hover: none)').matches) return;
+
+    heroSection.addEventListener('mousemove', (e) => {
+      const rect = heroSection.getBoundingClientRect();
+      const cx = rect.left + rect.width  / 2;
+      const cy = rect.top  + rect.height / 2;
+      const dx = (e.clientX - cx) / (rect.width  / 2);
+      const dy = (e.clientY - cy) / (rect.height / 2);
+      orbital.style.transform = `rotateY(${(dx * 8).toFixed(2)}deg) rotateX(${(-dy * 5).toFixed(2)}deg)`;
+      orbital.style.transition = 'transform 0.12s ease-out';
+    });
+
+    heroSection.addEventListener('mouseleave', () => {
+      orbital.style.transform = 'rotateY(0deg) rotateX(0deg)';
+      orbital.style.transition = 'transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    });
+  })();
+
 })();
