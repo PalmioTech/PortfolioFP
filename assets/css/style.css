@@ -2800,3 +2800,96 @@ textarea.form-control {
     grid-template-columns: 1fr;
   }
 }
+
+/* ============================================================
+   PAGE TRANSITION OVERLAY
+   ============================================================ */
+.page-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.page-transition.is-revealing {
+  animation: pt-reveal 0.6s cubic-bezier(0.76, 0, 0.24, 1) 0.08s forwards;
+}
+
+.page-transition.is-covering {
+  animation: pt-cover 0.5s cubic-bezier(0.76, 0, 0.24, 1) both;
+  pointer-events: all;
+}
+
+@keyframes pt-reveal {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-100%); }
+}
+
+@keyframes pt-cover {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+.page-transition__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  user-select: none;
+}
+
+.page-transition__fp {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(5rem, 22vw, 18rem);
+  color: var(--color-text);
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+  display: block;
+}
+
+.page-transition__dev {
+  font-family: var(--font-mono);
+  font-size: clamp(0.625rem, 1.5vw, 1rem);
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  display: block;
+  margin-top: var(--space-3);
+  margin-right: 0.1em;
+}
+
+.page-transition__bar {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: var(--color-accent);
+  margin-top: var(--space-4);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.page-transition.is-covering .page-transition__fp {
+  animation: pt-text-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+}
+
+.page-transition.is-covering .page-transition__dev {
+  animation: pt-text-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;
+}
+
+.page-transition.is-covering .page-transition__bar {
+  animation: pt-bar-grow 0.45s ease 0.32s both;
+}
+
+@keyframes pt-text-rise {
+  from { opacity: 0; transform: translateY(1.25rem); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pt-bar-grow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}

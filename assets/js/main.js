@@ -511,4 +511,54 @@
     });
   })();
 
+  /* ----------------------------------------------------------
+     PAGE TRANSITION OVERLAY
+  ---------------------------------------------------------- */
+  (function () {
+    var COVER_MS = 500;
+
+    var overlay = document.createElement('div');
+    overlay.className = 'page-transition';
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.innerHTML =
+      '<div class="page-transition__brand">' +
+        '<span class="page-transition__fp">FP</span>' +
+        '<span class="page-transition__dev">developer</span>' +
+        '<span class="page-transition__bar"></span>' +
+      '</div>';
+    document.body.appendChild(overlay);
+
+    // Reveal page content after load
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        overlay.classList.add('is-revealing');
+      });
+    });
+
+    // Intercept internal navigation
+    document.addEventListener('click', function (e) {
+      var link = e.target.closest('a[href]');
+      if (!link) return;
+
+      var href = link.getAttribute('href');
+      if (!href || href.charAt(0) === '#') return;
+      if (href.indexOf('mailto:') === 0 || href.indexOf('tel:') === 0) return;
+      if (link.target === '_blank') return;
+
+      var url;
+      try { url = new URL(href, location.href); } catch (_) { return; }
+      if (url.origin !== location.origin) return;
+      if (url.pathname === location.pathname && url.search === location.search) return;
+
+      e.preventDefault();
+      overlay.classList.remove('is-revealing');
+      void overlay.offsetWidth; // force reflow to reset animation
+      overlay.classList.add('is-covering');
+
+      setTimeout(function () {
+        window.location.href = href;
+      }, COVER_MS);
+    });
+  })();
+
 })();
