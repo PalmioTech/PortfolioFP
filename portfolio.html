@@ -7,52 +7,6 @@
   <meta name="description" content="Portfolio di progetti web: siti vetrina, landing page ad alta conversione, soluzioni WordPress avanzate e integrazioni AI. Risultati misurabili per ogni cliente.">
   <link rel="canonical" href="portfolio.html">
   <link rel="stylesheet" href="assets/css/style.css">
-  <style>
-    .portfolio-page-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-    }
-    .result-strip {
-      background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-2) 100%);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-xl);
-      padding: 3rem 0;
-      text-align: center;
-      margin: 4rem 0;
-    }
-    .result-strip__grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2rem;
-    }
-    .result-strip__value {
-      font-family: var(--font-display);
-      font-size: 2.5rem;
-      font-weight: 900;
-      color: var(--color-accent);
-      display: block;
-      line-height: 1;
-      margin-bottom: 0.25rem;
-    }
-    .result-strip__label {
-      font-size: 0.75rem;
-      color: var(--color-text-dim);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-weight: 500;
-    }
-    @media (max-width: 1024px) {
-      .portfolio-page-grid { grid-template-columns: repeat(2, 1fr); }
-      .result-strip__grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 640px) {
-      .portfolio-page-grid { grid-template-columns: 1fr; }
-      .result-strip__grid { grid-template-columns: repeat(2, 1fr); }
-      .result-strip { padding: 2rem var(--space-6); }
-      .result-strip__value { font-size: 2rem; }
-    }
-  </style>
   <script>(function(){var t=localStorage.getItem('fp-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
 </head>
 <body>
@@ -68,7 +22,7 @@
         <a href="index.html"    class="navbar__link">Home</a>
         <a href="about.html"    class="navbar__link">Chi sono</a>
         <a href="services.html" class="navbar__link">Servizi</a>
-        <a href="portfolio.html" class="navbar__link">Portfolio</a>
+        <a href="portfolio.html" class="navbar__link" aria-current="page">Portfolio</a>
         <a href="contact.html"  class="navbar__link">Contatti</a>
       </nav>
       <div class="navbar__actions">
@@ -77,7 +31,7 @@
           <svg class="theme-icon theme-icon--sun" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
         </button>
         <a href="contact.html" class="btn btn--primary">Parliamo →</a>
-        <button class="navbar__burger" aria-label="Menu mobile">
+        <button class="navbar__burger" aria-label="Menu mobile" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
       </div>
@@ -98,7 +52,7 @@
     <section class="page-hero" aria-labelledby="page-title">
       <div class="page-hero__glow" aria-hidden="true"></div>
       <div class="container">
-        <span class="section-label" style="justify-content:center; display:flex; margin-bottom:1rem;">Portfolio</span>
+        <span class="section-label">Portfolio</span>
         <h1 class="page-hero__title" id="page-title">Progetti che<br><span class="text-gradient">fanno la differenza</span></h1>
         <p class="page-hero__subtitle">
           Ogni progetto ha una storia, un obiettivo e un risultato misurabile. Qui trovi una selezione autentica del mio lavoro.
@@ -422,9 +376,9 @@
           <div class="footer__brand-logo">FP<span>dev</span></div>
           <p class="footer__brand-text">Sviluppatore web freelance specializzato in soluzioni digitali moderne, performanti e orientate ai risultati.</p>
           <div class="footer__socials">
-            <a href="#" class="footer__social" aria-label="LinkedIn">in</a>
-            <a href="#" class="footer__social" aria-label="GitHub">gh</a>
-            <a href="#" class="footer__social" aria-label="Twitter">𝕏</a>
+            <a href="#" class="footer__social" aria-label="LinkedIn" title="LinkedIn">in</a>
+            <a href="#" class="footer__social" aria-label="GitHub"   title="GitHub">gh</a>
+            <a href="#" class="footer__social" aria-label="Twitter"  title="Twitter">𝕏</a>
           </div>
         </div>
         <div>
@@ -444,13 +398,14 @@
             <li><a href="services.html" class="footer__link">Landing Page</a></li>
             <li><a href="services.html" class="footer__link">WordPress</a></li>
             <li><a href="services.html" class="footer__link">Integrazione AI</a></li>
+            <li><a href="services.html" class="footer__link">Manutenzione</a></li>
           </ul>
         </div>
         <div>
           <h3 class="footer__heading">Contatti</h3>
           <ul class="footer__links">
-            <li><span class="footer__link">📧 info@fpdeveloper.it</span></li>
-            <li><span class="footer__link">📱 +39 333 000 0000</span></li>
+            <li><a href="mailto:info@fpdeveloper.it" class="footer__link">📧 info@fpdeveloper.it</a></li>
+            <li><a href="tel:+393330000000"          class="footer__link">📱 +39 333 000 0000</a></li>
             <li><span class="footer__link">📍 Italia (remoto)</span></li>
           </ul>
         </div>

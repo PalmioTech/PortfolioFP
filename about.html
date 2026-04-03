@@ -7,108 +7,6 @@
   <meta name="description" content="Sviluppatore web freelance con 8 anni di esperienza. Specializzato in HTML, CSS, JavaScript, PHP, WordPress e integrazione di strumenti AI. Approccio orientato ai risultati.">
   <link rel="canonical" href="about.html">
   <link rel="stylesheet" href="assets/css/style.css">
-  <style>
-    .about-hero-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: center;
-    }
-    .about-portrait {
-      position: relative;
-      display: flex;
-      justify-content: center;
-    }
-    .about-portrait__frame {
-      width: 380px;
-      height: 460px;
-      background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-2) 100%);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-xl);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 6rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .about-portrait__frame::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: conic-gradient(from 0deg, transparent 0deg, rgba(255,107,53,0.08) 60deg, transparent 120deg);
-      animation: rotate-glow 8s linear infinite;
-    }
-    @keyframes rotate-glow {
-      to { transform: rotate(360deg); }
-    }
-    .about-portrait__badge {
-      position: absolute;
-      bottom: -16px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-full);
-      padding: 0.5rem 1.5rem;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--color-accent);
-      white-space: nowrap;
-    }
-    .about-portrait__corner {
-      position: absolute;
-      background: var(--color-accent);
-      border-radius: var(--radius-md);
-      padding: 0.5rem 0.75rem;
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: #fff;
-    }
-    .about-portrait__corner--tl { top: 1rem; left: -1.5rem; }
-    .about-portrait__corner--br { bottom: 2rem; right: -1.5rem; }
-    .stack-columns {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-    }
-    .stack-category {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-      padding: 1.25rem 1rem;
-      text-align: center;
-      transition: all var(--dur-base);
-    }
-    .stack-category:hover {
-      border-color: var(--color-border-hover);
-      transform: translateY(-3px);
-    }
-    .stack-category__title {
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--color-text-dim);
-      margin-bottom: 0.5rem;
-    }
-    .stack-category__items {
-      font-size: 0.8rem;
-      color: var(--color-text-muted);
-      line-height: 1.6;
-    }
-    @media (max-width: 1024px) {
-      .about-hero-layout { grid-template-columns: 1fr; }
-      .about-portrait { display: none; }
-      .stack-columns { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 640px) {
-      .stack-columns { grid-template-columns: 1fr; }
-    }
-  </style>
   <script>(function(){var t=localStorage.getItem('fp-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
 </head>
 <body>
@@ -122,7 +20,7 @@
       </a>
       <nav class="navbar__nav" aria-label="Navigazione principale">
         <a href="index.html"    class="navbar__link">Home</a>
-        <a href="about.html"    class="navbar__link">Chi sono</a>
+        <a href="about.html"    class="navbar__link" aria-current="page">Chi sono</a>
         <a href="services.html" class="navbar__link">Servizi</a>
         <a href="portfolio.html" class="navbar__link">Portfolio</a>
         <a href="contact.html"  class="navbar__link">Contatti</a>
@@ -133,7 +31,7 @@
           <svg class="theme-icon theme-icon--sun" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
         </button>
         <a href="contact.html" class="btn btn--primary">Parliamo →</a>
-        <button class="navbar__burger" aria-label="Menu mobile">
+        <button class="navbar__burger" aria-label="Menu mobile" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
       </div>
@@ -154,7 +52,7 @@
     <section class="page-hero" aria-labelledby="page-title">
       <div class="page-hero__glow" aria-hidden="true"></div>
       <div class="container">
-        <span class="section-label" style="justify-content:center; display:flex; margin-bottom:1rem;">Chi sono</span>
+        <span class="section-label">Chi sono</span>
         <h1 class="page-hero__title" id="page-title">Codice, design<br>e <span class="text-gradient">passione digitale</span></h1>
         <p class="page-hero__subtitle">
           Un professionista che unisce la precisione tecnica con il gusto estetico,
@@ -352,9 +250,9 @@
           <div class="footer__brand-logo">FP<span>dev</span></div>
           <p class="footer__brand-text">Sviluppatore web freelance specializzato in soluzioni digitali moderne, performanti e orientate ai risultati.</p>
           <div class="footer__socials">
-            <a href="#" class="footer__social" aria-label="LinkedIn">in</a>
-            <a href="#" class="footer__social" aria-label="GitHub">gh</a>
-            <a href="#" class="footer__social" aria-label="Twitter">𝕏</a>
+            <a href="#" class="footer__social" aria-label="LinkedIn" title="LinkedIn">in</a>
+            <a href="#" class="footer__social" aria-label="GitHub"   title="GitHub">gh</a>
+            <a href="#" class="footer__social" aria-label="Twitter"  title="Twitter">𝕏</a>
           </div>
         </div>
         <div>
@@ -374,13 +272,14 @@
             <li><a href="services.html" class="footer__link">Landing Page</a></li>
             <li><a href="services.html" class="footer__link">WordPress</a></li>
             <li><a href="services.html" class="footer__link">Integrazione AI</a></li>
+            <li><a href="services.html" class="footer__link">Manutenzione</a></li>
           </ul>
         </div>
         <div>
           <h3 class="footer__heading">Contatti</h3>
           <ul class="footer__links">
-            <li><span class="footer__link">📧 info@fpdeveloper.it</span></li>
-            <li><span class="footer__link">📱 +39 333 000 0000</span></li>
+            <li><a href="mailto:info@fpdeveloper.it" class="footer__link">📧 info@fpdeveloper.it</a></li>
+            <li><a href="tel:+393330000000"          class="footer__link">📱 +39 333 000 0000</a></li>
             <li><span class="footer__link">📍 Italia (remoto)</span></li>
           </ul>
         </div>
