@@ -46,7 +46,7 @@
   }
 
   /* ----------------------------------------------------------
-     ACTIVE NAV LINK based on current page
+     ACTIVE NAV LINK + SLIDING PILL
   ---------------------------------------------------------- */
   const currentPage = window.location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('.navbar__link').forEach(link => {
@@ -55,6 +55,35 @@
       link.classList.add('active');
     }
   });
+
+  const navContainer = document.querySelector('.navbar__nav');
+  if (navContainer) {
+    const pill = document.createElement('span');
+    pill.className = 'navbar__pill';
+    navContainer.prepend(pill);
+
+    const activeLink = navContainer.querySelector('.navbar__link.active');
+    const navLinks   = navContainer.querySelectorAll('.navbar__link');
+
+    function movePill(target, instant) {
+      if (instant) pill.style.transition = 'none';
+      else         pill.style.transition = '';
+      pill.style.left  = target.offsetLeft + 'px';
+      pill.style.width = target.offsetWidth + 'px';
+    }
+
+    if (activeLink) {
+      movePill(activeLink, true);
+      pill.getBoundingClientRect(); // flush layout so transition fires later
+    }
+
+    navLinks.forEach(link => {
+      link.addEventListener('mouseenter', () => movePill(link, false));
+      link.addEventListener('mouseleave', () => {
+        if (activeLink) movePill(activeLink, false);
+      });
+    });
+  }
 
   /* ----------------------------------------------------------
      SCROLL REVEAL — Intersection Observer

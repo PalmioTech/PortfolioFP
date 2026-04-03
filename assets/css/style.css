@@ -313,6 +313,20 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   gap: 2px;
+  position: relative;
+}
+
+.navbar__pill {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: calc(100% - 6px);
+  background: rgba(255, 255, 255, 0.10);
+  border-radius: var(--radius-full);
+  pointer-events: none;
+  z-index: 0;
+  transition: left 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+              width 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .navbar__link {
@@ -321,8 +335,9 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-text-muted);
   padding: 0.38em 0.9em;
   border-radius: var(--radius-full);
-  transition: color var(--dur-fast), background var(--dur-base) var(--ease-out);
+  transition: color var(--dur-fast);
   position: relative;
+  z-index: 1;
 }
 
 /* No underline — we use background pill instead */
@@ -330,12 +345,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .navbar__link:hover {
   color: var(--color-text);
-  background: rgba(255, 255, 255, 0.07);
 }
 
 .navbar__link.active {
   color: var(--color-text);
-  background: rgba(255, 255, 255, 0.1);
 }
 
 /* Right side CTA + burger */
@@ -2693,11 +2706,14 @@ textarea.form-control {
     0 1px 0 rgba(255, 255, 255, 0.9) inset,
     0 12px 48px rgba(0, 0, 0, 0.12);
 }
+[data-theme="light"] .navbar__pill {
+  background: rgba(0, 0, 0, 0.07);
+}
 [data-theme="light"] .navbar__link:hover {
-  background: rgba(0, 0, 0, 0.05);
+  color: var(--color-text);
 }
 [data-theme="light"] .navbar__link.active {
-  background: rgba(0, 0, 0, 0.07);
+  color: var(--color-text);
 }
 [data-theme="light"] .navbar__burger:hover {
   background: rgba(0, 0, 0, 0.06);
