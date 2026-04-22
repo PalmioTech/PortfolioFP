@@ -107,26 +107,75 @@
   }
 
   /* ----------------------------------------------------------
-     CURSOR GLOW EFFECT (desktop only)
+     CURSOR GLOW + TARGET CURSOR (desktop only)
   ---------------------------------------------------------- */
   if (window.matchMedia('(pointer: fine)').matches) {
+    /* ambient glow */
     const cursorGlow = document.createElement('div');
     cursorGlow.className = 'cursor-glow';
     document.body.appendChild(cursorGlow);
 
+    /* target cursor markup */
+    const targetCursor = document.createElement('div');
+    targetCursor.className = 'target-cursor';
+    targetCursor.innerHTML = `
+      <div class="target-cursor__ring target-cursor__outer"></div>
+      <div class="target-cursor__lines"></div>
+      <div class="target-cursor__ring target-cursor__inner"></div>
+    `;
+    document.body.appendChild(targetCursor);
+    document.body.classList.add('has-target-cursor');
+
     let mouseX = 0, mouseY = 0;
+    let curX = 0, curY = 0;
     let glowX = 0, glowY = 0;
+    let isHover = false;
 
     document.addEventListener('mousemove', e => {
       mouseX = e.clientX;
       mouseY = e.clientY;
+
+      /* hover detection — any interactive element or .cursor-target */
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      const hoverable = el && el.closest(
+        'a, button, [role="button"], input, textarea, select, label, .cursor-target, [tabindex]'
+      );
+      if (hoverable && !isHover) {
+        isHover = true;
+        targetCursor.classList.add('target-cursor--hover');
+      } else if (!hoverable && isHover) {
+        isHover = false;
+        targetCursor.classList.remove('target-cursor--hover');
+      }
+    });
+
+    document.addEventListener('mousedown', () => {
+      targetCursor.classList.add('target-cursor--click');
+    });
+    document.addEventListener('mouseup', () => {
+      targetCursor.classList.remove('target-cursor--click');
+    });
+
+    document.addEventListener('mouseleave', () => {
+      targetCursor.style.opacity = '0';
+    });
+    document.addEventListener('mouseenter', () => {
+      targetCursor.style.opacity = '1';
     });
 
     const animateCursor = () => {
+      /* target cursor — tight follow */
+      curX += (mouseX - curX) * 0.18;
+      curY += (mouseY - curY) * 0.18;
+      targetCursor.style.left = curX + 'px';
+      targetCursor.style.top  = curY + 'px';
+
+      /* glow — lazy follow */
       glowX += (mouseX - glowX) * 0.08;
       glowY += (mouseY - glowY) * 0.08;
       cursorGlow.style.left = glowX + 'px';
       cursorGlow.style.top  = glowY + 'px';
+
       requestAnimationFrame(animateCursor);
     };
     animateCursor();
@@ -490,29 +539,115 @@
     }
   }
 
-  // ── ORBITAL PARALLAX ─────────────────────────────────────
+  // ── ANTIGRAVITY PARTICLE EFFECT (sitewide) ────────────────────────
   (function () {
-    const orbital = document.querySelector('.hero__orbital');
-    const heroSection = document.querySelector('.hero');
-    if (!orbital || !heroSection) return;
+    const canvas = document.createElement('canvas');
+    canvas.className = 'site-particles';
+    canvas.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(canvas);
 
-    // Skip on touch devices
-    if (window.matchMedia('(hover: none)').matches) return;
+    const ctx  = canvas.getContext('2d');
+    const DPR  = Math.min(window.devicePixelRatio || 1, 2);
 
-    heroSection.addEventListener('mousemove', (e) => {
-      const rect = heroSection.getBoundingClientRect();
-      const cx = rect.left + rect.width  / 2;
-      const cy = rect.top  + rect.height / 2;
-      const dx = (e.clientX - cx) / (rect.width  / 2);
-      const dy = (e.clientY - cy) / (rect.height / 2);
-      orbital.style.transform = `perspective(800px) rotateY(${(dx * 8).toFixed(2)}deg) rotateX(${(-dy * 5).toFixed(2)}deg)`;
-      orbital.style.transition = 'transform 0.12s ease-out';
-    });
+    const COUNT         = 490;
+    const LERP          = 0.12;
+    const WAVE_SPEED    = 0.5;
+    const MAGNET_RADIUS = 130;
+    const MAGNET_FORCE  = 0.45;
 
-    heroSection.addEventListener('mouseleave', () => {
-      orbital.style.transform = 'rotateY(0deg) rotateX(0deg)';
-      orbital.style.transition = 'transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
-    });
+    // [r, g, b] site palette
+    const PALETTE = [[255,53,0],[255,100,50],[198,255,0],[255,210,170],[255,255,255]];
+    const WEIGHTS = [45, 20, 15, 12, 8];
+    const TOTAL_W = WEIGHTS.reduce((a, b) => a + b, 0);
+
+    function pickColor() {
+      let r = Math.random() * TOTAL_W;
+      for (let i = 0; i < WEIGHTS.length; i++) {
+        r -= WEIGHTS[i];
+        if (r <= 0) return PALETTE[i];
+      }
+      return PALETTE[0];
+    }
+
+    let W = 0, H = 0;
+    const particles = [];
+
+    function buildParticles(w, h) {
+      particles.length = 0;
+      for (let i = 0; i < COUNT; i++) {
+        const [r, g, b] = pickColor();
+        particles.push({
+          ox: Math.random() * w,
+          oy: Math.random() * h,
+          x:  Math.random() * w,
+          y:  Math.random() * h,
+          phase:   Math.random() * Math.PI * 2,
+          waveAmp: 8 + Math.random() * 22,
+          size:    0.5 + Math.random() * 2,
+          speed:   0.3 + Math.random() * 1.2,
+          r, g, b,
+          alpha: 0.08 + Math.random() * 0.35,
+        });
+      }
+    }
+
+    function resize() {
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width  = W * DPR;
+      canvas.height = H * DPR;
+      canvas.style.width  = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.scale(DPR, DPR);
+      buildParticles(W, H);
+    }
+
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    let mouseX = -9999, mouseY = -9999;
+    let time   = 0;
+
+    if (window.matchMedia('(pointer: fine)').matches) {
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      }, { passive: true });
+    }
+
+    function tick() {
+      ctx.clearRect(0, 0, W, H);
+      time += 0.016;
+
+      for (let i = 0; i < COUNT; i++) {
+        const p = particles[i];
+        const t = time * WAVE_SPEED * p.speed + p.phase;
+
+        let tx = p.ox + Math.sin(t)       * p.waveAmp;
+        let ty = p.oy + Math.cos(t * 0.7) * p.waveAmp * 0.6;
+
+        const dx   = mouseX - tx;
+        const dy   = mouseY - ty;
+        const dist = Math.hypot(dx, dy);
+        if (dist < MAGNET_RADIUS && dist > 0) {
+          const force = (1 - dist / MAGNET_RADIUS) * MAGNET_FORCE;
+          tx += dx * force;
+          ty += dy * force;
+        }
+
+        p.x += (tx - p.x) * LERP;
+        p.y += (ty - p.y) * LERP;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${p.r},${p.g},${p.b},${p.alpha})`;
+        ctx.fill();
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    tick();
   })();
 
   // ── SERVICE CARDS 3D TILT ─────────────────────────────────────
