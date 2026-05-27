@@ -214,7 +214,7 @@
         const category = btn.dataset.filter;
 
         portfolioCards.forEach(card => {
-          const match = category === 'all' || card.dataset.category === category;
+          const match = category === 'all' || card.dataset.category.split(' ').includes(category);
           if (match) {
             if (card.style.display === 'none') {
               card.style.transition = 'none';
