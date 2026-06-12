@@ -1732,6 +1732,14 @@ h1, h2, h3, h4, h5, h6 {
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
+.portfolio-card__category .badge {
+  background: rgba(5,11,24,0.72) !important;
+  border-color: rgba(255,255,255,0.18) !important;
+  color: #fff !important;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
 .portfolio-card:hover .portfolio-card__category {
   opacity: 0;
   transform: translateY(-6px);
