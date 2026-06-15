@@ -299,7 +299,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .navbar__logo-img {
-  height: 28px;
+  height: 44px;
   width: auto;
   display: block;
   transition: opacity var(--dur-base) var(--ease-out);
@@ -2978,10 +2978,6 @@ body.has-target-cursor * {
   background: rgba(0, 0, 0, 0.05);
 }
 
-/* Dual logo — show/hide based on theme */
-.logo-light { display: none; }
-[data-theme="light"] .logo-dark { display: none; }
-[data-theme="light"] .logo-light { display: block; }
 
 /* Theme toggle button */
 .navbar__theme-toggle {
