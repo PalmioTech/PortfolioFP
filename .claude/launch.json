@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "fpdev",
+      "runtimeExecutable": "php",
+      "runtimeArgs": ["-S", "localhost:8421"],
+      "port": 8421
+    }
+  ]
+}

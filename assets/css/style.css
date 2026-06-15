@@ -3707,3 +3707,138 @@ body.has-target-cursor * {
   from { transform: scaleX(0); }
   to   { transform: scaleX(1); }
 }
+
+/* ============================================================
+   CUSTOM SVG ICON SYSTEM — replaces emoji sitewide
+   Monoline, currentColor, animated on hover. One cohesive set.
+   ============================================================ */
+.fp-icon {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  display: block;
+  overflow: visible;
+}
+
+/* Home service cards — accent icon, inherits card rotate-on-hover */
+.service-card__icon {
+  color: var(--color-accent);
+  width: 34px;
+  height: 34px;
+}
+.service-card__icon .fp-icon { width: 34px; height: 34px; }
+
+/* Detail service cards (services page) */
+.service-detail-card__icon {
+  color: var(--color-accent);
+  width: 46px;
+  height: 46px;
+  filter: drop-shadow(0 0 14px var(--color-accent-glow-s));
+  transition: transform 0.5s var(--ease-out), filter 0.4s;
+}
+.service-detail-card__icon .fp-icon { width: 46px; height: 46px; }
+.service-detail-card:hover .service-detail-card__icon {
+  transform: rotate(-6deg) scale(1.08);
+  filter: drop-shadow(0 0 22px var(--color-accent-glow));
+}
+
+/* About "values" cards (.card__icon box) */
+.card__icon { color: var(--color-accent); }
+.card__icon .fp-icon { width: 24px; height: 24px; }
+
+/* Why-choose-me feature items */
+.feature-item__icon { color: var(--color-accent); }
+.feature-item__icon .fp-icon { width: 22px; height: 22px; }
+
+/* Skills grid */
+.skill-item__icon {
+  color: var(--color-text-muted);
+  width: 30px;
+  height: 30px;
+  transition: color var(--dur-base) var(--ease-out),
+              transform var(--dur-base) var(--ease-out);
+}
+.skill-item__icon .fp-icon { width: 30px; height: 30px; }
+.skill-item:hover .skill-item__icon {
+  color: var(--color-accent);
+  transform: translateY(-3px) scale(1.12);
+}
+
+/* Contact info items */
+.contact-item__icon { color: var(--color-accent); }
+.contact-item__icon .fp-icon { width: 20px; height: 20px; }
+
+/* Collab cards */
+.collab-card__icon {
+  color: var(--color-accent);
+  width: 30px;
+  height: 30px;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.collab-card__icon .fp-icon { width: 30px; height: 30px; }
+.collab-card:hover .collab-card__icon { transform: translateY(-3px) scale(1.1); }
+
+/* Inline icons inside footer links + small text contexts */
+.fp-ico-inline {
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  vertical-align: -2px;
+  margin-right: 0.45rem;
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+.footer__link { display: inline-flex; align-items: center; }
+
+/* Footer brand social icons → real brand glyphs */
+.footer__social .fp-icon { width: 17px; height: 17px; }
+.footer__social svg { stroke-width: 1.7; }
+
+/* Form-security note icon */
+.form-note-ico {
+  width: 14px; height: 14px;
+  display: inline-block; vertical-align: -2px;
+  margin-right: 0.3rem; color: var(--color-accent);
+}
+
+/* Footer "made with" heart */
+.fp-heart { width: 13px; height: 13px; display:inline-block; vertical-align:-2px; color: var(--color-accent); animation: fp-heartbeat 1.6s var(--ease-in-out) infinite; }
+@keyframes fp-heartbeat {
+  0%, 70%, 100% { transform: scale(1); }
+  35% { transform: scale(1.25); }
+}
+
+/* About portrait monogram (replaces emoji placeholder) */
+.about-portrait__frame { font-size: 0; }
+.about-portrait__monogram {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+.about-portrait__monogram-mark {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 6.5rem;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  background: linear-gradient(135deg, var(--color-accent) 0%, #FF7200 55%, #FFD000 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.about-portrait__monogram-sub {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fp-heart { animation: none; }
+}
