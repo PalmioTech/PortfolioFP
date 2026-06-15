@@ -3806,33 +3806,14 @@ body.has-target-cursor * {
   35% { transform: scale(1.25); }
 }
 
-/* About portrait monogram (replaces emoji placeholder) */
-.about-portrait__frame { font-size: 0; }
-.about-portrait__monogram {
+.about-portrait__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
   position: relative;
   z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-}
-.about-portrait__monogram-mark {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: 6.5rem;
-  line-height: 0.9;
-  letter-spacing: -0.05em;
-  background: linear-gradient(135deg, var(--color-accent) 0%, #FF7200 55%, #FFD000 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.about-portrait__monogram-sub {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--color-text-dim);
 }
 
 @media (prefers-reduced-motion: reduce) {
