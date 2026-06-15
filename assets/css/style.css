@@ -3151,6 +3151,7 @@ body.has-target-cursor * {
 }
 .about-portrait__corner {
   position: absolute;
+  z-index: 10;
   background: var(--color-accent);
   border-radius: var(--radius-md);
   padding: 0.5rem 0.75rem;
