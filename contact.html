@@ -131,55 +131,78 @@
               <form id="contact-form" action="send-mail.php" method="POST" novalidate>
                 <div class="form-row">
                   <div class="form-group">
-                    <label for="name" class="form-label">Nome *</label>
-                    <input type="text" id="name" name="name" class="form-control"
-                           placeholder="Mario Rossi" required autocomplete="name">
+                    <div class="fp-field">
+                      <input type="text" id="name" name="name" class="fp-field__input"
+                             placeholder=" " required autocomplete="name">
+                      <span class="fp-field__bar" aria-hidden="true"></span>
+                      <span class="fp-field__highlight" aria-hidden="true"></span>
+                      <label for="name" class="fp-field__label">Nome *</label>
+                    </div>
                   </div>
                   <div class="form-group">
-                    <label for="email" class="form-label">Email *</label>
-                    <input type="email" id="email" name="email" class="form-control"
-                           placeholder="mario@esempio.it" required autocomplete="email">
+                    <div class="fp-field">
+                      <input type="email" id="email" name="email" class="fp-field__input"
+                             placeholder=" " required autocomplete="email">
+                      <span class="fp-field__bar" aria-hidden="true"></span>
+                      <span class="fp-field__highlight" aria-hidden="true"></span>
+                      <label for="email" class="fp-field__label">Email *</label>
+                    </div>
                   </div>
                 </div>
 
                 <div class="form-row">
                   <div class="form-group">
-                    <label for="phone" class="form-label">Telefono</label>
-                    <input type="tel" id="phone" name="phone" class="form-control"
-                           placeholder="+39 333 000 0000" autocomplete="tel">
+                    <div class="fp-field">
+                      <input type="tel" id="phone" name="phone" class="fp-field__input"
+                             placeholder=" " autocomplete="tel">
+                      <span class="fp-field__bar" aria-hidden="true"></span>
+                      <span class="fp-field__highlight" aria-hidden="true"></span>
+                      <label for="phone" class="fp-field__label">Telefono</label>
+                    </div>
                   </div>
                   <div class="form-group">
-                    <label for="budget" class="form-label">Budget indicativo</label>
-                    <select id="budget" name="budget" class="form-control">
-                      <option value="" disabled selected>Seleziona una fascia</option>
-                      <option value="500-1000">€500 – €1.000</option>
-                      <option value="1000-2500">€1.000 – €2.500</option>
-                      <option value="2500-5000">€2.500 – €5.000</option>
-                      <option value="5000+">€5.000+</option>
-                      <option value="non-so">Non lo so ancora</option>
-                    </select>
+                    <div class="fp-field fp-field--select">
+                      <select id="budget" name="budget" class="fp-field__input">
+                        <option value="" disabled selected>Seleziona una fascia</option>
+                        <option value="500-1000">€500 – €1.000</option>
+                        <option value="1000-2500">€1.000 – €2.500</option>
+                        <option value="2500-5000">€2.500 – €5.000</option>
+                        <option value="5000+">€5.000+</option>
+                        <option value="non-so">Non lo so ancora</option>
+                      </select>
+                      <span class="fp-field__bar" aria-hidden="true"></span>
+                      <span class="fp-field__arrow" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+                      <label for="budget" class="fp-field__label">Budget indicativo</label>
+                    </div>
                   </div>
                 </div>
 
                 <div class="form-group">
-                  <label for="service" class="form-label">Tipo di servizio</label>
-                  <select id="service" name="service" class="form-control">
-                    <option value="" disabled selected>Di cosa hai bisogno?</option>
-                    <option value="vetrina">Sito Vetrina</option>
-                    <option value="landing">Landing Page</option>
-                    <option value="wordpress">Sito WordPress</option>
-                    <option value="ai">Integrazione AI</option>
-                    <option value="custom">Sviluppo Custom</option>
-                    <option value="manutenzione">Manutenzione / Restyling</option>
-                    <option value="altro">Altro</option>
-                  </select>
+                  <div class="fp-field fp-field--select">
+                    <select id="service" name="service" class="fp-field__input">
+                      <option value="" disabled selected>Di cosa hai bisogno?</option>
+                      <option value="vetrina">Sito Vetrina</option>
+                      <option value="landing">Landing Page</option>
+                      <option value="wordpress">Sito WordPress</option>
+                      <option value="ai">Integrazione AI</option>
+                      <option value="custom">Sviluppo Custom</option>
+                      <option value="manutenzione">Manutenzione / Restyling</option>
+                      <option value="altro">Altro</option>
+                    </select>
+                    <span class="fp-field__bar" aria-hidden="true"></span>
+                    <span class="fp-field__arrow" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+                    <label for="service" class="fp-field__label">Tipo di servizio</label>
+                  </div>
                 </div>
 
                 <div class="form-group">
-                  <label for="message" class="form-label">Messaggio *</label>
-                  <textarea id="message" name="message" class="form-control"
-                            placeholder="Descrivimi il tuo progetto: cosa hai in mente, quali sono gli obiettivi, eventuali riferimenti o scadenze..."
-                            required rows="5"></textarea>
+                  <div class="fp-field">
+                    <textarea id="message" name="message" class="fp-field__input"
+                              placeholder=" " required rows="5"></textarea>
+                    <span class="fp-field__bar" aria-hidden="true"></span>
+                    <span class="fp-field__highlight" aria-hidden="true"></span>
+                    <label for="message" class="fp-field__label">Messaggio *</label>
+                  </div>
                 </div>
 
                 <!-- Honeypot anti-spam -->

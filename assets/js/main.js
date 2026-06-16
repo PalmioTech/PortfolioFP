@@ -259,6 +259,15 @@
   });
 
   /* ----------------------------------------------------------
+     FLOATING LABEL — select fill detection
+  ---------------------------------------------------------- */
+  document.querySelectorAll('.fp-field--select .fp-field__input').forEach(function(sel) {
+    function syncFill() { sel.classList.toggle('is-filled', sel.value !== ''); }
+    sel.addEventListener('change', syncFill);
+    syncFill();
+  });
+
+  /* ----------------------------------------------------------
      CONTACT FORM — validation + AJAX submit
   ---------------------------------------------------------- */
   const contactForm = document.querySelector('#contact-form');
