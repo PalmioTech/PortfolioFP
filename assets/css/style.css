@@ -3929,3 +3929,24 @@ body.has-target-cursor * {
 @media (prefers-reduced-motion: reduce) {
   .fp-heart { animation: none; }
 }
+
+/* ============================================================
+   TEXT SHUFFLE — vanilla per-letter scramble reveal
+   (React-Bits "Shuffle" effect, reimplemented dependency-free)
+   ============================================================ */
+.shuffle-cw {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  line-height: 1;
+}
+.shuffle-strip {
+  display: inline-flex;
+  flex-wrap: nowrap;
+}
+.shuffle-cell {
+  display: inline-block;
+  flex: 0 0 auto;
+  text-align: center;
+  line-height: 1.1;
+}

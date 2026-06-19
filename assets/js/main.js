@@ -734,4 +734,156 @@
     });
   })();
 
+  /* ----------------------------------------------------------
+     TEXT SHUFFLE — per-letter scramble reveal (vanilla)
+     Reimplements the React-Bits "Shuffle" effect with no deps.
+     Applies to any [data-shuffle] element. Each glyph is a strip
+     that scrolls through scrambled chars to its final letter.
+     Triggers on scroll-into-view (once) + replays on hover.
+     Degrades to plain text with no JS / reduced motion.
+  ---------------------------------------------------------- */
+  (function () {
+    var nodes = document.querySelectorAll('[data-shuffle]');
+    if (!nodes.length) return;
+
+    var reduced = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return; // leave original text untouched
+
+    var DEFAULT_SET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&<>/*';
+    var EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
+
+    function rand(set) {
+      return set.charAt(Math.floor(Math.random() * set.length));
+    }
+
+    function setup(el) {
+      var duration = parseFloat(el.dataset.shuffleDuration) || 0.55;
+      var stagger  = parseFloat(el.dataset.shuffleStagger)  || 0.035;
+      var rolls    = Math.max(1, parseInt(el.dataset.shuffleTimes || '5', 10));
+      var charset  = el.dataset.shuffleCharset || DEFAULT_SET;
+
+      // Capture structure (chars / spaces / line breaks), tracking gradient
+      var tokens = [];
+      (function walk(node, grad) {
+        Array.prototype.forEach.call(node.childNodes, function (n) {
+          if (n.nodeType === 3) {
+            var t = n.textContent;
+            for (var i = 0; i < t.length; i++) {
+              if (/\s/.test(t[i])) tokens.push({ type: 'space' });
+              else tokens.push({ type: 'char', ch: t[i], grad: grad });
+            }
+          } else if (n.nodeType === 1) {
+            if (n.tagName === 'BR') tokens.push({ type: 'br' });
+            else walk(n, grad || n.classList.contains('text-gradient'));
+          }
+        });
+      })(el, false);
+
+      // Accessibility: expose the real, readable text; hide the scaffold
+      var label = tokens.map(function (t) {
+        return t.type === 'char' ? t.ch : ' ';
+      }).join('').replace(/\s+/g, ' ').trim();
+      if (label) el.setAttribute('aria-label', label);
+
+      // Rebuild DOM — each glyph starts as clean static text (a single cell)
+      el.textContent = '';
+      var wraps = [];
+      var idx = 0;
+
+      tokens.forEach(function (tok) {
+        if (tok.type === 'space') { el.appendChild(document.createTextNode(' ')); return; }
+        if (tok.type === 'br')    { el.appendChild(document.createElement('br')); return; }
+
+        var wrap = document.createElement('span');
+        wrap.className = 'shuffle-cw';
+        wrap.setAttribute('aria-hidden', 'true');
+
+        var strip = document.createElement('span');
+        strip.className = 'shuffle-strip';
+
+        var fin = document.createElement('span');
+        fin.className = 'shuffle-cell' + (tok.grad ? ' text-gradient' : '');
+        fin.textContent = tok.ch;
+        strip.appendChild(fin);
+
+        wrap.appendChild(strip);
+        el.appendChild(wrap);
+        wraps.push({ wrap: wrap, strip: strip, fin: fin, grad: tok.grad, i: idx++ });
+      });
+
+      // Measure each glyph in the real font (collapsed = natural width)
+      wraps.forEach(function (o) { o.w = o.fin.getBoundingClientRect().width; });
+
+      function fillStrip(o) {
+        // Prepend `rolls` scramble cells ahead of the final glyph
+        var gradCls = o.grad ? ' text-gradient' : '';
+        for (var k = 0; k < rolls; k++) {
+          var s = document.createElement('span');
+          s.className = 'shuffle-cell' + gradCls;
+          s.textContent = rand(charset);
+          s.style.width = o.w + 'px';
+          o.strip.insertBefore(s, o.fin);
+        }
+        o.fin.style.width = o.w + 'px';
+        o.wrap.style.width = o.w + 'px';
+        o.dist = rolls * o.w;
+        o.strip.style.willChange = 'transform';
+        o.strip.style.transition = 'none';
+        o.strip.style.transform = 'translateX(0px)';
+      }
+
+      function collapse(o) {
+        // Back to one clean glyph — crisp, no clipping, no lingering GPU layer
+        while (o.strip.firstChild !== o.fin) o.strip.removeChild(o.strip.firstChild);
+        o.strip.style.transition = 'none';
+        o.strip.style.transform = 'none';
+        o.strip.style.willChange = 'auto';
+        o.fin.style.width = 'auto';
+        o.wrap.style.width = 'auto';
+      }
+
+      var playing = false;
+
+      function play() {
+        if (playing) return;
+        playing = true;
+        var done = 0;
+
+        wraps.forEach(fillStrip);
+        void el.offsetWidth; // flush the reset before animating
+
+        wraps.forEach(function (o) {
+          // even/odd flavour: odd glyphs lead, even follow slightly
+          var group = (o.i % 2) * (stagger * 1.6);
+          var delay = o.i * stagger + group;
+          o.strip.style.transition =
+            'transform ' + duration + 's ' + EASE + ' ' + delay + 's';
+          o.strip.addEventListener('transitionend', function once() {
+            o.strip.removeEventListener('transitionend', once);
+            collapse(o);
+            if (++done === wraps.length) playing = false;
+          });
+          o.strip.style.transform = 'translateX(' + (-o.dist) + 'px)';
+        });
+      }
+
+      el.addEventListener('mouseenter', play);
+
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { play(); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.25 });
+      io.observe(el);
+    }
+
+    // Measure in the real font to avoid mis-sized cells
+    var run = function () {
+      Array.prototype.forEach.call(nodes, setup);
+    };
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(run);
+    else run();
+  })();
+
 })();
