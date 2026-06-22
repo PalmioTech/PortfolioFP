@@ -941,15 +941,26 @@
         var build = function () {
           bio.classList.remove('is-typing');
           bio.textContent = '';
-          for (var i = 0; i < full.length; i++) {
-            var c = full.charAt(i);
-            if (c === ' ') { bio.appendChild(document.createTextNode(' ')); continue; }
-            var s = document.createElement('span');
-            s.className = 'tw-char';
-            s.textContent = c;
-            s.style.animationDelay = (i * 0.02) + 's';
-            bio.appendChild(s);
-          }
+          var gi = 0; // global char index drives the stagger
+          var words = full.split(' ');
+          words.forEach(function (word, wi) {
+            // Keep each word whole — line breaks only happen at spaces
+            var wspan = document.createElement('span');
+            wspan.className = 'tw-word';
+            for (var j = 0; j < word.length; j++) {
+              var s = document.createElement('span');
+              s.className = 'tw-char';
+              s.textContent = word.charAt(j);
+              s.style.animationDelay = (gi * 0.02) + 's';
+              wspan.appendChild(s);
+              gi++;
+            }
+            bio.appendChild(wspan);
+            if (wi < words.length - 1) {
+              bio.appendChild(document.createTextNode(' '));
+              gi++;
+            }
+          });
           void bio.offsetWidth; // flush so the animation restarts
           bio.classList.add('is-typing');
         };

@@ -4227,3 +4227,7 @@ body.has-target-cursor * {
     mask-image: radial-gradient(ellipse 80% 75% at 50% 42%, #000 45%, transparent 85%);
   }
 }
+
+/* Bio typewriter: break only at spaces, never mid-word */
+.hero-mammoth__bio { white-space: normal; }
+.tw-word { display: inline-block; white-space: nowrap; }
