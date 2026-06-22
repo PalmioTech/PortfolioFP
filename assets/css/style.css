@@ -4244,3 +4244,22 @@ body.has-target-cursor * {
 /* Match the hero's heavier display weight (900) on the main titles */
 .section-title,
 .cta-section__title { font-weight: 900; }
+
+/* Light theme: make the hero text readable on the cream background */
+[data-theme="light"] .hero-mammoth__bio {
+  color: var(--color-text);
+  /* legible on the cream bg AND over the dark portrait it overlaps */
+  text-shadow: 0 0 6px #F2EDE7, 0 0 11px #F2EDE7, 0 1px 2px #F2EDE7;
+}
+[data-theme="light"] .hero-mammoth__line-stroke {
+  -webkit-text-stroke-color: rgba(24, 16, 14, 0.9);
+  text-stroke-color: rgba(24, 16, 14, 0.9);
+}
+[data-theme="light"] .hero-marker,
+[data-theme="light"] .hero-meta { color: var(--color-accent); }
+
+/* Light theme: hero outline button (lime is invisible on cream) */
+[data-theme="light"] .hero-view-btn {
+  color: var(--color-accent);
+  border-color: rgba(255, 53, 0, 0.5);
+}
