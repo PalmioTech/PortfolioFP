@@ -4263,3 +4263,12 @@ body.has-target-cursor * {
   color: var(--color-accent);
   border-color: rgba(255, 53, 0, 0.5);
 }
+
+/* Light theme: lime text is invisible on cream — use a dark readable green */
+[data-theme="light"] { --color-secondary: #466100; }
+[data-theme="light"] .section-label::before { color: rgba(70, 97, 0, 0.65); }
+[data-theme="light"] .service-card__type   { color: rgba(70, 97, 0, 0.7); }
+[data-theme="light"] .pill--lime {
+  color: #466100;
+  border-color: rgba(70, 97, 0, 0.5);
+}
