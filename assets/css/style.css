@@ -4106,3 +4106,124 @@ body.has-target-cursor * {
 @media (prefers-reduced-motion: reduce) {
   .hero-marquee__track { animation: none; }
 }
+
+/* ============================================================
+   MAMMOTH HERO v2 — central photo, split text (left / right)
+   Headline left, bio right, subject centered & grayscale.
+   ============================================================ */
+.hero-split {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 2rem;
+  padding: calc(var(--nav-height) + 2.5rem) clamp(1.25rem, 5vw, 4.5rem) clamp(2rem, 5vh, 3.5rem);
+  pointer-events: none;
+}
+.hero-split > * { pointer-events: auto; }
+
+.hero-split__left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  text-align: left;
+  max-width: 56%;
+}
+.hero-split__left .hero-mammoth__title {
+  align-items: flex-start;
+  text-align: left;
+  margin-bottom: 0;
+}
+.hero-split__left .hero-mammoth__line-accent { white-space: nowrap; }
+
+.hero-split__cta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.hero-marker {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+}
+.hero-view-btn { font-size: 0.8rem; }
+
+.hero-split__right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  text-align: right;
+  gap: 1.5rem;
+  max-width: 32%;
+  margin-left: auto;
+}
+.hero-split__right .hero-mammoth__bio {
+  max-width: 340px;
+  margin-bottom: 0;
+  font-size: clamp(0.8rem, 1vw, 0.95rem);
+  font-family: var(--font-mono);
+  line-height: 1.85;
+  color: rgba(255, 255, 255, 0.62);
+}
+.hero-meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+}
+
+/* Central subject — taller, grayscale (monochrome look) */
+.hero-cutout--center { height: 80%; }
+.hero-cutout--center .hero-cutout__img {
+  opacity: 0.95;
+  filter: grayscale(1) contrast(1.12) brightness(0.95)
+          drop-shadow(0 25px 55px rgba(0, 0, 0, 0.6));
+  -webkit-mask-image: radial-gradient(ellipse 66% 80% at 50% 40%, #000 50%, transparent 88%);
+  mask-image: radial-gradient(ellipse 66% 80% at 50% 40%, #000 50%, transparent 88%);
+}
+@media (min-width: 1200px) { .hero-cutout--center { height: 92%; } }
+
+/* Tablet / mobile: stack the columns, photo fades behind the text */
+@media (max-width: 900px) {
+  .hero-split {
+    position: relative;
+    inset: auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 2rem;
+    padding: calc(var(--nav-height) + 1.5rem) 1.25rem 2.5rem;
+  }
+  .hero-split__left,
+  .hero-split__right {
+    max-width: 100%;
+    align-items: center;
+    text-align: center;
+    margin: 0;
+    gap: 1.25rem;
+  }
+  .hero-split__left { justify-content: center; gap: 1.75rem; }
+  .hero-split__left .hero-mammoth__title { align-items: center; text-align: center; }
+  .hero-split__cta { align-items: center; }
+  .hero-split__right { justify-content: flex-start; align-items: center; }
+  .hero-split__right .hero-mammoth__bio { text-align: center; margin: 0 auto; }
+  .hero-cutout--center {
+    height: 58%;
+    opacity: 0.32;
+  }
+  .hero-cutout--center .hero-cutout__img {
+    -webkit-mask-image: radial-gradient(ellipse 80% 75% at 50% 42%, #000 45%, transparent 85%);
+    mask-image: radial-gradient(ellipse 80% 75% at 50% 42%, #000 45%, transparent 85%);
+  }
+}
