@@ -974,8 +974,7 @@
           void bio.offsetWidth; // flush so the animation restarts
           bio.classList.add('is-typing');
         };
-        build();
-        setInterval(build, 7000);
+        build(); // animate the entrance once, then leave it in place
       }
     }
   })();
