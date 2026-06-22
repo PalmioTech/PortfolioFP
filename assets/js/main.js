@@ -886,4 +886,77 @@
     else run();
   })();
 
+  /* ----------------------------------------------------------
+     MAMMOTH HERO — rotating scramble word + looping bio
+  ---------------------------------------------------------- */
+  (function () {
+    var reduced = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var SET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&/<>*';
+
+    /* Giant headline word: scrambles, then settles on the next word */
+    document.querySelectorAll('[data-scramble-rotate]').forEach(function (el) {
+      var words;
+      try { words = JSON.parse(el.dataset.words); } catch (e) { return; }
+      if (!words || !words.length) return;
+      var i = 0;
+      var raf = null;
+
+      function scrambleTo(target) {
+        if (raf) cancelAnimationFrame(raf);
+        if (reduced) { el.textContent = target; return; }
+        var len = target.length;
+        var DUR = 650;
+        var start = null;
+        function tick(ts) {
+          if (start === null) start = ts;
+          var p = Math.min(1, (ts - start) / DUR);
+          var revealed = Math.floor(p * len);
+          var out = '';
+          for (var j = 0; j < len; j++) {
+            if (j < revealed || target.charAt(j) === ' ') out += target.charAt(j);
+            else out += SET.charAt(Math.floor(Math.random() * SET.length));
+          }
+          el.textContent = out;
+          if (p < 1) raf = requestAnimationFrame(tick);
+          else el.textContent = target;
+        }
+        raf = requestAnimationFrame(tick);
+      }
+
+      scrambleTo(words[0]);
+      setInterval(function () {
+        i = (i + 1) % words.length;
+        scrambleTo(words[i]);
+      }, 4000);
+    });
+
+    /* Bio: staggered per-character reveal, re-runs on a loop */
+    var bio = document.querySelector('[data-typeloop]');
+    if (bio) {
+      var full = bio.textContent;
+      if (reduced) {
+        bio.textContent = full; // static, readable
+      } else {
+        var build = function () {
+          bio.classList.remove('is-typing');
+          bio.textContent = '';
+          for (var i = 0; i < full.length; i++) {
+            var c = full.charAt(i);
+            if (c === ' ') { bio.appendChild(document.createTextNode(' ')); continue; }
+            var s = document.createElement('span');
+            s.className = 'tw-char';
+            s.textContent = c;
+            s.style.animationDelay = (i * 0.02) + 's';
+            bio.appendChild(s);
+          }
+          void bio.offsetWidth; // flush so the animation restarts
+          bio.classList.add('is-typing');
+        };
+        build();
+        setInterval(build, 7000);
+      }
+    }
+  })();
+
 })();

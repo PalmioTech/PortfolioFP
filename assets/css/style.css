@@ -3950,3 +3950,159 @@ body.has-target-cursor * {
   text-align: center;
   line-height: 1.1;
 }
+
+/* ============================================================
+   MAMMOTH HERO — blueprint-style layered hero (vanilla)
+   Stroked top line + giant scramble word + looping typewriter
+   bio + bottom-centered subject cut-out + stroked name marquee.
+   Keeps the FPdeveloper brand (near-black + orange + lime).
+   ============================================================ */
+.hero--mammoth {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* z-20 — content */
+.hero-mammoth__content {
+  position: relative;
+  z-index: 20;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.hero--mammoth .hero__badge { margin-bottom: var(--space-5); }
+
+.hero-mammoth__title {
+  font-family: var(--font-display);
+  line-height: 0.9;
+  margin-bottom: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.04em;
+}
+.hero-mammoth__line-stroke {
+  font-size: clamp(1.5rem, 6vw, 4.2rem);
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.92);
+  text-stroke: 1px rgba(255, 255, 255, 0.92);
+}
+@media (min-width: 768px) {
+  .hero-mammoth__line-stroke {
+    -webkit-text-stroke-width: 2px;
+    text-stroke-width: 2px;
+  }
+}
+.hero-mammoth__line-accent {
+  display: inline-block;
+  font-size: clamp(3.4rem, 15vw, 11rem);
+  font-weight: 900;
+  line-height: 0.85;
+  letter-spacing: -0.015em;
+  min-height: 0.85em;
+  white-space: nowrap;
+}
+
+.hero-mammoth__bio {
+  max-width: 640px;
+  font-size: clamp(0.95rem, 1.7vw, 1.2rem);
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.6;
+  margin-bottom: var(--space-7);
+  white-space: pre-wrap;
+  min-height: 3.2em;
+}
+.hero-mammoth__bio .tw-char {
+  display: inline-block;
+  opacity: 0;
+  white-space: pre;
+}
+.hero-mammoth__bio.is-typing .tw-char {
+  animation: tw-char-in 0.4s var(--ease-out) forwards;
+}
+@keyframes tw-char-in {
+  from { opacity: 0; transform: translateY(0.4em); }
+  to   { opacity: 1; transform: none; }
+}
+
+.hero-mammoth__actions { justify-content: center; }
+
+/* z-10 — subject cut-out, bottom centered, feathered into the bg */
+.hero-cutout {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  z-index: 10;
+  height: 56%;
+  display: flex;
+  align-items: flex-end;
+  pointer-events: none;
+}
+.hero-cutout__img {
+  height: 100%;
+  width: auto;
+  max-width: 92vw;
+  object-fit: contain;
+  opacity: 0.9;
+  border-radius: 20px;
+  filter: contrast(1.12) saturate(1.04)
+          drop-shadow(0 25px 50px rgba(0, 0, 0, 0.55));
+  -webkit-mask-image: radial-gradient(ellipse 72% 82% at 50% 42%, #000 52%, transparent 90%);
+  mask-image: radial-gradient(ellipse 72% 82% at 50% 42%, #000 52%, transparent 90%);
+  transition: transform 0.7s var(--ease-out), filter 0.7s var(--ease-out);
+  pointer-events: auto;
+}
+.hero-cutout__img:hover {
+  transform: scale(1.04);
+  filter: contrast(1.15) saturate(1.1)
+          drop-shadow(0 30px 60px rgba(0, 0, 0, 0.6));
+}
+@media (min-width: 768px)  { .hero-cutout { height: 70%; } }
+@media (min-width: 1200px) { .hero-cutout { height: 80%; } }
+
+/* z-30 — ultra-large stroked name marquee at the bottom edge */
+.hero-marquee {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 30;
+  overflow: hidden;
+  pointer-events: none;
+  line-height: 0.78;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+.hero-marquee__track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: hero-marquee-scroll 30s linear infinite;
+  will-change: transform;
+}
+.hero-marquee__track span {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 12vw, 10rem);
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.13);
+  text-stroke: 1px rgba(255, 255, 255, 0.13);
+  letter-spacing: 0.005em;
+  padding-right: 0.25em;
+}
+@keyframes hero-marquee-scroll {
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-marquee__track { animation: none; }
+}

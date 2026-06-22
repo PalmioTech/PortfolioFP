@@ -49,47 +49,40 @@
   <main>
 
     <!-- HERO -->
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="hero__bg">
-        <div class="hero__glow-1" aria-hidden="true"></div>
-        <div class="hero__glow-2" aria-hidden="true"></div>
+    <section class="hero hero--mammoth" aria-labelledby="hero-title">
+      <div class="hero__bg" aria-hidden="true">
+        <div class="hero__glow-1"></div>
+        <div class="hero__glow-2"></div>
       </div>
-      <div class="hero__content">
-        <div class="hero__text">
-          <div class="hero__comment" aria-hidden="true">// federico palmieri — disponibile per nuovi progetti</div>
-          <div class="hero__badge" aria-label="Disponibile per nuovi progetti">
-            <span class="hero__badge-dot" aria-hidden="true"></span>
-            status: available
-          </div>
-          <h1 class="hero__title" id="hero-title">
-            <span class="line"><span>Sviluppo web</span></span>
-            <span class="line"><span>che <span class="text-gradient typewriter-rotate typewriter-rotate--mono" data-words='["converte()","fidelizza()","vende()","stupisce()"]'>converte()</span><span class="type-cursor" aria-hidden="true"></span></span></span>
-            <span class="line"><span>e convince.</span></span>
-          </h1>
-          <p class="hero__description">
-            Creo siti web moderni, veloci ed eleganti per freelance, aziende e brand digitali.
-            Design curato, codice pulito, risultati misurabili.
-          </p>
-          <div class="hero__actions">
-            <a href="portfolio.html" class="btn btn--primary btn--lg">Scopri i progetti</a>
-            <a href="contact.html" class="btn btn--outline btn--lg btn--outline-mono">→ lavoriamo_insieme()</a>
-          </div>
-          <div class="hero__stats">
-            <div>
-              <span class="hero__stat-value">4+</span>
-              <span class="hero__stat-label">anni: di_pratica</span>
-            </div>
-            <div>
-              <span class="hero__stat-value">Full</span>
-              <span class="hero__stat-label">stack: web</span>
-            </div>
-            <div>
-              <span class="hero__stat-value" data-counter="100" data-suffix="%">100%</span>
-              <span class="hero__stat-label">freelance: dedicato</span>
-            </div>
-          </div>
-        </div>
 
+      <!-- Subject cut-out (z-10) -->
+      <div class="hero-cutout">
+        <img src="assets/img/foto-profilo.png" alt="Federico Palmieri" class="hero-cutout__img" width="591" height="666">
+      </div>
+
+      <!-- Hero content (z-20) -->
+      <div class="hero-mammoth__content">
+        <div class="hero__badge" aria-label="Disponibile per nuovi progetti">
+          <span class="hero__badge-dot" aria-hidden="true"></span>
+          status: available
+        </div>
+        <h1 class="hero-mammoth__title" id="hero-title">
+          <span class="hero-mammoth__line-stroke">Sviluppo con</span>
+          <span class="hero-mammoth__line-accent text-gradient" data-scramble-rotate data-words='["IMPATTO","VISIONE","INTENTO"]'>IMPATTO</span>
+        </h1>
+        <p class="hero-mammoth__bio" data-typeloop>Sono Federico — sviluppo siti web moderni, veloci ed eleganti per freelance, aziende e brand digitali. Design curato, codice pulito, risultati misurabili.</p>
+        <div class="hero__actions hero-mammoth__actions">
+          <a href="portfolio.html" class="btn btn--primary btn--lg">Scopri i progetti</a>
+          <a href="contact.html" class="btn btn--outline btn--lg btn--outline-mono">→ lavoriamo_insieme()</a>
+        </div>
+      </div>
+
+      <!-- Footer marquee (z-30) -->
+      <div class="hero-marquee" aria-hidden="true">
+        <div class="hero-marquee__track">
+          <span>FEDERICO PALMIERI&nbsp;&nbsp;//&nbsp;&nbsp;WEB DEVELOPER&nbsp;&nbsp;//&nbsp;&nbsp;</span>
+          <span>FEDERICO PALMIERI&nbsp;&nbsp;//&nbsp;&nbsp;WEB DEVELOPER&nbsp;&nbsp;//&nbsp;&nbsp;</span>
+        </div>
       </div>
     </section>
 
