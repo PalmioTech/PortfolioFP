@@ -7,7 +7,7 @@
  */
 
 // --- Configurazione ----------------------------------------------------------
-define('RECIPIENT_EMAIL', 'info@fpdeveloper.it');   // ← Modifica con la tua email
+define('RECIPIENT_EMAIL', 'fede-palma@hotmail.it');   // ← Modifica con la tua email
 define('RECIPIENT_NAME',  'FPdeveloper');
 define('SITE_NAME',       'FPdeveloper');
 
