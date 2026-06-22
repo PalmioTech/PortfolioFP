@@ -791,9 +791,12 @@
       var wraps = [];
       var idx = 0;
 
+      var word = null; // current word container (keeps glyphs unbreakable)
       tokens.forEach(function (tok) {
-        if (tok.type === 'space') { el.appendChild(document.createTextNode(' ')); return; }
-        if (tok.type === 'br')    { el.appendChild(document.createElement('br')); return; }
+        if (tok.type === 'space') { word = null; el.appendChild(document.createTextNode(' ')); return; }
+        if (tok.type === 'br')    { word = null; el.appendChild(document.createElement('br')); return; }
+
+        if (!word) { word = document.createElement('span'); word.className = 'shuffle-word'; el.appendChild(word); }
 
         var wrap = document.createElement('span');
         wrap.className = 'shuffle-cw';
@@ -808,7 +811,7 @@
         strip.appendChild(fin);
 
         wrap.appendChild(strip);
-        el.appendChild(wrap);
+        word.appendChild(wrap);
         wraps.push({ wrap: wrap, strip: strip, fin: fin, grad: tok.grad, i: idx++ });
       });
 

@@ -4231,3 +4231,6 @@ body.has-target-cursor * {
 /* Bio typewriter: break only at spaces, never mid-word */
 .hero-mammoth__bio { white-space: normal; }
 .tw-word { display: inline-block; white-space: nowrap; }
+
+/* Shuffle titles: keep each word whole — break only at spaces */
+.shuffle-word { display: inline-block; white-space: nowrap; }
