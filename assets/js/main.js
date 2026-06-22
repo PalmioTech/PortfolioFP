@@ -911,10 +911,26 @@
       if (!words || !words.length) return;
       var i = 0;
       var raf = null;
+      var current = words[0];
+
+      // Keep the word on screen: long words shrink to fit, short words
+      // stay big — never clipped at the viewport edges.
+      function fit() {
+        el.style.fontSize = '';                         // back to the CSS clamp
+        var max = parseFloat(getComputedStyle(el).fontSize) || 0;
+        var w = el.scrollWidth;
+        if (!w || !max) return;
+        var bleed = window.innerWidth <= 900 ? 0.9 : 1.02;
+        var avail = window.innerWidth * bleed;
+        if (w > avail) el.style.fontSize = (max * avail / w) + 'px';
+      }
 
       function scrambleTo(target) {
         if (raf) cancelAnimationFrame(raf);
-        if (reduced) { el.textContent = target; return; }
+        current = target;
+        el.textContent = target;
+        fit();                                          // size to the final word
+        if (reduced) return;
         var len = target.length;
         var DUR = 650;
         var start = null;
@@ -939,6 +955,12 @@
         i = (i + 1) % words.length;
         scrambleTo(words[i]);
       }, 4000);
+
+      var rt;
+      window.addEventListener('resize', function () {
+        clearTimeout(rt);
+        rt = setTimeout(function () { el.textContent = current; fit(); }, 150);
+      }, { passive: true });
     });
 
     /* Bio: staggered per-character reveal, re-runs on a loop */
