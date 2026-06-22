@@ -4234,3 +4234,9 @@ body.has-target-cursor * {
 
 /* Shuffle titles: keep each word whole — break only at spaces */
 .shuffle-word { display: inline-block; white-space: nowrap; }
+
+/* Mobile: shrink the mammoth headline so the word never leaves the screen */
+@media (max-width: 900px) {
+  .hero-mammoth__line-stroke { font-size: clamp(1.2rem, 5.5vw, 3rem); }
+  .hero-mammoth__line-accent { font-size: clamp(1.9rem, 11vw, 4.5rem); }
+}
