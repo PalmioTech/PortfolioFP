@@ -91,19 +91,26 @@
   const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
 
   if (revealElements.length > 0) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -60px 0px' }
-    );
+    if (!('IntersectionObserver' in window)) {
+      // Failsafe: never leave content stuck invisible
+      revealElements.forEach(el => el.classList.add('revealed'));
+    } else {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('revealed');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        // Pre-reveal before the section scrolls into view so mobile never
+        // shows an empty gap waiting for the animation to fire.
+        { threshold: 0, rootMargin: '0px 0px 240px 0px' }
+      );
 
-    revealElements.forEach(el => observer.observe(el));
+      revealElements.forEach(el => observer.observe(el));
+    }
   }
 
   /* ----------------------------------------------------------
