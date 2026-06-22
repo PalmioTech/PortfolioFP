@@ -902,7 +902,8 @@
   (function () {
     var reduced = window.matchMedia &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var SET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&/<>*';
+    // Narrow glyphs only — keeps scramble width close to the final word
+    var SET = 'ABCDEFGHIJKLNOPRSTUVXYZ0123456789/<>*-';
 
     /* Giant headline word: scrambles, then settles on the next word */
     document.querySelectorAll('[data-scramble-rotate]').forEach(function (el) {
@@ -918,9 +919,9 @@
       function fit() {
         el.style.fontSize = '';                         // back to the CSS clamp
         var max = parseFloat(getComputedStyle(el).fontSize) || 0;
-        var w = el.scrollWidth;
+        var w = el.scrollWidth * 1.25;                  // headroom for wider scramble glyphs
         if (!w || !max) return;
-        var bleed = window.innerWidth <= 900 ? 0.9 : 1.02;
+        var bleed = window.innerWidth <= 900 ? 0.9 : 1.0;
         var avail = window.innerWidth * bleed;
         if (w > avail) el.style.fontSize = (max * avail / w) + 'px';
       }
@@ -955,6 +956,12 @@
         i = (i + 1) % words.length;
         scrambleTo(words[i]);
       }, 4000);
+
+      // Re-fit once the display font loads (fallback font measures narrower,
+      // which would otherwise leave the word too big and overflow).
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function () { el.textContent = current; fit(); });
+      }
 
       var rt;
       window.addEventListener('resize', function () {
