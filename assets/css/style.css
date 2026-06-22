@@ -4272,3 +4272,6 @@ body.has-target-cursor * {
   color: #466100;
   border-color: rgba(70, 97, 0, 0.5);
 }
+
+/* Fallback tone when a portfolio screenshot image is missing */
+.proj-screenshot { background-color: var(--color-surface-2); }
