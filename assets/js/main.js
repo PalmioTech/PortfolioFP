@@ -1050,7 +1050,9 @@
       // how many later cards are already pinned in front of this one
       var depthAbove = 0;
       for (var j = k + 1; j < vis.length; j++) if (pinned[j]) depthAbove++;
-      var d = Math.min(depthAbove, MAX_DEPTH);
+      // Collected cards rest at ONE fixed slot — they don't keep shifting as
+      // more cards pin, so the stack stays still once a card is filed away.
+      var d = depthAbove > 0 ? 1 : 0;
 
       var ty, tx = 0, rot = 0, scale = 1;
       if (pinned[k]) {
