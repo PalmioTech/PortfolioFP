@@ -1063,7 +1063,8 @@
       }
 
       c.style.transform = 'translate3d(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px,0) scale(' + scale.toFixed(3) + ') rotate(' + rot.toFixed(2) + 'deg)';
-      c.style.zIndex = pinned[k] ? String(100 + k) : '';
+      // later cards always sit on top → the incoming card slides OVER the stack
+      c.style.zIndex = String(10 + k);
       // only the front (top-most pinned) card opens to show its text
       c.classList.toggle('is-open', pinned[k] && depthAbove === 0);
     });
