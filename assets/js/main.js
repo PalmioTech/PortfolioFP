@@ -1039,8 +1039,14 @@
     cards.forEach(function (c, i) { c.style.transform = prev[i] || ''; });
   }
 
-  function update() {
-    raf = null;
+  var LERP = 0.2, lastSy = -1, idle = 0;
+
+  function resetState() {
+    cards.forEach(function (c) { c._dx = 0; c._dy = 0; c._sc = 1; c._rt = 0; });
+  }
+
+  // Compute + apply one frame. Returns true if anything still needs easing.
+  function step() {
     // Cap the scroll used for pinning so the stack releases at the section end
     var sy = Math.min(window.scrollY, releaseScroll);
     var vis = [];
@@ -1049,47 +1055,65 @@
     // A card is "pinned" once its top reaches PIN_TOP
     var pinned = vis.map(function (idx) { return (sy + PIN_TOP) - tops[idx] > 0; });
 
+    var moving = false;
     vis.forEach(function (idx, k) {
       var c = cards[idx];
-      var rawTy = (sy + PIN_TOP) - tops[idx];
-      // how many later cards are already pinned in front of this one
       var depthAbove = 0;
       for (var j = k + 1; j < vis.length; j++) if (pinned[j]) depthAbove++;
-      // Collected cards rest at ONE fixed slot — they don't keep shifting as
-      // more cards pin, so the stack stays still once a card is filed away.
+      // Collected cards rest at ONE fixed slot — still once filed away.
       var d = depthAbove > 0 ? 1 : 0;
 
-      var ty, tx = 0, rot = 0, scale = 1;
-      if (pinned[k]) {
-        ty = rawTy - d * PEEK_Y;        // hold at PIN_TOP, lift the ones behind upward
-        tx = -d * PEEK_X;               // ...and to the left → fanned deck
-        rot = -d * ROT;
-        scale = 1 - d * STEP;
-      } else {
-        ty = 0;                          // still rising in normal flow (image showing)
-      }
+      // Decorative deck offsets (these EASE for a fluid file-away animation)
+      var tDx = pinned[k] ? -d * PEEK_X : 0;
+      var tDy = pinned[k] ? -d * PEEK_Y : 0;
+      var tSc = pinned[k] ? 1 - d * STEP : 1;
+      var tRt = pinned[k] ? -d * ROT : 0;
+      if (Math.abs(tDx - c._dx) > 0.03 || Math.abs(tDy - c._dy) > 0.03 ||
+          Math.abs(tSc - c._sc) > 0.001 || Math.abs(tRt - c._rt) > 0.03) moving = true;
+      c._dx += (tDx - c._dx) * LERP;
+      c._dy += (tDy - c._dy) * LERP;
+      c._sc += (tSc - c._sc) * LERP;
+      c._rt += (tRt - c._rt) * LERP;
 
-      c.style.transform = 'translate3d(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px,0) scale(' + scale.toFixed(3) + ') rotate(' + rot.toFixed(2) + 'deg)';
-      // later cards always sit on top → the incoming card slides OVER the stack
-      c.style.zIndex = String(10 + k);
-      // only the front (top-most pinned) card opens to show its text
+      // Pin offset is EXACT (no easing) so the collector never drifts
+      var pinTy = pinned[k] ? (sy + PIN_TOP) - tops[idx] : 0;
+      var ty = pinTy + c._dy;
+
+      c.style.transform = 'translate3d(' + c._dx.toFixed(2) + 'px,' + ty.toFixed(2) + 'px,0) scale(' + c._sc.toFixed(3) + ') rotate(' + c._rt.toFixed(2) + 'deg)';
+      c.style.zIndex = String(10 + k);     // incoming card always slides on top
       c.classList.toggle('is-open', pinned[k] && depthAbove === 0);
     });
+
+    if (window.scrollY !== lastSy) { moving = true; lastSy = window.scrollY; }
+    return moving;
   }
 
-  function onScroll() { if (!raf) raf = requestAnimationFrame(update); }
+  function loop() {
+    var moving = step();
+    idle = moving ? 0 : idle + 1;
+    raf = (active && idle < 8) ? requestAnimationFrame(loop) : null;
+  }
+
+  // Apply immediately on scroll (responsive even if rAF is throttled), and
+  // keep the rAF loop alive so the deck offsets ease smoothly between events.
+  function onScroll() { if (active) { step(); kick(); } }
+  function kick() { if (active && !raf) { idle = 0; raf = requestAnimationFrame(loop); } }
 
   function enable() {
     if (active) return;
     active = true;
     document.body.classList.add('scrollstack-on');
-    requestAnimationFrame(function () { measure(); update(); });
+    measure();
+    resetState();
+    step();          // apply once synchronously so cards are placed right away
+    kick();
     window.addEventListener('scroll', onScroll, { passive: true });
   }
 
   function disable() {
     if (!active) return;
     active = false;
+    if (raf) { cancelAnimationFrame(raf); raf = null; }
     document.body.classList.remove('scrollstack-on');
     window.removeEventListener('scroll', onScroll);
     cards.forEach(function (c) { c.style.transform = ''; c.style.zIndex = ''; c.classList.remove('is-open'); });
@@ -1100,13 +1124,13 @@
   var rt;
   window.addEventListener('resize', function () {
     clearTimeout(rt);
-    rt = setTimeout(function () { if (active) { measure(); update(); } apply(); }, 150);
+    rt = setTimeout(function () { if (active) { measure(); kick(); } apply(); }, 150);
   }, { passive: true });
 
   // Filtering changes the layout — re-measure card positions afterwards
   document.querySelectorAll('.filter-btn').forEach(function (b) {
     b.addEventListener('click', function () {
-      if (active) setTimeout(function () { measure(); update(); }, 320);
+      if (active) setTimeout(function () { measure(); kick(); }, 320);
     });
   });
 

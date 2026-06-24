@@ -4298,7 +4298,7 @@ body.has-target-cursor * {
     transition: none;                 /* JS drives the transform each frame */
     box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
   }
-  body.scrollstack-on .portfolio-card:last-of-type { margin-bottom: 60vh; }
+  body.scrollstack-on .portfolio-card:last-of-type { margin-bottom: 26vh; }
 
   /* Scroll-driven equivalent of the desktop :hover reveal */
   body.scrollstack-on .portfolio-card__visual { height: 100%; }
