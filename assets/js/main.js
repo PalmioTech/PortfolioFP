@@ -1025,19 +1025,24 @@
 
   var mq = window.matchMedia('(max-width: 768px)');
   // Front card pins at PIN_TOP; cards behind it fan up-left, smaller (deck look)
-  var PIN_TOP = 118, PEEK_Y = 16, PEEK_X = 12, STEP = 0.05, ROT = 2.2, MAX_DEPTH = 4;
-  var raf = null, active = false, tops = [];
+  var PIN_TOP = 118, PEEK_Y = 16, PEEK_X = 12, STEP = 0.05, ROT = 2.2;
+  var raf = null, active = false, tops = [], releaseScroll = Infinity;
 
   function measure() {
     var prev = cards.map(function (c) { return c.style.transform; });
     cards.forEach(function (c) { c.style.transform = 'none'; });
     tops = cards.map(function (c) { return c.getBoundingClientRect().top + window.scrollY; });
+    // Release point: once the grid bottom reaches the viewport bottom the
+    // whole stack un-pins and scrolls away like a normal section.
+    var gridBottom = grid.getBoundingClientRect().bottom + window.scrollY;
+    releaseScroll = Math.max(0, gridBottom - window.innerHeight);
     cards.forEach(function (c, i) { c.style.transform = prev[i] || ''; });
   }
 
   function update() {
     raf = null;
-    var sy = window.scrollY;
+    // Cap the scroll used for pinning so the stack releases at the section end
+    var sy = Math.min(window.scrollY, releaseScroll);
     var vis = [];
     cards.forEach(function (c, i) { if (c.offsetParent !== null) vis.push(i); });
 
