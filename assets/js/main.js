@@ -1009,3 +1009,84 @@
   })();
 
 })();
+
+/* ----------------------------------------------------------
+   PORTFOLIO SCROLL-STACK (mobile only) — vanilla, no deps
+   Pins + scales the portfolio cards on scroll and reveals
+   each card's text (image → text), then stacks the next one.
+---------------------------------------------------------- */
+(function () {
+  var grid = document.querySelector('.portfolio-page-grid');
+  if (!grid) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var cards = Array.prototype.slice.call(grid.querySelectorAll('.portfolio-card'));
+  if (!cards.length) return;
+
+  var mq = window.matchMedia('(max-width: 768px)');
+  var TOP = 84, PEEK = 12, ITEM_SCALE = 0.04, BASE = 0.86;
+  var raf = null, active = false, tops = [];
+
+  function measure() {
+    var prev = cards.map(function (c) { return c.style.transform; });
+    cards.forEach(function (c) { c.style.transform = 'none'; });
+    tops = cards.map(function (c) { return c.getBoundingClientRect().top + window.scrollY; });
+    cards.forEach(function (c, i) { c.style.transform = prev[i] || ''; });
+  }
+
+  function update() {
+    raf = null;
+    var sy = window.scrollY;
+    var vis = [];
+    cards.forEach(function (c, i) { if (c.offsetParent !== null) vis.push(i); });
+
+    var pinned = vis.map(function (idx, k) {
+      return (sy + TOP + k * PEEK) - tops[idx] > 0;
+    });
+
+    vis.forEach(function (idx, k) {
+      var ty = Math.max(0, (sy + TOP + k * PEEK) - tops[idx]);
+      var depthAbove = 0;
+      for (var j = k + 1; j < vis.length; j++) if (pinned[j]) depthAbove++;
+      var scale = Math.max(BASE, 1 - depthAbove * ITEM_SCALE);
+      var c = cards[idx];
+      c.style.transform = 'translate3d(0,' + ty.toFixed(1) + 'px,0) scale(' + scale.toFixed(3) + ')';
+      c.classList.toggle('is-open', pinned[k]);
+    });
+  }
+
+  function onScroll() { if (!raf) raf = requestAnimationFrame(update); }
+
+  function enable() {
+    if (active) return;
+    active = true;
+    document.body.classList.add('scrollstack-on');
+    requestAnimationFrame(function () { measure(); update(); });
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  function disable() {
+    if (!active) return;
+    active = false;
+    document.body.classList.remove('scrollstack-on');
+    window.removeEventListener('scroll', onScroll);
+    cards.forEach(function (c) { c.style.transform = ''; c.classList.remove('is-open'); });
+  }
+
+  function apply() { if (mq.matches) enable(); else disable(); }
+
+  var rt;
+  window.addEventListener('resize', function () {
+    clearTimeout(rt);
+    rt = setTimeout(function () { if (active) { measure(); update(); } apply(); }, 150);
+  }, { passive: true });
+
+  // Filtering changes the layout — re-measure card positions afterwards
+  document.querySelectorAll('.filter-btn').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (active) setTimeout(function () { measure(); update(); }, 320);
+    });
+  });
+
+  apply();
+})();

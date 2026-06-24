@@ -4275,3 +4275,38 @@ body.has-target-cursor * {
 
 /* Fallback tone when a portfolio screenshot image is missing */
 .proj-screenshot { background-color: var(--color-surface-2); }
+
+/* ============================================================
+   PORTFOLIO SCROLL-STACK (mobile only, vanilla, JS-driven)
+   Cards pin & scale as you scroll; each reveals image → text,
+   then the next card stacks over it. React-Bits "ScrollStack"
+   reimplemented dependency-free. Activated via body.scrollstack-on.
+   ============================================================ */
+@media (max-width: 768px) {
+  body.scrollstack-on .portfolio-page-grid {
+    display: block;
+    perspective: 1200px;
+  }
+  body.scrollstack-on .portfolio-card {
+    height: min(86vh, 700px);
+    width: 100%;
+    margin: 0 0 52vh;
+    opacity: 1 !important;
+    transform-origin: top center;
+    backface-visibility: hidden;
+    will-change: transform;
+    transition: none;                 /* JS drives the transform each frame */
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+  }
+  body.scrollstack-on .portfolio-card:last-of-type { margin-bottom: 8vh; }
+
+  /* Scroll-driven equivalent of the desktop :hover reveal */
+  body.scrollstack-on .portfolio-card__visual { height: 100%; }
+  body.scrollstack-on .portfolio-card.is-open .portfolio-card__visual { height: 44%; }
+  body.scrollstack-on .portfolio-card.is-open .portfolio-card__body { opacity: 1; }
+  body.scrollstack-on .portfolio-card.is-open .portfolio-card__overlay { opacity: 0.5; }
+  body.scrollstack-on .portfolio-card.is-open .portfolio-card__category {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
