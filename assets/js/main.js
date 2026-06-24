@@ -1024,7 +1024,8 @@
   if (!cards.length) return;
 
   var mq = window.matchMedia('(max-width: 768px)');
-  var TOP = 84, PEEK = 12, ITEM_SCALE = 0.04, BASE = 0.86;
+  // Front card pins at PIN_TOP; cards behind it fan up-left, smaller (deck look)
+  var PIN_TOP = 118, PEEK_Y = 16, PEEK_X = 12, STEP = 0.05, ROT = 2.2, MAX_DEPTH = 4;
   var raf = null, active = false, tops = [];
 
   function measure() {
@@ -1040,18 +1041,31 @@
     var vis = [];
     cards.forEach(function (c, i) { if (c.offsetParent !== null) vis.push(i); });
 
-    var pinned = vis.map(function (idx, k) {
-      return (sy + TOP + k * PEEK) - tops[idx] > 0;
-    });
+    // A card is "pinned" once its top reaches PIN_TOP
+    var pinned = vis.map(function (idx) { return (sy + PIN_TOP) - tops[idx] > 0; });
 
     vis.forEach(function (idx, k) {
-      var ty = Math.max(0, (sy + TOP + k * PEEK) - tops[idx]);
+      var c = cards[idx];
+      var rawTy = (sy + PIN_TOP) - tops[idx];
+      // how many later cards are already pinned in front of this one
       var depthAbove = 0;
       for (var j = k + 1; j < vis.length; j++) if (pinned[j]) depthAbove++;
-      var scale = Math.max(BASE, 1 - depthAbove * ITEM_SCALE);
-      var c = cards[idx];
-      c.style.transform = 'translate3d(0,' + ty.toFixed(1) + 'px,0) scale(' + scale.toFixed(3) + ')';
-      c.classList.toggle('is-open', pinned[k]);
+      var d = Math.min(depthAbove, MAX_DEPTH);
+
+      var ty, tx = 0, rot = 0, scale = 1;
+      if (pinned[k]) {
+        ty = rawTy - d * PEEK_Y;        // hold at PIN_TOP, lift the ones behind upward
+        tx = -d * PEEK_X;               // ...and to the left → fanned deck
+        rot = -d * ROT;
+        scale = 1 - d * STEP;
+      } else {
+        ty = 0;                          // still rising in normal flow (image showing)
+      }
+
+      c.style.transform = 'translate3d(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px,0) scale(' + scale.toFixed(3) + ') rotate(' + rot.toFixed(2) + 'deg)';
+      c.style.zIndex = pinned[k] ? String(100 + k) : '';
+      // only the front (top-most pinned) card opens to show its text
+      c.classList.toggle('is-open', pinned[k] && depthAbove === 0);
     });
   }
 
@@ -1070,7 +1084,7 @@
     active = false;
     document.body.classList.remove('scrollstack-on');
     window.removeEventListener('scroll', onScroll);
-    cards.forEach(function (c) { c.style.transform = ''; c.classList.remove('is-open'); });
+    cards.forEach(function (c) { c.style.transform = ''; c.style.zIndex = ''; c.classList.remove('is-open'); });
   }
 
   function apply() { if (mq.matches) enable(); else disable(); }

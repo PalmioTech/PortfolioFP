@@ -4288,9 +4288,9 @@ body.has-target-cursor * {
     perspective: 1200px;
   }
   body.scrollstack-on .portfolio-card {
-    height: min(86vh, 700px);
-    width: 100%;
-    margin: 0 0 52vh;
+    height: min(62vh, 460px);
+    width: 88%;
+    margin: 0 auto 30vh;
     opacity: 1 !important;
     transform-origin: top center;
     backface-visibility: hidden;
