@@ -1176,7 +1176,6 @@
   })();
 
   var mq = window.matchMedia('(min-width: 769px)');
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var ctx = canvas.getContext('2d');
   var DPR = Math.min(window.devicePixelRatio || 1, 2);
   var W = 0, H = 0, ready = false, active = false, raf = null;
@@ -1340,7 +1339,10 @@
   }
 
   function load() {
-    if (reduced) { stop(); return; }   // runs on mobile + desktop (touch & mouse)
+    // Scrub runs on mobile + desktop (touch & mouse). It is purely scroll-driven
+    // — the user controls every frame, nothing autoplays — so we intentionally do
+    // NOT bail on prefers-reduced-motion (iOS Low Power Mode forces that flag and
+    // would otherwise freeze the hero on a static photo).
     if (active) return;
     if (VIDEO) {
       if (!vid) {

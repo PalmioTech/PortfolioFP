@@ -4356,7 +4356,6 @@ body.has-target-cursor * {
 }
 .hero-track { height: 160vh; }
 .hero-track .hero--mammoth { position: sticky; top: 0; height: 100svh; }
-@media (prefers-reduced-motion: reduce) {
-  .hero-track { height: auto; }
-  .hero-track .hero--mammoth { position: relative; }
-}
+/* NB: no prefers-reduced-motion override here. The scrub is scroll-driven (the
+   user controls every frame), and iOS Low Power Mode forces reduced-motion —
+   collapsing the pin would freeze the hero on a static photo. Pin always on. */
