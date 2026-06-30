@@ -4195,15 +4195,20 @@ body.has-target-cursor * {
 
 /* Tablet / mobile: stack the columns, photo fades behind the text */
 @media (max-width: 900px) {
+  /* Anchor hero text to the top — centering it in the 100svh pin left a
+     big empty gap above the headline on phones (esp. in-app webviews). */
+  .hero--mammoth { justify-content: flex-start; }
   .hero-split {
     position: relative;
     inset: auto;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     text-align: center;
     gap: 2rem;
-    padding: calc(var(--nav-height) + 1.5rem) 1.25rem 2.5rem;
+    /* mammoth already pads nav-height to clear the fixed navbar — don't add it
+       again here, or content sinks too far down. Just breathing room. */
+    padding: 1.5rem 1.25rem 2.5rem;
   }
   .hero-split__left,
   .hero-split__right {
