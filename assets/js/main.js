@@ -1219,12 +1219,22 @@
     var dw = fr.naturalWidth * s, dh = fr.naturalHeight * s;
     var ox = (W - dw) / 2, oy = (H - dh) / 2;
     ctx.drawImage(fr, ox, oy, dw, dh);
-    // Erase the AI watermark (top-right of the frame) softly → blends into bg
+
     ctx.save();
     ctx.globalCompositeOperation = 'destination-out';
+    // 1) erase the AI watermark (top-right of the frame) softly
     ctx.filter = 'blur(18px)';
     ctx.fillStyle = '#000';
     ctx.fillRect(ox + dw * 0.58, oy - 30, dw * 0.50, dh * 0.21);
+    // 2) feather the frame edges so it dissolves into the hero bg
+    //    (no hard rectangle — doesn't read as a card slapped on)
+    ctx.filter = 'none';
+    var cx = ox + dw / 2, cy = oy + dh / 2, rad = Math.min(dw, dh);
+    var g = ctx.createRadialGradient(cx, cy, rad * 0.36, cx, cy, rad * 0.68);
+    g.addColorStop(0, 'rgba(0,0,0,0)');
+    g.addColorStop(1, 'rgba(0,0,0,1)');
+    ctx.fillStyle = g;
+    ctx.fillRect(ox, oy, dw, dh);
     ctx.restore();
   }
 

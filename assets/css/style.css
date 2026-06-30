@@ -4352,8 +4352,7 @@ body.has-target-cursor * {
   height: 100%;
   display: none;            /* JS shows it when the engine is ready */
   pointer-events: none;
-  -webkit-mask-image: radial-gradient(ellipse 66% 80% at 50% 42%, #000 50%, transparent 90%);
-  mask-image: radial-gradient(ellipse 66% 80% at 50% 42%, #000 50%, transparent 90%);
+  /* edge dissolve is painted on the canvas itself (see drawFrames) */
 }
 @media (min-width: 769px) {
   .hero-track { height: 160vh; }
