@@ -1164,14 +1164,23 @@
   var img = track.querySelector('.hero-cutout__img');
   if (!canvas || !img) return;
 
-  var FRAMES = []; // <-- fill with real frame URLs to use the true animation
+  // Animation source. VIDEO wins if set, else FRAMES (image sequence),
+  // else the photo+desk placeholder.
+  var VIDEO = '';
+  var FRAMES = (function () {
+    var a = [];
+    for (var i = 0; i < 52; i++) {
+      a.push('assets/img/hero-seq/frame-' + String(i).padStart(3, '0') + '.webp');
+    }
+    return a;
+  })();
 
   var mq = window.matchMedia('(min-width: 769px)');
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var ctx = canvas.getContext('2d');
   var DPR = Math.min(window.devicePixelRatio || 1, 2);
   var W = 0, H = 0, ready = false, active = false, raf = null;
-  var frames = [], photo = null;
+  var frames = [], photo = null, vid = null;
 
   function size() {
     var r = canvas.getBoundingClientRect();
@@ -1202,12 +1211,19 @@
   }
 
   function drawFrames(p) {
-    ctx.clearRect(0, 0, W, H);
     var fr = frames[Math.min(frames.length - 1, Math.round(p * (frames.length - 1)))];
     if (!fr || !fr.naturalWidth) return;
-    var dh = H, dw = dh * (fr.naturalWidth / fr.naturalHeight);
-    if (dw > W) { dw = W; dh = dw * (fr.naturalHeight / fr.naturalWidth); }
-    ctx.drawImage(fr, (W - dw) / 2, H - dh, dw, dh);
+    ctx.clearRect(0, 0, W, H);
+    var s = Math.max(W / fr.naturalWidth, H / fr.naturalHeight);
+    var dw = fr.naturalWidth * s, dh = fr.naturalHeight * s;
+    ctx.drawImage(fr, (W - dw) / 2, (H - dh) / 2, dw, dh);
+    // Erase the AI watermark (top-right) softly so it blends into the hero bg
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.filter = 'blur(16px)';
+    ctx.fillStyle = '#000';
+    ctx.fillRect(W * 0.70, -20, W * 0.40, H * 0.17);
+    ctx.restore();
   }
 
   // Placeholder: the real photo settles down/back while a desk + monitor
@@ -1245,11 +1261,30 @@
     ctx.fillRect(cx - 3, my + mh, 6, 10);
   }
 
+  function blitVideo() {
+    if (!vid || !vid.videoWidth || !W) return;
+    var s = Math.max(W / vid.videoWidth, H / vid.videoHeight);
+    var dw = vid.videoWidth * s, dh = vid.videoHeight * s;
+    ctx.clearRect(0, 0, W, H);
+    ctx.drawImage(vid, (W - dw) / 2, (H - dh) / 2, dw, dh);
+  }
+  function drawVideo(p) {
+    if (!vid) return;
+    var dur = vid.duration;
+    if (dur) {
+      var t = Math.min(dur - 0.05, Math.max(0, p * dur));
+      if (Math.abs(vid.currentTime - t) > 0.012) vid.currentTime = t;
+    }
+    blitVideo();
+  }
+
   function render() {
     raf = null;
     if (!ready || !W) return;
     var p = progress();
-    if (FRAMES.length) drawFrames(p); else drawPlaceholder(p);
+    if (VIDEO) drawVideo(p);
+    else if (FRAMES.length) drawFrames(p);
+    else drawPlaceholder(p);
   }
   function onScroll() { if (!raf) raf = requestAnimationFrame(render); }
 
@@ -1274,7 +1309,18 @@
   function load() {
     if (reduced || !mq.matches) { stop(); return; }
     if (active) return;
-    if (FRAMES.length) {
+    if (VIDEO) {
+      if (!vid) {
+        vid = document.createElement('video');
+        vid.muted = true; vid.defaultMuted = true;
+        vid.playsInline = true; vid.setAttribute('playsinline', '');
+        vid.preload = 'auto';
+        vid.addEventListener('loadeddata', function () { ready = true; start(); });
+        vid.addEventListener('seeked', blitVideo);
+        vid.src = VIDEO;
+        vid.load();
+      } else { start(); }
+    } else if (FRAMES.length) {
       var n = 0;
       FRAMES.forEach(function (u, i) {
         var im = new Image();
