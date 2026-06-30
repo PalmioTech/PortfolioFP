@@ -1023,6 +1023,11 @@
   var cards = Array.prototype.slice.call(grid.querySelectorAll('.portfolio-card'));
   if (!cards.length) return;
 
+  // Mobile deck disabled: the JS pin/transform/vh stack was unreliable in
+  // in-app browsers (Instagram, etc.). Mobile now uses a plain readable
+  // vertical stack via CSS. Keeping the code below dormant.
+  return;
+
   var mq = window.matchMedia('(max-width: 768px)');
   // Front card pins at PIN_TOP; cards behind it fan up-left, smaller (deck look)
   var PIN_TOP = 118, PEEK_Y = 16, PEEK_X = 12, STEP = 0.05, ROT = 2.2;

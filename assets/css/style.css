@@ -4311,3 +4311,19 @@ body.has-target-cursor * {
     transform: translateY(-6px);
   }
 }
+
+/* ============================================================
+   PORTFOLIO — MOBILE: simple readable vertical stack
+   (replaces the JS deck; robust in in-app browsers)
+   ============================================================ */
+@media (max-width: 768px) {
+  .portfolio-page-grid { grid-template-columns: 1fr; }
+  .portfolio-card { height: auto; }
+  .portfolio-card__visual,
+  .portfolio-card:hover .portfolio-card__visual { height: 210px; }
+  /* image + title always shown; text always visible (no hover needed) */
+  .portfolio-card__body { opacity: 1; overflow: visible; }
+  .portfolio-card__body-inner { height: auto; }
+  .portfolio-card__category,
+  .portfolio-card:hover .portfolio-card__category { opacity: 1; transform: none; }
+}
