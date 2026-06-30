@@ -4338,3 +4338,28 @@ body.has-target-cursor * {
   .portfolio-card__category,
   .portfolio-card:hover .portfolio-card__category { opacity: 1; transform: none; }
 }
+
+/* ============================================================
+   HERO SCROLL-SCRUB (desktop/tablet)
+   Pins the hero while scrolling; frames are drawn on <canvas>.
+   Placeholder = photo + desk/monitor compositing. Swap in a real
+   frame sequence by filling FRAMES in main.js.
+   ============================================================ */
+.hero-scrub {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: none;            /* JS shows it when the engine is ready */
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse 66% 80% at 50% 42%, #000 50%, transparent 90%);
+  mask-image: radial-gradient(ellipse 66% 80% at 50% 42%, #000 50%, transparent 90%);
+}
+@media (min-width: 769px) {
+  .hero-track { height: 160vh; }
+  .hero-track .hero--mammoth { position: sticky; top: 0; height: 100svh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-track { height: auto; }
+  .hero-track .hero--mammoth { position: relative; }
+}

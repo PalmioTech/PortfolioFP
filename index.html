@@ -49,15 +49,18 @@
   <main>
 
     <!-- HERO -->
+    <div class="hero-track">
     <section class="hero hero--mammoth" aria-labelledby="hero-title">
       <div class="hero__bg" aria-hidden="true">
         <div class="hero__glow-1"></div>
         <div class="hero__glow-2"></div>
       </div>
 
-      <!-- Central subject (z-10) -->
+      <!-- Central subject (z-10) — scroll-scrubbed on <canvas>.
+           The <img> is the no-JS fallback and the placeholder source. -->
       <div class="hero-cutout hero-cutout--center">
         <img src="assets/img/foto-profilo.png" alt="Federico Palmieri" class="hero-cutout__img" width="591" height="666">
+        <canvas class="hero-scrub" aria-hidden="true"></canvas>
       </div>
 
       <!-- Split content (z-20): headline left, bio right -->
@@ -79,6 +82,7 @@
         </div>
       </div>
     </section>
+    </div>
 
     <!-- SERVICES PREVIEW -->
     <section class="section" id="servizi" aria-labelledby="services-title">

@@ -1144,3 +1144,151 @@
 
   apply();
 })();
+
+/* ----------------------------------------------------------
+   HERO SCROLL-SCRUB ENGINE (desktop/tablet) — vanilla, no deps
+   Pins the hero (CSS sticky) and scrubs an animation on <canvas>
+   as you scroll (mouse or touch).
+
+   >>> TO USE A REAL FRAME SEQUENCE: fill FRAMES with the ordered
+   image URLs, e.g.
+     FRAMES = Array.from({length:120}, function(_,i){
+       return 'assets/img/hero-seq/frame-' + String(i+1).padStart(3,'0') + '.webp';
+     });
+   With FRAMES empty it runs the photo + desk/monitor placeholder.
+---------------------------------------------------------- */
+(function () {
+  var track = document.querySelector('.hero-track');
+  if (!track) return;
+  var canvas = track.querySelector('.hero-scrub');
+  var img = track.querySelector('.hero-cutout__img');
+  if (!canvas || !img) return;
+
+  var FRAMES = []; // <-- fill with real frame URLs to use the true animation
+
+  var mq = window.matchMedia('(min-width: 769px)');
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ctx = canvas.getContext('2d');
+  var DPR = Math.min(window.devicePixelRatio || 1, 2);
+  var W = 0, H = 0, ready = false, active = false, raf = null;
+  var frames = [], photo = null;
+
+  function size() {
+    var r = canvas.getBoundingClientRect();
+    W = r.width; H = r.height;
+    if (!W || !H) return;
+    canvas.width = Math.round(W * DPR);
+    canvas.height = Math.round(H * DPR);
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+
+  function progress() {
+    var rect = track.getBoundingClientRect();
+    var dist = track.offsetHeight - window.innerHeight;
+    if (dist <= 0) return 0;
+    return clamp(-rect.top / dist);
+  }
+
+  function rr(x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  function drawFrames(p) {
+    ctx.clearRect(0, 0, W, H);
+    var fr = frames[Math.min(frames.length - 1, Math.round(p * (frames.length - 1)))];
+    if (!fr || !fr.naturalWidth) return;
+    var dh = H, dw = dh * (fr.naturalWidth / fr.naturalHeight);
+    if (dw > W) { dw = W; dh = dw * (fr.naturalHeight / fr.naturalWidth); }
+    ctx.drawImage(fr, (W - dw) / 2, H - dh, dw, dh);
+  }
+
+  // Placeholder: the real photo settles down/back while a desk + monitor
+  // rise in front — a stand-in for "subject sits at the computer".
+  function drawPlaceholder(p) {
+    ctx.clearRect(0, 0, W, H);
+    var cx = W / 2;
+    var scale = lerp(1, 0.86, p);
+    var dh = H * 0.92 * scale;
+    var dw = dh * (photo.naturalWidth / photo.naturalHeight);
+    var dy = lerp(0, H * 0.05, p);
+    ctx.save();
+    ctx.filter = 'grayscale(1) contrast(1.08) brightness(0.96)';
+    ctx.drawImage(photo, cx - dw / 2, H - dh + dy, dw, dh);
+    ctx.restore();
+
+    var dp = clamp((p - 0.18) / 0.82);
+    if (dp <= 0) return;
+    var deskTop = lerp(H * 1.06, H * 0.6, dp);
+    ctx.fillStyle = 'rgba(12,10,15,0.92)';
+    rr(W * 0.1, deskTop, W * 0.8, H - deskTop, 14); ctx.fill();
+    ctx.fillStyle = '#FF3500';
+    ctx.fillRect(W * 0.1, deskTop, W * 0.8, 3);
+
+    var mp = clamp((dp - 0.35) / 0.65);
+    if (mp <= 0) return;
+    var mw = W * 0.34 * mp, mh = mw * 0.62, mx = cx - mw / 2, my = deskTop - mh + 6;
+    ctx.fillStyle = 'rgba(20,17,28,0.96)';
+    rr(mx, my, mw, mh, 8); ctx.fill();
+    ctx.fillStyle = 'rgba(198,255,0,' + (0.12 * mp) + ')';
+    rr(mx + 6, my + 6, mw - 12, mh - 12, 5); ctx.fill();
+    ctx.strokeStyle = 'rgba(255,53,0,0.5)'; ctx.lineWidth = 2;
+    rr(mx, my, mw, mh, 8); ctx.stroke();
+    ctx.fillStyle = 'rgba(20,17,28,0.96)';
+    ctx.fillRect(cx - 3, my + mh, 6, 10);
+  }
+
+  function render() {
+    raf = null;
+    if (!ready || !W) return;
+    var p = progress();
+    if (FRAMES.length) drawFrames(p); else drawPlaceholder(p);
+  }
+  function onScroll() { if (!raf) raf = requestAnimationFrame(render); }
+
+  function start() {
+    if (active) return;
+    active = true;
+    canvas.style.display = 'block';
+    img.style.visibility = 'hidden';
+    size(); render();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize, { passive: true });
+  }
+  function onResize() { size(); render(); }
+  function stop() {
+    active = false;
+    canvas.style.display = 'none';
+    img.style.visibility = '';
+    window.removeEventListener('scroll', onScroll);
+    window.removeEventListener('resize', onResize);
+  }
+
+  function load() {
+    if (reduced || !mq.matches) { stop(); return; }
+    if (active) return;
+    if (FRAMES.length) {
+      var n = 0;
+      FRAMES.forEach(function (u, i) {
+        var im = new Image();
+        im.onload = function () { if (++n === FRAMES.length) { ready = true; start(); } };
+        im.src = u; frames[i] = im;
+      });
+    } else {
+      photo = new Image();
+      photo.onload = function () { ready = true; start(); };
+      photo.src = img.currentSrc || img.src;
+      if (photo.complete && photo.naturalWidth) { ready = true; start(); }
+    }
+  }
+
+  load();
+  if (mq.addEventListener) mq.addEventListener('change', function () { stop(); load(); });
+})();
