@@ -4322,12 +4322,14 @@ body.has-target-cursor * {
   .portfolio-page-grid { grid-template-columns: 1fr; display: block; }
   .portfolio-card {
     position: sticky;
-    top: calc(74px + var(--si, 0) * 6px);  /* slight fan so cards peek */
+    /* staircase fan (capped) so several card tops peek = clearly a deck */
+    top: calc(70px + min(var(--si, 0), 4) * 22px);
     height: auto;
-    margin: 0 0 26px;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+    margin: 0 0 30px;
+    border-radius: 22px;
+    box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.06) inset,
+                0 22px 45px rgba(0, 0, 0, 0.55);
   }
-  .portfolio-card:last-child { margin-bottom: 0; }
   /* image + title always shown; text always visible (no hover needed) */
   .portfolio-card__visual,
   .portfolio-card:hover .portfolio-card__visual { height: 210px; }
