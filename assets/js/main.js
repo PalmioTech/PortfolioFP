@@ -1214,15 +1214,17 @@
     var fr = frames[Math.min(frames.length - 1, Math.round(p * (frames.length - 1)))];
     if (!fr || !fr.naturalWidth) return;
     ctx.clearRect(0, 0, W, H);
-    var s = Math.max(W / fr.naturalWidth, H / fr.naturalHeight);
+    // contain (whole frame visible, a touch smaller) so the face is never cut
+    var s = Math.min(W / fr.naturalWidth, H / fr.naturalHeight) * 0.95;
     var dw = fr.naturalWidth * s, dh = fr.naturalHeight * s;
-    ctx.drawImage(fr, (W - dw) / 2, (H - dh) / 2, dw, dh);
-    // Erase the AI watermark (top-right) softly so it blends into the hero bg
+    var ox = (W - dw) / 2, oy = (H - dh) / 2;
+    ctx.drawImage(fr, ox, oy, dw, dh);
+    // Erase the AI watermark (top-right of the frame) softly → blends into bg
     ctx.save();
     ctx.globalCompositeOperation = 'destination-out';
-    ctx.filter = 'blur(16px)';
+    ctx.filter = 'blur(18px)';
     ctx.fillStyle = '#000';
-    ctx.fillRect(W * 0.70, -20, W * 0.40, H * 0.17);
+    ctx.fillRect(ox + dw * 0.58, oy - 30, dw * 0.50, dh * 0.21);
     ctx.restore();
   }
 
