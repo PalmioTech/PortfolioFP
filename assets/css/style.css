@@ -101,7 +101,7 @@ html {
   scroll-behavior: smooth;
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
@@ -113,7 +113,7 @@ body {
     radial-gradient(ellipse 500px 400px at 50% 110%, rgba(255, 53, 0, 0.04) 0%, transparent 60%);
   color: var(--color-text);
   line-height: 1.6;
-  overflow-x: hidden;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -4313,15 +4313,24 @@ body.has-target-cursor * {
 }
 
 /* ============================================================
-   PORTFOLIO — MOBILE: simple readable vertical stack
-   (replaces the JS deck; robust in in-app browsers)
+   PORTFOLIO — MOBILE: sticky card deck ("raccoglitore")
+   Pure CSS position:sticky — cards pin and stack as you scroll,
+   each peeking above the next. Robust in in-app browsers (no JS
+   on scroll, no transforms, no vh math).
    ============================================================ */
 @media (max-width: 768px) {
-  .portfolio-page-grid { grid-template-columns: 1fr; }
-  .portfolio-card { height: auto; }
+  .portfolio-page-grid { grid-template-columns: 1fr; display: block; }
+  .portfolio-card {
+    position: sticky;
+    top: calc(74px + var(--si, 0) * 6px);  /* slight fan so cards peek */
+    height: auto;
+    margin: 0 0 26px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  }
+  .portfolio-card:last-child { margin-bottom: 0; }
+  /* image + title always shown; text always visible (no hover needed) */
   .portfolio-card__visual,
   .portfolio-card:hover .portfolio-card__visual { height: 210px; }
-  /* image + title always shown; text always visible (no hover needed) */
   .portfolio-card__body { opacity: 1; overflow: visible; }
   .portfolio-card__body-inner { height: auto; }
   .portfolio-card__category,

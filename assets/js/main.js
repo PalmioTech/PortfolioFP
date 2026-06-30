@@ -1023,9 +1023,12 @@
   var cards = Array.prototype.slice.call(grid.querySelectorAll('.portfolio-card'));
   if (!cards.length) return;
 
-  // Mobile deck disabled: the JS pin/transform/vh stack was unreliable in
-  // in-app browsers (Instagram, etc.). Mobile now uses a plain readable
-  // vertical stack via CSS. Keeping the code below dormant.
+  // Mobile deck is now pure CSS (position: sticky). Set each card's stack
+  // index so the CSS can fan them slightly (peek). One-time, no scroll JS.
+  cards.forEach(function (c, i) { c.style.setProperty('--si', i); });
+
+  // The old JS transform/pin deck below is left dormant — it was unreliable
+  // in in-app browsers (Instagram). CSS sticky handles the deck now.
   return;
 
   var mq = window.matchMedia('(max-width: 768px)');
