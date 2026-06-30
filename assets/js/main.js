@@ -1180,7 +1180,40 @@
   var ctx = canvas.getContext('2d');
   var DPR = Math.min(window.devicePixelRatio || 1, 2);
   var W = 0, H = 0, ready = false, active = false, raf = null;
-  var frames = [], photo = null, vid = null;
+  var frames = [], photo = null, vid = null, maskCanvas = null;
+
+  function fit(iw, ih) {
+    var s = Math.min(W / iw, H / ih) * 0.95;
+    var dw = iw * s, dh = ih * s;
+    return { ox: (W - dw) / 2, oy: (H - dh) / 2, dw: dw, dh: dh };
+  }
+
+  // Bake watermark-erase + edge dissolve into a mask ONCE (per size), so the
+  // per-frame draw stays cheap (no blur filter every scroll frame) — mobile-safe.
+  function buildMask() {
+    if (!W || !H) return;
+    if (!maskCanvas) maskCanvas = document.createElement('canvas');
+    maskCanvas.width = Math.round(W);
+    maskCanvas.height = Math.round(H);
+    var m = maskCanvas.getContext('2d');
+    var f = fit(640, 640); // frames are 640x640
+    m.clearRect(0, 0, W, H);
+    m.fillStyle = '#000';
+    m.fillRect(f.ox, f.oy, f.dw, f.dh);
+    m.globalCompositeOperation = 'destination-out';
+    m.filter = 'blur(16px)';                              // soft erase over the icon (hugs the head)
+    m.fillRect(f.ox + f.dw * 0.58, f.oy - 30, f.dw * 0.50, f.dh * 0.21);
+    m.filter = 'blur(6px)';                               // stronger erase over the "DeeVid AI" text (clear of the head)
+    m.fillRect(f.ox + f.dw * 0.70, f.oy - 40, f.dw * 0.42, f.dh * 0.22);
+    m.filter = 'none';
+    var cx = f.ox + f.dw / 2, cy = f.oy + f.dh / 2, rad = Math.min(f.dw, f.dh);
+    var g = m.createRadialGradient(cx, cy, rad * 0.36, cx, cy, rad * 0.68);
+    g.addColorStop(0, 'rgba(0,0,0,0)');
+    g.addColorStop(1, 'rgba(0,0,0,1)');
+    m.fillStyle = g;
+    m.fillRect(f.ox, f.oy, f.dw, f.dh);                  // edge dissolve (vignette)
+    m.globalCompositeOperation = 'source-over';
+  }
 
   function size() {
     var r = canvas.getBoundingClientRect();
@@ -1189,6 +1222,7 @@
     canvas.width = Math.round(W * DPR);
     canvas.height = Math.round(H * DPR);
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    buildMask();
   }
   function lerp(a, b, t) { return a + (b - a) * t; }
   function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
@@ -1213,29 +1247,16 @@
   function drawFrames(p) {
     var fr = frames[Math.min(frames.length - 1, Math.round(p * (frames.length - 1)))];
     if (!fr || !fr.naturalWidth) return;
+    var f = fit(fr.naturalWidth, fr.naturalHeight); // contain, slightly smaller (face never cut)
     ctx.clearRect(0, 0, W, H);
-    // contain (whole frame visible, a touch smaller) so the face is never cut
-    var s = Math.min(W / fr.naturalWidth, H / fr.naturalHeight) * 0.95;
-    var dw = fr.naturalWidth * s, dh = fr.naturalHeight * s;
-    var ox = (W - dw) / 2, oy = (H - dh) / 2;
-    ctx.drawImage(fr, ox, oy, dw, dh);
-
-    ctx.save();
-    ctx.globalCompositeOperation = 'destination-out';
-    // 1) erase the AI watermark (top-right of the frame) softly
-    ctx.filter = 'blur(18px)';
-    ctx.fillStyle = '#000';
-    ctx.fillRect(ox + dw * 0.58, oy - 30, dw * 0.50, dh * 0.21);
-    // 2) feather the frame edges so it dissolves into the hero bg
-    //    (no hard rectangle — doesn't read as a card slapped on)
-    ctx.filter = 'none';
-    var cx = ox + dw / 2, cy = oy + dh / 2, rad = Math.min(dw, dh);
-    var g = ctx.createRadialGradient(cx, cy, rad * 0.36, cx, cy, rad * 0.68);
-    g.addColorStop(0, 'rgba(0,0,0,0)');
-    g.addColorStop(1, 'rgba(0,0,0,1)');
-    ctx.fillStyle = g;
-    ctx.fillRect(ox, oy, dw, dh);
-    ctx.restore();
+    ctx.drawImage(fr, f.ox, f.oy, f.dw, f.dh);
+    // apply the baked mask (watermark erased + edges dissolved) — cheap per frame
+    if (maskCanvas) {
+      ctx.save();
+      ctx.globalCompositeOperation = 'destination-in';
+      ctx.drawImage(maskCanvas, 0, 0, W, H);
+      ctx.restore();
+    }
   }
 
   // Placeholder: the real photo settles down/back while a desk + monitor
@@ -1319,7 +1340,7 @@
   }
 
   function load() {
-    if (reduced || !mq.matches) { stop(); return; }
+    if (reduced) { stop(); return; }   // runs on mobile + desktop (touch & mouse)
     if (active) return;
     if (VIDEO) {
       if (!vid) {

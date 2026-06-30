@@ -4219,8 +4219,8 @@ body.has-target-cursor * {
   .hero-split__right { justify-content: flex-start; align-items: center; }
   .hero-split__right .hero-mammoth__bio { text-align: center; margin: 0 auto; }
   .hero-cutout--center {
-    height: 58%;
-    opacity: 0.32;
+    height: 66%;
+    opacity: 0.55;
   }
   .hero-cutout--center .hero-cutout__img {
     -webkit-mask-image: radial-gradient(ellipse 80% 75% at 50% 42%, #000 45%, transparent 85%);
@@ -4354,10 +4354,8 @@ body.has-target-cursor * {
   pointer-events: none;
   /* edge dissolve is painted on the canvas itself (see drawFrames) */
 }
-@media (min-width: 769px) {
-  .hero-track { height: 160vh; }
-  .hero-track .hero--mammoth { position: sticky; top: 0; height: 100svh; }
-}
+.hero-track { height: 160vh; }
+.hero-track .hero--mammoth { position: sticky; top: 0; height: 100svh; }
 @media (prefers-reduced-motion: reduce) {
   .hero-track { height: auto; }
   .hero-track .hero--mammoth { position: relative; }
