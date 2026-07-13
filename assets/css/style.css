@@ -28,7 +28,7 @@
 
   --color-text:          #F2EDF8;
   --color-text-muted:    #8C7FA3;
-  --color-text-dim:      #524862;
+  --color-text-dim:      #857A99;   /* WCAG AA: 5.1:1 on #060508 (was #524862 = 2.4:1, failed) */
 
   /* Typography */
   --font-body:    'Figtree', system-ui, sans-serif;
@@ -102,6 +102,12 @@ html {
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
   overflow-x: clip;
+  -webkit-tap-highlight-color: transparent;   /* no grey tap box on iOS; custom :active states instead */
+}
+
+/* Kill the 300ms double-tap-zoom delay on interactive controls (pinch-zoom unaffected). */
+a, button, [role="button"], .filter-btn, .btn, input, select, textarea, label {
+  touch-action: manipulation;
 }
 
 body {
@@ -365,14 +371,16 @@ h1, h2, h3, h4, h5, h6 {
   display: none;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 5px;
-  width: 32px;
-  height: 32px;
+  width: 44px;             /* 44px min touch target (bars stay ~24px via padding) */
+  height: 44px;
   cursor: pointer;
-  padding: var(--space-1);
+  padding: 10px;
   border-radius: var(--radius-sm);
   transition: background var(--dur-fast);
 }
+.navbar__burger span { width: 24px; }
 
 .navbar__burger:hover {
   background: rgba(255,255,255,0.07);
@@ -429,6 +437,9 @@ h1, h2, h3, h4, h5, h6 {
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-md);
   width: 100%;
+  min-height: 44px;          /* 44px min touch target */
+  display: flex;
+  align-items: center;
 }
 
 .navbar__mobile .navbar__link:hover {
@@ -1609,6 +1620,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .filter-btn {
+  min-height: 44px;                 /* 44px min touch target */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: var(--space-2) var(--space-5);
   border-radius: var(--radius-full);
   font-size: var(--text-sm);
@@ -2947,6 +2962,9 @@ body.has-target-cursor * {
   .navbar__nav,
   .navbar__actions .btn--primary { display: none; }
   .navbar__burger { display: flex; }
+  /* .navbar__actions prefix beats the later single-class base rule (media queries
+     don't add specificity) — 44px min touch target on mobile. */
+  .navbar__actions .navbar__theme-toggle { width: 44px; height: 44px; }
 
   .services-grid,
   .portfolio-grid,
