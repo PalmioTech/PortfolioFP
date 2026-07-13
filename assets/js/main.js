@@ -1163,6 +1163,10 @@
   var canvas = track.querySelector('.hero-scrub');
   var img = track.querySelector('.hero-cutout__img');
   if (!canvas || !img) return;
+  // The sticky-pinned element (height: 100svh). Its height is STABLE across the
+  // mobile address-bar show/hide — unlike window.innerHeight — so we measure the
+  // scrub distance against it (see progress()).
+  var pin = canvas.closest('.hero--mammoth') || track;
 
   // Animation source. VIDEO wins if set, else FRAMES (image sequence),
   // else the photo+desk placeholder.
@@ -1228,7 +1232,11 @@
 
   function progress() {
     var rect = track.getBoundingClientRect();
-    var dist = track.offsetHeight - window.innerHeight;
+    // Distance the pin stays stuck = track height - pinned element height. Both
+    // are stable units (160vh / 100svh), so this does NOT jump when the mobile
+    // URL bar retracts on first scroll. Using window.innerHeight here caused a
+    // "scalino" — the frame skipped forward the instant the bar collapsed.
+    var dist = track.offsetHeight - pin.offsetHeight;
     if (dist <= 0) return 0;
     return clamp(-rect.top / dist);
   }
