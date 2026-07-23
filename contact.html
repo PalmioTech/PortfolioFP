@@ -128,7 +128,9 @@
               <h3 style="font-size:1.5rem; font-weight:800; margin-bottom:0.5rem;">Invia un messaggio</h3>
               <p style="font-size:0.875rem; color:var(--color-text-muted); margin-bottom:2rem;">Compila il modulo e ti rispondo entro 24 ore.</p>
 
-              <form id="contact-form" action="send-mail.php" method="POST" novalidate>
+              <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" novalidate>
+                <input type="hidden" name="access_key" value="INCOLLA-QUI-LA-ACCESS-KEY">
+                <input type="hidden" name="subject" value="[FPdeveloper] Nuovo messaggio dal sito">
                 <div class="form-row">
                   <div class="form-group">
                     <div class="fp-field">
@@ -205,9 +207,9 @@
                   </div>
                 </div>
 
-                <!-- Honeypot anti-spam -->
+                <!-- Honeypot anti-spam (campo gestito da Web3Forms) -->
                 <div style="display:none;" aria-hidden="true">
-                  <input type="text" name="website" tabindex="-1" autocomplete="off">
+                  <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off">
                 </div>
 
                 <button type="submit" class="btn btn--primary btn--lg btn--submit" style="width:100%;">

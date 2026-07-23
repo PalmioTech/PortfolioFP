@@ -309,7 +309,7 @@
 
       try {
         const formData = new FormData(contactForm);
-        const response = await fetch('send-mail.php', {
+        const response = await fetch(contactForm.action, {
           method: 'POST',
           body: formData
         });
@@ -322,9 +322,7 @@
           showMessage(data.message || 'Si è verificato un errore. Riprova.', 'error');
         }
       } catch {
-        // Fallback: form was submitted but PHP not running
-        showMessage('Grazie per il messaggio! Ti contatterò al più presto.', 'success');
-        contactForm.reset();
+        showMessage('Invio non riuscito. Scrivimi direttamente a fede-palma@hotmail.it.', 'error');
       } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
