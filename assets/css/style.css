@@ -3992,6 +3992,17 @@ body.has-target-cursor * {
 .navbar__theme-toggle .theme-icon { transition: transform var(--dur-base) var(--ease-out); }
 .navbar__theme-toggle:hover .theme-icon { transform: rotate(35deg); }
 
+/* Idle loops stay paused until their section scrolls into view
+   (.revealed is added by the reveal observer). Placed after the
+   animation rules so it wins on equal specificity. */
+.fp-icon--globe, .fp-icon--spark, .fp-icon--bolt, .fp-icon--cube { animation-play-state: paused; }
+.fp-icon--target circle:nth-of-type(2),
+.fp-icon--target circle:nth-of-type(3) { animation-play-state: paused; }
+.revealed .fp-icon--globe, .revealed .fp-icon--spark,
+.revealed .fp-icon--bolt, .revealed .fp-icon--cube { animation-play-state: running; }
+.revealed .fp-icon--target circle:nth-of-type(2),
+.revealed .fp-icon--target circle:nth-of-type(3) { animation-play-state: running; }
+
 .about-portrait__photo {
   width: 100%;
   height: 100%;
