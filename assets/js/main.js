@@ -90,16 +90,51 @@
   ---------------------------------------------------------- */
   const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
 
+  /* Self-drawing line icons (svgartista-style stroke reveal).
+     The prominent monoline icons trace themselves when their section
+     reveals. Pure stroke-dashoffset, so it coexists with the transform
+     loops on the signature icons. Disabled under reduced-motion. */
+  const DRAW_SEL = '.service-card__icon .fp-icon, .service-detail-card__icon .fp-icon,' +
+                   '.feature-item__icon .fp-icon, .collab-card__icon .fp-icon,' +
+                   '.approach-item .fp-icon';
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const drawMap = new WeakMap();
+    document.querySelectorAll(DRAW_SEL).forEach(svg => {
+      const parts = [];
+      svg.querySelectorAll('path, circle, rect, line, polyline, polygon').forEach(el => {
+        let len = 0;
+        try { len = el.getTotalLength(); } catch (e) { /* unsupported shape */ }
+        if (!len) return;
+        el.style.strokeDasharray = len;
+        el.style.strokeDashoffset = len;
+        parts.push(el);
+      });
+      if (parts.length) drawMap.set(svg, parts);
+    });
+    window.__fpDrawIcons = root => {
+      root.querySelectorAll(DRAW_SEL).forEach(svg => {
+        const parts = drawMap.get(svg);
+        if (!parts) return;
+        parts.forEach((el, i) => {
+          el.style.transition = 'stroke-dashoffset 0.7s cubic-bezier(0.47,0,0.745,0.715) ' + (i * 0.09) + 's';
+          el.style.strokeDashoffset = '0';
+        });
+      });
+    };
+  }
+
   if (revealElements.length > 0) {
     if (!('IntersectionObserver' in window)) {
       // Failsafe: never leave content stuck invisible
       revealElements.forEach(el => el.classList.add('revealed'));
+      if (window.__fpDrawIcons) window.__fpDrawIcons(document);
     } else {
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               entry.target.classList.add('revealed');
+              if (window.__fpDrawIcons) window.__fpDrawIcons(entry.target);
               observer.unobserve(entry.target);
             }
           });
