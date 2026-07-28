@@ -4292,6 +4292,10 @@ body.has-target-cursor * {
   mask-image: radial-gradient(ellipse 66% 80% at 50% 40%, #000 50%, transparent 88%);
 }
 @media (min-width: 1200px) { .hero-cutout--center { height: 92%; } }
+/* Nudge the portrait down on desktop so the headline clears the head */
+@media (min-width: 901px) {
+  .hero-cutout--center { transform: translateX(-50%) translateY(7%); }
+}
 
 /* Tablet / mobile: stack the columns, photo fades behind the text */
 @media (max-width: 900px) {
