@@ -2538,6 +2538,14 @@ textarea.fp-field__input:not(:placeholder-shown) ~ .fp-field__label,
   background: var(--color-accent-glow-s);
 }
 
+.footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.footer__legal a { cursor: pointer; }
+
 .footer__heading {
   font-size: var(--text-xs);
   font-weight: 700;
