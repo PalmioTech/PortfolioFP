@@ -4333,6 +4333,30 @@ body.has-target-cursor * {
   }
 }
 
+/* Hero v3 (desktop): photo anchored right, description + status moved
+   into the lower-left block under the headline. */
+@media (min-width: 901px) {
+  .hero-cutout--center {
+    left: auto;
+    right: clamp(0px, 2vw, 2.5rem);
+    transform: none;
+  }
+  .hero-split__cta .hero-mammoth__bio {
+    max-width: 380px;
+    margin-bottom: 0;
+    font-size: clamp(0.8rem, 1vw, 0.95rem);
+    font-family: var(--font-mono);
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.62);
+    text-align: left;
+    white-space: normal;
+  }
+  .hero-split__cta .hero-meta { margin-top: 0.25rem; }
+}
+@media (max-width: 900px) {
+  .hero-split__cta .hero-mammoth__bio { text-align: center; margin: 0 auto; max-width: 420px; }
+}
+
 /* Bio typewriter: break only at spaces, never mid-word */
 .hero-mammoth__bio { white-space: normal; }
 .tw-word { display: inline-block; white-space: nowrap; }
