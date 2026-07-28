@@ -4104,7 +4104,7 @@ body.has-target-cursor * {
 }
 .hero-mammoth__line-accent {
   display: inline-block;
-  font-size: clamp(3.4rem, 15vw, 11rem);
+  font-size: clamp(3rem, 12vw, 9rem);
   font-weight: 900;
   line-height: 0.85;
   letter-spacing: -0.015em;
@@ -4331,30 +4331,6 @@ body.has-target-cursor * {
     -webkit-mask-image: radial-gradient(ellipse 80% 75% at 50% 42%, #000 45%, transparent 85%);
     mask-image: radial-gradient(ellipse 80% 75% at 50% 42%, #000 45%, transparent 85%);
   }
-}
-
-/* Hero v3 (desktop): photo anchored right, description + status moved
-   into the lower-left block under the headline. */
-@media (min-width: 901px) {
-  .hero-cutout--center {
-    left: auto;
-    right: clamp(0px, 2vw, 2.5rem);
-    transform: none;
-  }
-  .hero-split__cta .hero-mammoth__bio {
-    max-width: 380px;
-    margin-bottom: 0;
-    font-size: clamp(0.8rem, 1vw, 0.95rem);
-    font-family: var(--font-mono);
-    line-height: 1.8;
-    color: rgba(255, 255, 255, 0.62);
-    text-align: left;
-    white-space: normal;
-  }
-  .hero-split__cta .hero-meta { margin-top: 0.25rem; }
-}
-@media (max-width: 900px) {
-  .hero-split__cta .hero-mammoth__bio { text-align: center; margin: 0 auto; max-width: 420px; }
 }
 
 /* Bio typewriter: break only at spaces, never mid-word */
