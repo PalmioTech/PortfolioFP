@@ -84,7 +84,7 @@
   --dur-slow: 600ms;
 
   /* Layout */
-  --container-max: 1200px;
+  --container-max: 2100px;
   --nav-height: 72px;
 }
 
@@ -176,7 +176,9 @@ h1, h2, h3, h4, h5, h6 {
 .container {
   max-width: var(--container-max);
   margin: 0 auto;
-  padding: 0 var(--space-6);
+  /* Match the hero's full-bleed side gutters so sections track the hero
+     width on wide screens instead of staying in a narrow 1200px column. */
+  padding: 0 clamp(1.25rem, 5vw, 4.5rem);
 }
 
 .section {
@@ -3403,6 +3405,7 @@ body.has-target-cursor * {
   color: var(--color-text-muted);
   line-height: 1.8;
   font-size: 1rem;
+  max-width: 62ch;
 }
 .service-detail-card__list {
   display: flex;
