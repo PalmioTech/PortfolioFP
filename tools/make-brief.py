@@ -177,9 +177,12 @@ two_fields('Sito attuale (se ce l\'hai)', 'Social principali', base='dati')
 
 section(2, 'La tua attività')
 field_row('Cosa fai / settore:', base='att')
+field_row('A chi ti rivolgi (target):', base='att')
+radio_line('Dove operi:', ['locale', 'tutta Italia', 'anche estero'])
 field_row('Da quanto sei attivo:', base='att')
 label('Cosa ti distingue dai concorrenti:')
 textfield(CW, base='att'); gap(20)
+field_row('Come ti cercherebbero su Google (2-3 parole):', base='att')
 field_row('2-3 concorrenti o siti simili (URL):', base='att')
 
 section(3, 'Obiettivo del sito')
