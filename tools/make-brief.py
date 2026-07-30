@@ -75,10 +75,13 @@ def label(txt, dy=13, size=9.5, color=DARK, font='Helvetica-Bold'):
 
 def textfield(w, base='campo', h=17, x=None, multiline=False, tip=''):
     if x is None: x = ML
-    af.textfield(name=fname(base), tooltip=tip, x=x, y=y[0] - h + 3, width=w, height=h,
+    need(h + 12)
+    top = y[0]
+    af.textfield(name=fname(base), tooltip=tip, x=x, y=top - h, width=w, height=h,
                  borderStyle='solid', borderWidth=0.7, borderColor=BORDER,
                  fillColor=FIELDBG, textColor=DARK, fontName='Helvetica', fontSize=10,
                  forceBorder=True, fieldFlags='multiline' if multiline else '')
+    y[0] = top - h - 8   # avanza sotto il campo (niente sovrapposizioni)
 
 def field_row(lbl, w=None, base='campo'):
     """Etichetta a sinistra, campo che riempie il resto della riga."""
@@ -88,7 +91,7 @@ def field_row(lbl, w=None, base='campo'):
     lw = c.stringWidth(lbl, 'Helvetica-Bold', 9.5)
     fx = ML + lw + 10
     fw = (W - MR) - fx
-    af.textfield(name=fname(base), tooltip='', x=fx, y=y[0] - 4, width=fw, height=15,
+    af.textfield(name=fname(base), tooltip='', x=fx, y=y[0] - 11, width=fw, height=14,
                  borderStyle='solid', borderWidth=0.7, borderColor=BORDER,
                  fillColor=FIELDBG, textColor=DARK, fontName='Helvetica', fontSize=10,
                  forceBorder=True)
@@ -181,7 +184,7 @@ field_row('A chi ti rivolgi (target):', base='att')
 radio_line('Dove operi:', ['locale', 'tutta Italia', 'anche estero'])
 field_row('Da quanto sei attivo:', base='att')
 label('Cosa ti distingue dai concorrenti:')
-textfield(CW, base='att'); gap(20)
+textfield(CW, base='att')
 field_row('Come ti cercherebbero su Google (2-3 parole):', base='att')
 field_row('2-3 concorrenti o siti simili (URL):', base='att')
 
@@ -228,9 +231,9 @@ c.showPage(); header(False)
 section(7, 'Stile e gusto')
 field_row('3 aggettivi che deve trasmettere il sito:', base='stile')
 label('Colori preferiti / da evitare:')
-textfield(CW, base='stile'); gap(20)
+textfield(CW, base='stile')
 label('2-3 siti che ti piacciono + cosa ti piace:')
-textfield(CW, h=40, base='stile', multiline=True); gap(44)
+textfield(CW, h=40, base='stile', multiline=True); gap(6)
 
 section(8, 'Budget e tempi')
 label('Budget indicativo:')
@@ -242,7 +245,7 @@ radio_line('Manutenzione dopo il lancio:', ['sì', 'no', 'da valutare'])
 
 section(9, 'Note libere')
 label('Qualsiasi altra cosa utile a capire il progetto:', color=MUTED, font='Helvetica')
-textfield(CW, h=70, base='note', multiline=True); gap(76)
+textfield(CW, h=70, base='note', multiline=True); gap(6)
 
 # Chiusura
 need(60)
