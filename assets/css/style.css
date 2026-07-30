@@ -1652,7 +1652,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .portfolio-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--space-6);
 }
 
@@ -2876,6 +2876,7 @@ body.has-target-cursor * {
 /* 4-up on wide desktop → 3-up on medium desktop (2/1 below) */
 @media (max-width: 1300px) {
   .services-grid,
+  .portfolio-grid,
   .portfolio-page-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
