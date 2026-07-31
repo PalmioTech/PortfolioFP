@@ -177,6 +177,7 @@ section(1, 'I tuoi dati')
 two_fields('Nome e cognome / Azienda', 'Referente', base='dati')
 two_fields('Email', 'Telefono / WhatsApp', base='dati')
 two_fields('Sito attuale (se ce l\'hai)', 'Social principali', base='dati')
+field_row('Chi decide/approva il progetto (oltre a te):', base='dati')
 
 section(2, 'La tua attività')
 field_row('Cosa fai / settore:', base='att')
@@ -196,6 +197,7 @@ checkboxes([
     'Presentare il mio lavoro (vetrina)', 'Altro',
 ], cols=2, base='obj')
 gap(2); field_row('Altro (specifica):', base='obj_altro')
+field_row('Come capirai che il sito funziona? (es. contatti/mese):', base='obj_metrica')
 
 # ============ PAGINA 2 ============
 c.showPage(); header(False)
