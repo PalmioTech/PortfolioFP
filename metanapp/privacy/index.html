@@ -54,7 +54,7 @@
 
   <main class="legal">
     <h1>Informativa sulla privacy — MetanApp</h1>
-    <p class="updated">Ultimo aggiornamento: 31 luglio 2026</p>
+    <p class="updated">Ultimo aggiornamento: 3 agosto 2026</p>
 
     <h2>Chi tratta i tuoi dati</h2>
     <p>
@@ -67,17 +67,22 @@
     <p>
       MetanApp non richiede registrazione, non crea account, non mostra pubblicità
       e non utilizza strumenti di analisi statistica o di tracciamento. Non
-      raccogliamo né conserviamo dati personali sui nostri server, per la semplice
-      ragione che l'applicazione non dispone di alcun server proprio: funziona
-      interamente sul tuo dispositivo.
+      raccogliamo né conserviamo alcun dato personale: le tue ricerche e i tuoi
+      percorsi vengono elaborati interamente sul tuo dispositivo. L'unico
+      collegamento verso il nostro sito serve a scaricare l'elenco aggiornato dei
+      distributori, come descritto più sotto.
     </p>
 
     <h2>Posizione geografica</h2>
     <p>
       Se concedi il permesso, l'applicazione legge la posizione del dispositivo per
       mostrarti i distributori di metano più vicini e calcolare il percorso di
-      rifornimento. La posizione viene elaborata <strong>esclusivamente sul tuo
-      dispositivo</strong> e non viene trasmessa, salvata né condivisa con nessuno.
+      rifornimento. La posizione viene elaborata sul tuo dispositivo e
+      <strong>non viene salvata né trasmessa ai nostri sistemi</strong>. L'unica
+      eccezione: quando scegli "usa la mia posizione", le coordinate vengono
+      inviate al servizio Nominatim di OpenStreetMap al solo scopo di convertirle
+      nell'indirizzo da mostrare nel campo di partenza; la richiesta non contiene
+      altri dati che ti identifichino.
     </p>
     <p>
       Il permesso è facoltativo: puoi rifiutarlo e continuare a usare l'applicazione
@@ -94,9 +99,20 @@
 
     <h2>Elenco dei distributori</h2>
     <p>
-      L'elenco dei distributori di metano è incluso nell'applicazione come archivio
-      statico e viene consultato senza interrogare alcun servizio esterno. Nessuna
-      delle tue ricerche viene inviata altrove.
+      L'applicazione include un elenco dei distributori di metano e, quando è
+      disponibile una connessione, ne scarica la versione aggiornata dal nostro
+      sito, che in tale occasione riceve l'indirizzo IP del dispositivo come
+      qualsiasi sito web. La richiesta non contiene ricerche, posizione né altri
+      dati personali. In assenza di connessione viene utilizzata l'ultima copia
+      disponibile sul dispositivo. Nessuna delle tue ricerche viene inviata
+      altrove.
+    </p>
+    <p>
+      I dati su impianti e prezzi provengono dagli open data del
+      <a href="https://www.mimit.gov.it/it/open-data/elenco-dataset/carburanti-prezzi-praticati-e-anagrafica-degli-impianti" target="_blank" rel="noopener">Ministero
+      delle Imprese e del Made in Italy (MIMIT)</a>, rilasciati con licenza
+      <a href="https://www.dati.gov.it/iodl/2.0/" target="_blank" rel="noopener">IODL 2.0</a>,
+      e sono forniti a titolo indicativo.
     </p>
 
     <h2>Servizi di terze parti</h2>
@@ -111,6 +127,13 @@
         scaricate dai server di
         <a href="https://osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener">OpenStreetMap</a>.
         Ricevono l'indirizzo IP e l'area geografica che stai visualizzando.
+      </li>
+      <li>
+        <strong>Ricerca indirizzi (Nominatim)</strong> — quando digiti un indirizzo
+        o usi la tua posizione come punto di partenza, il testo digitato o le
+        coordinate vengono inviati al servizio
+        <a href="https://osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener">Nominatim
+        di OpenStreetMap</a> per trovare o comporre l'indirizzo corrispondente.
       </li>
       <li>
         <strong>Navigazione</strong> — quando scegli di aprire un itinerario in
