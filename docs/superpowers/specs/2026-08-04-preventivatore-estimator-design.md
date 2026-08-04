@@ -73,30 +73,35 @@ maintenance, custom }`). Nessun accesso al DOM: testabile in isolamento.
 
 ### Tabelle (single source of truth nel codice)
 
+> **Listino "esca":** numeri volutamente bassi/attraenti (il preventivatore serve
+> ad attrarre; il prezzo reale si concorda dopo il brief). Valori correnti autorevoli
+> in `PRICING` in `main.js` (con self-check). Sotto lo snapshot.
+
 **Base — Step 1**
 | chiave | label | base |
 |---|---|---|
-| `landing` | Landing (1 pagina) | 600 |
-| `vetrina` | Sito vetrina | 800 |
-| `wordpress` | WordPress (gestibile/blog) | 1200 |
-| `ecommerce` | E-commerce | 1500 |
+| `landing` | Landing (1 pagina) | 300 |
+| `vetrina` | Sito vetrina | 400 |
+| `wordpress` | WordPress (gestibile/blog) | 600 |
+| `ecommerce` | E-commerce | 800 |
 | `custom` | Web app / gestionale su misura | *null → percorso "su misura"* |
 
 **Pagine — Step 2** (salta `landing` e `custom`)
 | chiave | delta |
 |---|---|
 | `1-4` | 0 |
-| `5-8` | 400 |
-| `9+` | 900 |
+| `5-8` | 150 |
+| `9+` | 350 |
 
-**Funzioni — Step 3** (multi, si sommano)
-| chiave | label | delta |
-|---|---|---|
-| `multilingua` | Multilingua | 500 |
-| `prenotazioni` | Prenotazioni / booking | 600 |
-| `area_riservata` | Area riservata / login | 800 |
-| `ai` | Integrazione AI | 900 |
-| `blog` | Blog / news | 300 |
+**Funzioni — Step 3** (multi, si sommano). Due tabelle: `functions` (default) e
+`functionsLanding` (usata quando `tipo === landing`, perché è una pagina sola).
+| chiave | label | delta (default) | delta (landing) |
+|---|---|---|---|
+| `multilingua` | Multilingua | 200 | 100 |
+| `prenotazioni` | Prenotazioni / booking | 250 | 150 |
+| `area_riservata` | Area riservata / login | 300 | 150 |
+| `ai` | Integrazione AI | 350 | 200 |
+| `blog` | Blog / news | 100 | 50 |
 
 *(E-commerce NON è qui: è un tipo in Step 1, per evitare doppio conteggio.)*
 
@@ -104,22 +109,22 @@ maintenance, custom }`). Nessun accesso al DOM: testabile in isolamento.
 | chiave | delta |
 |---|---|
 | `forniti` | 0 |
-| `copywriting` | 400 |
+| `copywriting` | 150 |
 
 **Contenuti — Step 4b media**
 | chiave | delta |
 |---|---|
 | `forniti` | 0 |
-| `stock` | 250 |
-| `produzione` | 700 |
+| `stock` | 100 |
+| `produzione` | 300 |
 
 **Prodotti — Step 5** (solo `ecommerce`; se non e-commerce → contributo 0)
 | chiave | delta |
 |---|---|
 | `cliente` | 0 |
-| `io_fino20` | 200 |
-| `io_21_100` | 500 |
-| `io_100plus` | 1000 |
+| `io_fino20` | 100 |
+| `io_21_100` | 200 |
+| `io_100plus` | 400 |
 
 **Urgenza — Step 6** (moltiplicatore)
 | chiave | mult |
@@ -132,7 +137,7 @@ maintenance, custom }`). Nessun accesso al DOM: testabile in isolamento.
 | chiave | effetto |
 |---|---|
 | `indipendente` | nessuna riga |
-| `canone` | mostra "+ manutenzione da 300€/anno (opzionale)" |
+| `canone` | mostra "+ manutenzione da 150€/anno (opzionale)" |
 
 ### Formula
 
@@ -148,24 +153,27 @@ high  = roundTo100(tot × 1.35)
 - Output forbice: **"Da {low}€ a {high}€"** (formattazione IT: `toLocaleString('it-IT')`
   → separatore migliaia `.`).
 - Se `tipo === custom`: nessun calcolo → schermata "Progetto su misura — parliamone".
-- Se manutenzione `canone`: sotto la forbice, riga "+ manutenzione da 300€/anno
+- Se manutenzione `canone`: sotto la forbice, riga "+ manutenzione da 150€/anno
   (opzionale)".
 
 ### Esempio di verifica
 
 E-commerce + 5–8 pagine + multilingua + testi `copywriting` + media `produzione`
 + prodotti `cliente` + urgenza `urgente`:
-`somma = 1500 + 400 + 500 + 400 + 700 + 0 = 3500` → `tot = 3500 × 1.25 = 4375`
-→ low `roundTo100(4375) = 4400`, high `roundTo100(5906.25) = 5900`
-→ **"Da 4.400€ a 5.900€"**.
+`somma = 800 + 150 + 200 + 150 + 300 + 0 = 1600` → `tot = 1600 × 1.25 = 2000`
+→ low `roundTo100(2000) = 2000`, high `roundTo100(2700) = 2700`
+→ **"Da 2.000€ a 2.700€"**.
 
-Landing, tutto minimo, flessibile: `600 × 1.0 = 600` → low `600`,
-high `roundTo100(810) = 800` → **"Da 600€ a 800€"**.
+Landing, tutto minimo, flessibile: `300 × 1.0 = 300` → low `300`,
+high `roundTo100(405) = 400` → **"Da 300€ a 400€"**.
 
 Arrotondamento (verifica bidirezionale) — Vetrina + prenotazioni + media stock,
-urgenza `entro_1_mese`: `somma = 800 + 600 + 250 = 1650` → `tot = 1650 × 1.05 =
-1732.5` → low `roundTo100(1732.5) = 1700`, high `roundTo100(2338.875) = 2300`
-→ **"Da 1.700€ a 2.300€"**.
+urgenza `entro_1_mese`: `somma = 400 + 250 + 100 = 750` → `tot = 750 × 1.05 =
+787.5` → low `roundTo100(787.5) = 800`, high `roundTo100(1063.125) = 1100`
+→ **"Da 800€ a 1.100€"**.
+
+Funzioni scontate su landing — Landing + `ai` (delta landing 200, non 350),
+contenuti forniti, flessibile: `300 + 200 = 500` → **"Da 500€ a 700€"**.
 
 ## Output / CTA
 

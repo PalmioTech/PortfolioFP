@@ -76,17 +76,17 @@ Append in coda a `assets/js/main.js`:
       // A: landing minimo
       eq(computeQuote({ tipo:'landing', funzioni:[], testi:'forniti',
         media:'forniti', urgenza:'flessibile', manutenzione:'indipendente' }),
-        { custom:false, low:600, high:800, maintenance:0 }, 'landing-min');
+        { custom:false, low:300, high:400, maintenance:0 }, 'landing-min');
       // B: e-commerce pieno, urgente, canone
       eq(computeQuote({ tipo:'ecommerce', pagine:'5-8', funzioni:['multilingua'],
         testi:'copywriting', media:'produzione', prodotti:'cliente',
         urgenza:'urgente', manutenzione:'canone' }),
-        { custom:false, low:4400, high:5900, maintenance:300 }, 'ecommerce-full');
+        { custom:false, low:2000, high:2700, maintenance:150 }, 'ecommerce-full');
       // C: rounding bidirezionale (vetrina + prenotazioni + stock, entro 1 mese)
       eq(computeQuote({ tipo:'vetrina', pagine:'1-4', funzioni:['prenotazioni'],
         testi:'forniti', media:'stock', urgenza:'entro_1_mese',
         manutenzione:'indipendente' }),
-        { custom:false, low:1700, high:2300, maintenance:0 }, 'rounding');
+        { custom:false, low:800, high:1100, maintenance:0 }, 'rounding');
       // D: custom → nessun numero
       eq(computeQuote({ tipo:'custom' }), { custom:true }, 'custom');
       console.log('%cPREVENTIVATORE selfcheck OK', 'color:#C6FF00');
@@ -107,14 +107,16 @@ Dentro la stessa IIFE, **sopra** `runSelfCheck`:
 ```js
     /* --- price engine (pure) --- */
     var PRICING = {
-      base:      { landing:600, vetrina:800, wordpress:1200, ecommerce:1500, custom:null },
-      pages:     { '1-4':0, '5-8':400, '9+':900 },
-      functions: { multilingua:500, prenotazioni:600, area_riservata:800, ai:900, blog:300 },
-      testi:     { forniti:0, copywriting:400 },
-      media:     { forniti:0, stock:250, produzione:700 },
-      prodotti:  { cliente:0, io_fino20:200, io_21_100:500, io_100plus:1000 },
+      // Listino "esca": basso/attraente (prezzo reale dopo il brief)
+      base:      { landing:300, vetrina:400, wordpress:600, ecommerce:800, custom:null },
+      pages:     { '1-4':0, '5-8':150, '9+':350 },
+      functions: { multilingua:200, prenotazioni:250, area_riservata:300, ai:350, blog:100 },
+      functionsLanding: { multilingua:100, prenotazioni:150, area_riservata:150, ai:200, blog:50 },
+      testi:     { forniti:0, copywriting:150 },
+      media:     { forniti:0, stock:100, produzione:300 },
+      prodotti:  { cliente:0, io_fino20:100, io_21_100:200, io_100plus:400 },
       urgenza:   { flessibile:1.0, entro_1_mese:1.05, urgente:1.25 },
-      maintenance: { annual:300 },
+      maintenance: { annual:150 },
       spread:    1.35
     };
 
@@ -699,7 +701,7 @@ Append:
 - [ ] **Step 4: Verifica manuale — numeri corretti**
 
 Preview, apri il pill e componi il **caso B** del self-check: E-commerce · 5–8 · Multilingua · testi "Li scrivi tu" · media "produzione foto + video" · prodotti "Li carico io" · Urgente · manutenzione "canone".
-Expected: **"Da 4.400€ a 5.900€"** + riga "+ manutenzione da 300€/anno (opzionale)".
+Expected: **"Da 2.000€ a 2.700€"** + riga "+ manutenzione da 150€/anno (opzionale)".
 Poi **custom**: scegli "Web app / gestionale su misura" → schermata "Parliamone", nessun numero.
 "Ricomincia" → torna allo step 1 pulito.
 
