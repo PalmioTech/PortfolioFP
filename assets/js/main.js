@@ -1518,6 +1518,7 @@
       });
       btn.setAttribute('aria-expanded', 'true');
       document.body.classList.add('pv-lock');
+      startWizard();
       var first = sheet.querySelector('button, [href], input, [tabindex]');
       if (first) first.focus();
     }
@@ -1541,6 +1542,185 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && _open) closeSheet();
     });
+
+    /* --- wizard config --- */
+    var STEPS = [
+      { id:'tipo', title:'Che tipo di sito ti serve?', type:'radio', required:true,
+        options:[
+          { v:'landing',   label:'Landing page',    hint:'Una pagina, focalizzata' },
+          { v:'vetrina',   label:'Sito vetrina',    hint:'Più pagine, presentazione' },
+          { v:'wordpress', label:'WordPress',       hint:'Gestibile, blog' },
+          { v:'ecommerce', label:'E-commerce',      hint:'Vendita online' },
+          { v:'custom',    label:'Web app / gestionale su misura', hint:'Progetto custom' }
+        ] },
+      { id:'pagine', title:'Quante pagine, all’incirca?', type:'radio', required:true,
+        skip:function (a) { return a.tipo === 'landing' || a.tipo === 'custom'; },
+        options:[ { v:'1-4', label:'1–4' }, { v:'5-8', label:'5–8' }, { v:'9+', label:'9 o più' } ] },
+      { id:'funzioni', title:'Quali funzioni ti servono?', type:'checkbox', required:false,
+        skip:function (a) { return a.tipo === 'custom'; },
+        options:[
+          { v:'multilingua',    label:'Multilingua' },
+          { v:'prenotazioni',   label:'Prenotazioni / booking' },
+          { v:'area_riservata', label:'Area riservata / login' },
+          { v:'ai',             label:'Integrazione AI' },
+          { v:'blog',           label:'Blog / news' }
+        ] },
+      { id:'contenuti', title:'Chi mette i contenuti?', type:'dual', required:true,
+        skip:function (a) { return a.tipo === 'custom'; },
+        groups:[
+          { key:'testi', label:'Testi', options:[
+            { v:'forniti', label:'Li fornisco io' }, { v:'copywriting', label:'Li scrivi tu' } ] },
+          { key:'media', label:'Foto & video', options:[
+            { v:'forniti',    label:'Li ho già' },
+            { v:'stock',      label:'Serve selezione stock + ritocco' },
+            { v:'produzione', label:'Serve produzione foto + video' } ] }
+        ] },
+      { id:'prodotti', title:'I prodotti chi li carica?', type:'radio', required:true,
+        skip:function (a) { return a.tipo !== 'ecommerce'; },
+        options:[
+          { v:'cliente',    label:'Li carico io (cliente)' },
+          { v:'io_fino20',  label:'Li carichi tu · fino a 20' },
+          { v:'io_21_100',  label:'Li carichi tu · 21–100' },
+          { v:'io_100plus', label:'Li carichi tu · 100+' }
+        ] },
+      { id:'urgenza', title:'Quanto sei di fretta?', type:'radio', required:true,
+        skip:function (a) { return a.tipo === 'custom'; },
+        options:[
+          { v:'flessibile',   label:'Nessuna fretta' },
+          { v:'entro_1_mese', label:'Entro un mese' },
+          { v:'urgente',      label:'Urgente (2 settimane)' }
+        ] },
+      { id:'manutenzione', title:'Vuoi la manutenzione annuale?', type:'radio', required:true,
+        skip:function (a) { return a.tipo === 'custom'; },
+        options:[
+          { v:'indipendente', label:'No, gestisco io' },
+          { v:'canone',       label:'Sì, canone annuale' }
+        ] }
+    ];
+
+    var answers = {};
+    var stepIndex = 0;
+
+    function visibleSteps() {
+      return STEPS.filter(function (s) { return !s.skip || !s.skip(answers); });
+    }
+
+    function labelOf(stepId, value) {
+      var s = STEPS.filter(function (x) { return x.id === stepId; })[0];
+      if (!s) return value;
+      var opts = s.options || [];
+      if (s.groups) s.groups.forEach(function (g) { opts = opts.concat(g.options); });
+      var o = opts.filter(function (x) { return x.v === value; })[0];
+      return o ? o.label : value;
+    }
+
+    function stepValid(step) {
+      if (!step.required) return true;
+      if (step.type === 'dual') return step.groups.every(function (g) { return answers[g.key]; });
+      return answers[step.id] != null && answers[step.id] !== '';
+    }
+
+    function esc(s) { return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]; }); }
+
+    function renderStep() {
+      var steps = visibleSteps();
+      if (stepIndex >= steps.length) { goResult(); return; }
+      var step = steps[stepIndex];
+      var n = steps.length;
+      var html = '' +
+        '<div class="pv-progress"><span>Step ' + (stepIndex + 1) + '/' + n + '</span>' +
+        '<i class="pv-progress__bar" style="--pv-p:' + ((stepIndex + 1) / n * 100) + '%"></i></div>' +
+        '<h3 class="pv-step__title">' + esc(step.title) + '</h3>';
+
+      if (step.type === 'dual') {
+        step.groups.forEach(function (g) {
+          html += '<p class="pv-group__label">' + esc(g.label) + '</p><div class="pv-options">';
+          g.options.forEach(function (o) {
+            html += optionHtml(g.key, o, answers[g.key] === o.v, 'radio');
+          });
+          html += '</div>';
+        });
+      } else {
+        var kind = step.type === 'checkbox' ? 'checkbox' : 'radio';
+        html += '<div class="pv-options">';
+        step.options.forEach(function (o) {
+          var on = kind === 'checkbox'
+            ? (answers[step.id] || []).indexOf(o.v) !== -1
+            : answers[step.id] === o.v;
+          html += optionHtml(step.id, o, on, kind);
+        });
+        html += '</div>';
+      }
+
+      html += '<div class="pv-nav">' +
+        (stepIndex > 0 ? '<button type="button" class="pv-btn pv-btn--ghost" data-pv="back">Indietro</button>' : '<span></span>') +
+        '<button type="button" class="pv-btn pv-btn--next" data-pv="next">' +
+          (stepIndex === n - 1 ? 'Vedi la stima' : 'Avanti') + '</button>' +
+        '</div>';
+
+      els.body.innerHTML = html;
+      syncNext();
+      wireStep(step);
+    }
+
+    function optionHtml(name, o, on, kind) {
+      return '<label class="pv-opt' + (on ? ' is-on' : '') + '">' +
+        '<input type="' + kind + '" name="' + name + '" value="' + o.v + '"' +
+        (on ? ' checked' : '') + '>' +
+        '<span class="pv-opt__label">' + esc(o.label) + '</span>' +
+        (o.hint ? '<span class="pv-opt__hint">' + esc(o.hint) + '</span>' : '') +
+        '</label>';
+    }
+
+    function syncNext() {
+      var steps = visibleSteps();
+      var step = steps[stepIndex];
+      var next = els.body.querySelector('[data-pv="next"]');
+      if (next) next.disabled = !stepValid(step);
+    }
+
+    // Change listener attached ONCE on els.body (which persists across renders —
+    // only its innerHTML is replaced). Resolves the current step live from
+    // stepIndex/visibleSteps() rather than closing over a stale `step`, so it
+    // never accumulates duplicate listeners or writes answers under the wrong key.
+    function onBodyChange(e) {
+      var t = e.target;
+      if (!t.name) return;
+      var step = visibleSteps()[stepIndex];
+      if (!step) return;
+      if (step.type === 'checkbox') {
+        var arr = answers[step.id] || [];
+        if (t.checked) { if (arr.indexOf(t.value) === -1) arr.push(t.value); }
+        else { arr = arr.filter(function (v) { return v !== t.value; }); }
+        answers[step.id] = arr;
+      } else {
+        answers[t.name] = t.value; // radio (anche i due gruppi di 'dual')
+      }
+      // aggiorna stato visivo selezione + bottone
+      var group = els.body.querySelectorAll('input[name="' + t.name + '"]');
+      group.forEach(function (inp) { inp.closest('.pv-opt').classList.toggle('is-on', inp.checked); });
+      syncNext();
+    }
+    if (!els.body.dataset.pvWired) {
+      els.body.addEventListener('change', onBodyChange);
+      els.body.dataset.pvWired = '1';
+    }
+
+    function wireStep(step) {
+      var back = els.body.querySelector('[data-pv="back"]');
+      var next = els.body.querySelector('[data-pv="next"]');
+      if (back) back.addEventListener('click', function () { stepIndex--; renderStep(); });
+      if (next) next.addEventListener('click', function () {
+        if (next.disabled) return;
+        stepIndex++; renderStep();
+      });
+    }
+
+    // stub sostituito dal Task 4
+    function goResult() { els.body.innerHTML = '<p>RESULT</p>'; }
+
+    function startWizard() { answers = {}; stepIndex = 0; renderStep(); }
 
     /* --- self-check (dev): attivo solo con hash #preventivo-selfcheck --- */
     function runSelfCheck() {

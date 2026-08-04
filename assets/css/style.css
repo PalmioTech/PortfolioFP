@@ -4582,3 +4582,27 @@ body.pv-lock { overflow: hidden; }
   .pv-sheet { transform: translate(-50%, 0); }
   .pv-sheet:not(.is-open) { display: none; }
 }
+
+.pv-progress { display:flex; flex-direction:column; gap:0.4rem; margin-bottom:1rem;
+  font-size:0.8rem; color:var(--color-text-muted); font-family:var(--font-mono, monospace); }
+.pv-progress__bar { display:block; height:3px; border-radius:2px; background:rgba(255,255,255,0.1); position:relative; }
+.pv-progress__bar::after { content:''; position:absolute; inset:0 auto 0 0; width:var(--pv-p,0%);
+  background:var(--color-accent); border-radius:2px; transition:width var(--dur-base) var(--ease-out); }
+.pv-step__title { font-size:1.25rem; margin:0 0 1rem; }
+.pv-group__label { font-size:0.85rem; color:var(--color-text-muted); margin:1rem 0 0.5rem;
+  text-transform:uppercase; letter-spacing:0.05em; }
+.pv-options { display:flex; flex-direction:column; gap:0.6rem; }
+.pv-opt { display:grid; grid-template-columns:auto 1fr; align-items:center; gap:0.25rem 0.75rem;
+  padding:0.85rem 1rem; border:1px solid rgba(255,255,255,0.1); border-radius:12px; cursor:pointer;
+  transition:border-color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out); }
+.pv-opt:hover { border-color:rgba(255,255,255,0.25); }
+.pv-opt.is-on { border-color:var(--color-accent); background:rgba(255,53,0,0.08); }
+.pv-opt input { accent-color:var(--color-accent); width:18px; height:18px; }
+.pv-opt__label { font-weight:600; }
+.pv-opt__hint { grid-column:2; font-size:0.8rem; color:var(--color-text-muted); }
+.pv-nav { display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-top:1.5rem; }
+.pv-btn { padding:0.7rem 1.4rem; border-radius:var(--radius-full); font-weight:700; font-size:0.9rem;
+  border:1px solid transparent; cursor:pointer; }
+.pv-btn--next { background:var(--color-accent); color:#060508; }
+.pv-btn--next:disabled { opacity:0.4; cursor:not-allowed; }
+.pv-btn--ghost { background:none; color:var(--color-text); border-color:rgba(255,255,255,0.2); }
