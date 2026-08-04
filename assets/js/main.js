@@ -1727,8 +1727,39 @@
       });
     }
 
-    // stub sostituito dal Task 4
-    function goResult() { els.body.innerHTML = '<p>RESULT</p>'; }
+    var lastQuote = null;
+
+    function goResult() {
+      var q = computeQuote(answers);
+      lastQuote = q;
+      var html;
+      if (q.custom) {
+        html = '<div class="pv-result">' +
+          '<p class="pv-result__eyebrow">Progetto su misura</p>' +
+          '<h3 class="pv-result__range">Parliamone</h3>' +
+          '<p class="pv-result__note">Un gestionale o una web app su misura hanno ' +
+          'bisogno di un preventivo dedicato: raccontami cosa ti serve.</p>' +
+          '<div class="pv-cta-slot"></div>' +
+          '<button type="button" class="pv-restart" data-pv="restart">Ricomincia</button>' +
+          '</div>';
+      } else {
+        html = '<div class="pv-result">' +
+          '<p class="pv-result__eyebrow">Stima indicativa</p>' +
+          '<h3 class="pv-result__range">Da ' + formatEuro(q.low) + '€ a ' + formatEuro(q.high) + '€</h3>' +
+          (q.maintenance
+            ? '<p class="pv-result__maint">+ manutenzione da ' + formatEuro(q.maintenance) + '€/anno (opzionale)</p>'
+            : '') +
+          '<p class="pv-result__note">Stima indicativa. Il preventivo reale arriva dopo il brief.</p>' +
+          '<div class="pv-cta-slot"></div>' +
+          '<button type="button" class="pv-restart" data-pv="restart">Ricomincia</button>' +
+          '</div>';
+      }
+      els.body.innerHTML = html;
+      els.body.querySelector('[data-pv="restart"]').addEventListener('click', startWizard);
+      mountCta();  // definita nel Task 5; stub qui sotto finché non c'è
+    }
+
+    function mountCta() { /* Task 5 */ }
 
     function startWizard() { answers = {}; stepIndex = 0; renderStep(); }
 
