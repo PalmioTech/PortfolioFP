@@ -25,9 +25,11 @@ Sostituisce/realizza il "preventivatore automatico" in sospeso descritto in
 
 ## UX / Flusso
 
-1. **Bottone pill fisso**, bottom-center, on-brand (arancio `#FF3500`, testo scuro,
-   icona monoline). Label: **"Calcola il preventivo"**. Sempre visibile (non si
-   nasconde allo scroll — semplice).
+1. **Bottone tondo stile chat** fisso **in basso a sinistra**, on-brand (arancio
+   `#FF3500`, icona fumetto). `aria-label` "Calcola il preventivo". Dopo **~4s**
+   (una volta a sessione, `sessionStorage`) spunta un **fumetto** sopra il bottone:
+   *"Scopri il tuo preventivo"* (codina + ✕, micro-bounce del bottone, auto-hide
+   ~8s). Click bottone **o** fumetto → apre il bottom-sheet; ✕ chiude solo il fumetto.
 2. Tap → **bottom-sheet** scivola su dal basso (~85% altezza viewport, angoli alti
    arrotondati), con backdrop semi-trasparente dietro; il sito resta intravisto.
 3. Wizard **una domanda per schermo**, indicatore `Step n/N` + barra progresso.

@@ -1471,15 +1471,25 @@
     btn.setAttribute('aria-haspopup', 'dialog');
     btn.setAttribute('aria-expanded', 'false');
     btn.setAttribute('aria-controls', 'pv-sheet');
+    btn.setAttribute('aria-label', 'Calcola il preventivo');
     btn.innerHTML =
-      '<svg class="pv-fab__icon" viewBox="0 0 24 24" fill="none" ' +
-        'stroke="currentColor" stroke-width="1.8" stroke-linecap="round" ' +
-        'stroke-linejoin="round" aria-hidden="true">' +
-        '<rect x="4" y="3" width="16" height="18" rx="2"/>' +
-        '<line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="10" y2="11"/>' +
-        '<line x1="13" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="10" y2="15"/>' +
-        '<line x1="13" y1="15" x2="16" y2="15"/></svg>' +
-      '<span class="pv-fab__label">Calcola il preventivo</span>';
+      '<svg class="pv-fab__icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">' +
+        // torta arancio ~270°, aperta in alto a destra
+        '<path fill="#FF3500" d="M15 4.8a11.2 11.2 0 1 0 11.2 11.2H16.5a1.5 1.5 0 0 1-1.5-1.5z"/>' +
+        // fetta esplosa in alto a destra
+        '<path fill="#FF3500" d="M17.4 3.4a12.6 12.6 0 0 1 11.2 11.2H18.9a2 2 0 0 0-1.5-1.5z"/>' +
+        // moneta (near-black) + simbolo $
+        '<circle cx="12.4" cy="17.2" r="6.6" fill="#060508"/>' +
+        '<text x="12.4" y="20.5" text-anchor="middle" font-size="9.6" font-weight="800" ' +
+          'font-family="var(--font-body, sans-serif)" fill="#fff">$</text>' +
+      '</svg>';
+
+    var nudge = document.createElement('div');
+    nudge.className = 'pv-nudge';
+    nudge.hidden = true;
+    nudge.innerHTML =
+      '<button type="button" class="pv-nudge__text">Scopri il tuo preventivo</button>' +
+      '<button type="button" class="pv-nudge__close" aria-label="Chiudi nota">&times;</button>';
 
     var backdrop = document.createElement('div');
     backdrop.className = 'pv-backdrop';
@@ -1500,6 +1510,7 @@
       '<div class="pv-sheet__body"></div>';
 
     document.body.appendChild(btn);
+    document.body.appendChild(nudge);
     document.body.appendChild(backdrop);
     document.body.appendChild(sheet);
 
@@ -1513,6 +1524,8 @@
     function openSheet() {
       if (_open) return;
       _open = true;
+      window.clearTimeout(nudgeTimer);
+      hideNudge();
       lastFocus = document.activeElement;
       backdrop.hidden = false; sheet.hidden = false;
       requestAnimationFrame(function () {
@@ -1545,6 +1558,28 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && _open) closeSheet();
     });
+
+    /* --- nudge (fumetto "come se parlasse") --- */
+    var nudgeTimer = null, nudgeHideTimer = null;
+    function hideNudge() {
+      window.clearTimeout(nudgeHideTimer);
+      nudge.classList.remove('is-on');
+      btn.classList.remove('pv-fab--attn');
+      window.setTimeout(function () { if (!nudge.classList.contains('is-on')) nudge.hidden = true; }, 300);
+    }
+    function showNudge() {
+      if (_open) return;
+      nudge.hidden = false;
+      requestAnimationFrame(function () { nudge.classList.add('is-on'); });
+      btn.classList.add('pv-fab--attn');
+      try { sessionStorage.setItem('pv-nudge-shown', '1'); } catch (e) {}
+      nudgeHideTimer = window.setTimeout(hideNudge, 8000);
+    }
+    nudge.querySelector('.pv-nudge__text').addEventListener('click', function () { openSheet(); });
+    nudge.querySelector('.pv-nudge__close').addEventListener('click', function (e) { e.stopPropagation(); hideNudge(); });
+    var nudgeSeen;
+    try { nudgeSeen = sessionStorage.getItem('pv-nudge-shown'); } catch (e) { nudgeSeen = null; }
+    if (!nudgeSeen) nudgeTimer = window.setTimeout(showNudge, 4000);
 
     /* --- wizard config --- */
     var STEPS = [

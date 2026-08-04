@@ -4509,28 +4509,83 @@ body.has-target-cursor * {
    ========================================================== */
 .pv-fab {
   position: fixed;
-  left: 50%;
+  left: clamp(1rem, 3vw, 1.75rem);
   bottom: clamp(1rem, 3vw, 1.75rem);
-  transform: translateX(-50%);
   z-index: 9998;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.8rem 1.35rem;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  padding: 0;
   border: none;
   border-radius: var(--radius-full);
-  background: var(--color-accent);
-  color: var(--color-bg);
-  font-family: var(--font-body, inherit);
-  font-weight: 700;
-  font-size: 0.95rem;
+  background: #fff;
   cursor: pointer;
   box-shadow: 0 8px 30px rgba(255, 53, 0, 0.35);
   transition: transform var(--dur-base) var(--ease-out),
               box-shadow var(--dur-base) var(--ease-out);
 }
-.pv-fab:hover { transform: translateX(-50%) translateY(-3px); }
-.pv-fab__icon { width: 20px; height: 20px; }
+.pv-fab:hover { transform: translateY(-3px); box-shadow: 0 12px 38px rgba(255, 53, 0, 0.5); }
+.pv-fab__icon { width: 32px; height: 32px; }
+
+/* attira l'occhio quando spunta il fumetto */
+.pv-fab--attn { animation: pv-bounce 1.1s var(--ease-out) 2; }
+@keyframes pv-bounce {
+  0%, 50%, 100% { transform: translateY(0); }
+  25%           { transform: translateY(-7px); }
+}
+
+/* fumetto nudge ("come se parlasse") */
+.pv-nudge {
+  position: fixed;
+  left: clamp(1rem, 3vw, 1.75rem);
+  bottom: calc(clamp(1rem, 3vw, 1.75rem) + 58px + 0.65rem);
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  max-width: min(260px, 72vw);
+  padding: 0.6rem 0.55rem 0.6rem 0.9rem;
+  background: var(--color-bg);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  transform: translateY(8px) scale(0.96);
+  transform-origin: bottom left;
+  pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease-out),
+              transform var(--dur-base) var(--ease-out);
+}
+.pv-nudge.is-on { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+.pv-nudge::after {
+  content: '';
+  position: absolute;
+  left: 20px;
+  bottom: -7px;
+  width: 13px;
+  height: 13px;
+  background: var(--color-bg);
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  transform: rotate(45deg);
+}
+.pv-nudge__text {
+  background: none; border: none; padding: 0;
+  color: var(--color-text);
+  font-family: var(--font-body, inherit);
+  font-weight: 600; font-size: 0.9rem; line-height: 1.2;
+  text-align: left; cursor: pointer;
+}
+.pv-nudge__text:hover { color: var(--color-accent); }
+.pv-nudge__close {
+  background: none; border: none;
+  color: var(--color-text-muted);
+  font-size: 1.25rem; line-height: 1; cursor: pointer;
+  padding: 0 0.15rem; flex-shrink: 0;
+}
+.pv-nudge__close:hover { color: var(--color-text); }
 
 .pv-backdrop {
   position: fixed;
@@ -4578,9 +4633,11 @@ body.has-target-cursor * {
 body.pv-lock { overflow: hidden; }
 
 @media (prefers-reduced-motion: reduce) {
-  .pv-sheet, .pv-backdrop, .pv-fab { transition: none; }
+  .pv-sheet, .pv-backdrop, .pv-fab, .pv-nudge { transition: none; }
   .pv-sheet { transform: translate(-50%, 0); }
   .pv-sheet:not(.is-open) { display: none; }
+  .pv-fab--attn { animation: none; }
+  .pv-nudge.is-on { transform: none; }
 }
 
 .pv-progress { display:flex; flex-direction:column; gap:0.4rem; margin-bottom:1rem;

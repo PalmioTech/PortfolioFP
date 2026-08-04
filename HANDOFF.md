@@ -32,8 +32,9 @@ ancorato + bottom-sheet wizard), ora live. Vedi **Current progress**.
 
 ## Current progress (fatto, tutto già live su main)
 ### Questa sessione (recente → vecchio)
-- **Preventivatore automatico**: bottone pill fisso "Calcola il preventivo"
-  (bottom-center) → **bottom-sheet** wizard, tutto vanilla in **una IIFE in coda a
+- **Preventivatore automatico**: bottone tondo stile chat in **basso a sinistra**
+  (con **fumetto nudge** "Scopri il tuo preventivo" dopo ~4s, una volta a sessione)
+  → **bottom-sheet** wizard, tutto vanilla in **una IIFE in coda a
   `main.js`** + sezione `PREVENTIVATORE` in `style.css`. Iniettato via JS su tutte
   le pagine **tranne `contact.html`** (skip su `location.pathname`; le pagine
   metanapp non caricano `main.js` → già escluse). 7 step condizionali (tipo,
