@@ -1414,3 +1414,72 @@
   load();
   if (mq.addEventListener) mq.addEventListener('change', function () { stop(); load(); });
 })();
+
+  /* ----------------------------------------------------------
+     PREVENTIVATORE (QUOTE ESTIMATOR) — bottone ancorato + bottom-sheet
+  ---------------------------------------------------------- */
+  (function () {
+    'use strict';
+
+    /* --- price engine (pure) --- */
+    var PRICING = {
+      base:      { landing:600, vetrina:800, wordpress:1200, ecommerce:1200, custom:null },
+      pages:     { '1-4':0, '5-8':400, '9+':900 },
+      functions: { multilingua:500, prenotazioni:600, area_riservata:800, ai:900, blog:300 },
+      testi:     { forniti:0, copywriting:400 },
+      media:     { forniti:0, stock:250, produzione:700 },
+      prodotti:  { cliente:0, io_fino20:200, io_21_100:500, io_100plus:1000 },
+      urgenza:   { flessibile:1.0, entro_1_mese:1.05, urgente:1.25 },
+      maintenance: { annual:300 },
+      spread:    1.35
+    };
+
+    function roundTo100(x) { return Math.round(x / 100) * 100; }
+
+    function computeQuote(a) {
+      if (a.tipo === 'custom') return { custom:true };
+      var sum = PRICING.base[a.tipo] || 0;
+      if (a.pagine && PRICING.pages[a.pagine] != null) sum += PRICING.pages[a.pagine];
+      (a.funzioni || []).forEach(function (f) { sum += PRICING.functions[f] || 0; });
+      sum += PRICING.testi[a.testi] || 0;
+      sum += PRICING.media[a.media] || 0;
+      if (a.tipo === 'ecommerce' && a.prodotti) sum += PRICING.prodotti[a.prodotti] || 0;
+      var tot = sum * (PRICING.urgenza[a.urgenza] || 1);
+      return {
+        custom: false,
+        low:  roundTo100(tot),
+        high: roundTo100(tot * PRICING.spread),
+        maintenance: a.manutenzione === 'canone' ? PRICING.maintenance.annual : 0
+      };
+    }
+
+    function formatEuro(n) { return n.toLocaleString('it-IT'); }
+
+    /* --- self-check (dev): attivo solo con hash #preventivo-selfcheck --- */
+    function runSelfCheck() {
+      function eq(got, exp, name) {
+        var okv = JSON.stringify(got) === JSON.stringify(exp);
+        if (!okv) throw new Error('SELFCHECK FAIL [' + name + ']: got ' +
+          JSON.stringify(got) + ' exp ' + JSON.stringify(exp));
+        console.log('✓ ' + name);
+      }
+      // A: landing minimo
+      eq(computeQuote({ tipo:'landing', funzioni:[], testi:'forniti',
+        media:'forniti', urgenza:'flessibile', manutenzione:'indipendente' }),
+        { custom:false, low:600, high:800, maintenance:0 }, 'landing-min');
+      // B: e-commerce pieno, urgente, canone
+      eq(computeQuote({ tipo:'ecommerce', pagine:'5-8', funzioni:['multilingua'],
+        testi:'copywriting', media:'produzione', prodotti:'cliente',
+        urgenza:'urgente', manutenzione:'canone' }),
+        { custom:false, low:4000, high:5400, maintenance:300 }, 'ecommerce-full');
+      // C: rounding bidirezionale (vetrina + prenotazioni + stock, entro 1 mese)
+      eq(computeQuote({ tipo:'vetrina', pagine:'1-4', funzioni:['prenotazioni'],
+        testi:'forniti', media:'stock', urgenza:'entro_1_mese',
+        manutenzione:'indipendente' }),
+        { custom:false, low:1700, high:2300, maintenance:0 }, 'rounding');
+      // D: custom → nessun numero
+      eq(computeQuote({ tipo:'custom' }), { custom:true }, 'custom');
+      console.log('%cPREVENTIVATORE selfcheck OK', 'color:#C6FF00');
+    }
+    if (location.hash === '#preventivo-selfcheck') runSelfCheck();
+  })();
