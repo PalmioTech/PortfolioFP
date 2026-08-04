@@ -79,7 +79,7 @@ maintenance, custom }`). Nessun accesso al DOM: testabile in isolamento.
 | `landing` | Landing (1 pagina) | 600 |
 | `vetrina` | Sito vetrina | 800 |
 | `wordpress` | WordPress (gestibile/blog) | 1200 |
-| `ecommerce` | E-commerce | 1200 |
+| `ecommerce` | E-commerce | 1500 |
 | `custom` | Web app / gestionale su misura | *null → percorso "su misura"* |
 
 **Pagine — Step 2** (salta `landing` e `custom`)
@@ -155,9 +155,9 @@ high  = roundTo100(tot × 1.35)
 
 E-commerce + 5–8 pagine + multilingua + testi `copywriting` + media `produzione`
 + prodotti `cliente` + urgenza `urgente`:
-`somma = 1200 + 400 + 500 + 400 + 700 + 0 = 3200` → `tot = 3200 × 1.25 = 4000`
-→ low `roundTo100(4000) = 4000`, high `roundTo100(5400) = 5400`
-→ **"Da 4.000€ a 5.400€"**.
+`somma = 1500 + 400 + 500 + 400 + 700 + 0 = 3500` → `tot = 3500 × 1.25 = 4375`
+→ low `roundTo100(4375) = 4400`, high `roundTo100(5906.25) = 5900`
+→ **"Da 4.400€ a 5.900€"**.
 
 Landing, tutto minimo, flessibile: `600 × 1.0 = 600` → low `600`,
 high `roundTo100(810) = 800` → **"Da 600€ a 800€"**.

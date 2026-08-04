@@ -81,7 +81,7 @@ Append in coda a `assets/js/main.js`:
       eq(computeQuote({ tipo:'ecommerce', pagine:'5-8', funzioni:['multilingua'],
         testi:'copywriting', media:'produzione', prodotti:'cliente',
         urgenza:'urgente', manutenzione:'canone' }),
-        { custom:false, low:4000, high:5400, maintenance:300 }, 'ecommerce-full');
+        { custom:false, low:4400, high:5900, maintenance:300 }, 'ecommerce-full');
       // C: rounding bidirezionale (vetrina + prenotazioni + stock, entro 1 mese)
       eq(computeQuote({ tipo:'vetrina', pagine:'1-4', funzioni:['prenotazioni'],
         testi:'forniti', media:'stock', urgenza:'entro_1_mese',
@@ -107,7 +107,7 @@ Dentro la stessa IIFE, **sopra** `runSelfCheck`:
 ```js
     /* --- price engine (pure) --- */
     var PRICING = {
-      base:      { landing:600, vetrina:800, wordpress:1200, ecommerce:1200, custom:null },
+      base:      { landing:600, vetrina:800, wordpress:1200, ecommerce:1500, custom:null },
       pages:     { '1-4':0, '5-8':400, '9+':900 },
       functions: { multilingua:500, prenotazioni:600, area_riservata:800, ai:900, blog:300 },
       testi:     { forniti:0, copywriting:400 },
@@ -699,7 +699,7 @@ Append:
 - [ ] **Step 4: Verifica manuale — numeri corretti**
 
 Preview, apri il pill e componi il **caso B** del self-check: E-commerce · 5–8 · Multilingua · testi "Li scrivi tu" · media "produzione foto + video" · prodotti "Li carico io" · Urgente · manutenzione "canone".
-Expected: **"Da 4.000€ a 5.400€"** + riga "+ manutenzione da 300€/anno (opzionale)".
+Expected: **"Da 4.400€ a 5.900€"** + riga "+ manutenzione da 300€/anno (opzionale)".
 Poi **custom**: scegli "Web app / gestionale su misura" → schermata "Parliamone", nessun numero.
 "Ricomincia" → torna allo step 1 pulito.
 

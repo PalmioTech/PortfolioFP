@@ -1426,7 +1426,7 @@
 
     /* --- price engine (pure) --- */
     var PRICING = {
-      base:      { landing:600, vetrina:800, wordpress:1200, ecommerce:1200, custom:null },
+      base:      { landing:600, vetrina:800, wordpress:1200, ecommerce:1500, custom:null },
       pages:     { '1-4':0, '5-8':400, '9+':900 },
       functions: { multilingua:500, prenotazioni:600, area_riservata:800, ai:900, blog:300 },
       testi:     { forniti:0, copywriting:400 },
@@ -1856,7 +1856,7 @@
       eq(computeQuote({ tipo:'ecommerce', pagine:'5-8', funzioni:['multilingua'],
         testi:'copywriting', media:'produzione', prodotti:'cliente',
         urgenza:'urgente', manutenzione:'canone' }),
-        { custom:false, low:4000, high:5400, maintenance:300 }, 'ecommerce-full');
+        { custom:false, low:4400, high:5900, maintenance:300 }, 'ecommerce-full');
       // C: rounding bidirezionale (vetrina + prenotazioni + stock, entro 1 mese)
       eq(computeQuote({ tipo:'vetrina', pagine:'1-4', funzioni:['prenotazioni'],
         testi:'forniti', media:'stock', urgenza:'entro_1_mese',
