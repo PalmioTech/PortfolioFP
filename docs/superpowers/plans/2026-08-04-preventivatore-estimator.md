@@ -454,14 +454,18 @@ Nell'IIFE, dopo il blocco DOM shell (Task 2), aggiungi:
       return STEPS.filter(function (s) { return !s.skip || !s.skip(answers); });
     }
 
-    function labelOf(stepId, value) {
+    function labelOf(stepId, value, groupKey) {
       var s = STEPS.filter(function (x) { return x.id === stepId; })[0];
       if (!s) return value;
       var opts = s.options || [];
-      if (s.groups) s.groups.forEach(function (g) { opts = opts.concat(g.options); });
+      if (s.groups) s.groups.forEach(function (g) {
+        if (!groupKey || g.key === groupKey) opts = opts.concat(g.options);
+      });
       var o = opts.filter(function (x) { return x.v === value; })[0];
       return o ? o.label : value;
     }
+    // NB: i gruppi 'dual' (contenuti) condividono valori (es. 'forniti') tra testi e
+    // media → passare groupKey per disambiguare la label. Vedi Task 5 buildSummary.
 
     function stepValid(step) {
       if (!step.required) return true;
@@ -729,8 +733,8 @@ Sostituisci lo stub `mountCta` con:
       if (answers.pagine)   lines.push('Pagine: ' + labelOf('pagine', answers.pagine));
       if (answers.funzioni && answers.funzioni.length)
         lines.push('Funzioni: ' + answers.funzioni.map(function (f) { return labelOf('funzioni', f); }).join(', '));
-      if (answers.testi)    lines.push('Testi: ' + labelOf('contenuti', answers.testi));
-      if (answers.media)    lines.push('Foto & video: ' + labelOf('contenuti', answers.media));
+      if (answers.testi)    lines.push('Testi: ' + labelOf('contenuti', answers.testi, 'testi'));
+      if (answers.media)    lines.push('Foto & video: ' + labelOf('contenuti', answers.media, 'media'));
       if (answers.prodotti) lines.push('Prodotti: ' + labelOf('prodotti', answers.prodotti));
       if (answers.urgenza)  lines.push('Urgenza: ' + labelOf('urgenza', answers.urgenza));
       if (answers.manutenzione) lines.push('Manutenzione: ' + labelOf('manutenzione', answers.manutenzione));
