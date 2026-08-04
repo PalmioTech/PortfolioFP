@@ -4520,7 +4520,7 @@ body.has-target-cursor * {
   border: none;
   border-radius: var(--radius-full);
   background: var(--color-accent);
-  color: #060508;
+  color: var(--color-bg);
   font-family: var(--font-body, inherit);
   font-weight: 700;
   font-size: 0.95rem;
@@ -4546,7 +4546,7 @@ body.has-target-cursor * {
   position: fixed;
   left: 50%;
   bottom: 0;
-  z-index: 9999;
+  z-index: 9998;
   width: min(560px, 100%);
   max-height: 85svh;
   transform: translate(-50%, 100%);
@@ -4559,6 +4559,7 @@ body.has-target-cursor * {
   box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.5);
   transition: transform var(--dur-slow, 0.4s) var(--ease-out);
 }
+.pv-sheet[hidden] { display: none; }
 .pv-sheet.is-open { transform: translate(-50%, 0); }
 .pv-sheet__head {
   display: flex;
