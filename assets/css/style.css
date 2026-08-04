@@ -4687,3 +4687,35 @@ body.pv-lock { overflow: hidden; }
 .pv-lead__msg { font-size:0.85rem; margin:0; min-height:1.1em; }
 .pv-lead__msg.is-success { color:var(--color-secondary, #C6FF00); }
 .pv-lead__msg.is-error   { color:var(--color-accent); }
+
+/* --- "carrello": corsia a sinistra + barra con icona che scende (solo desktop) --- */
+.pv-rail { display: none; }
+@media (min-width: 1024px) {
+  /* sposta il contenuto delle sezioni a destra, libera la corsia a sinistra */
+  .container { padding-left: calc(clamp(1.25rem, 5vw, 4.5rem) + 4.5rem); }
+
+  .pv-rail {
+    display: block;
+    position: fixed;
+    left: 2.1rem;
+    top: 0; bottom: 0;
+    width: 2px;
+    z-index: 30;
+    pointer-events: none;
+    background: linear-gradient(to bottom,
+      transparent 0, rgba(255, 53, 0, 0.32) 10%,
+      rgba(255, 53, 0, 0.32) 90%, transparent 100%);
+  }
+  .pv-rail__car {
+    position: fixed;
+    left: calc(2.1rem - 17px);
+    top: 92px;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    background: #fff;
+    border-radius: var(--radius-full);
+    box-shadow: 0 4px 16px rgba(255, 53, 0, 0.4);
+    pointer-events: none;
+  }
+  .pv-rail__car .pv-fab__icon { width: 22px; height: 22px; }
+}

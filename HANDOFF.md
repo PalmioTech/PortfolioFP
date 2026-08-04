@@ -45,6 +45,11 @@ ancorato + bottom-sheet wizard), ora live. Vedi **Current progress**.
   (mini-form email → **Web3Forms**, stesso `access_key`/honeypot del form contatti)
   + **"Scarica il brief"** (PDF). A11y (role=dialog, focus in/out, Esc), reduced-
   motion, scroll-lock. Self-check del motore gated da `#preventivo-selfcheck`.
+  **Desktop (≥1024px)**: `.container` ha `padding-left` extra (gutter + 4.5rem) →
+  contenuto sezioni spostato a destra, corsia libera a sx; lì una **barra fissa**
+  (`.pv-rail`) con **carrello** (`.pv-rail__car`, stessa icona) che scende seguendo
+  lo scroll (JS scroll→`car.style.top`, rAF, fermo sopra il bottone chat). Navbar
+  e hero NON usano `.container` → non spostati. Sotto 1024px: niente shift né rail.
   Spec+piano in `docs/superpowers/{specs,plans}/2026-08-04-preventivatore-*`.
 - **MetanApp**: due pagine statiche on-brand (stesso layout `.legal`):
   - `metanapp/index.html` → `/metanapp/` (supporto/FAQ, URL assistenza store).

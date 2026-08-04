@@ -48,6 +48,15 @@ funzionale).
 ### Body scroll lock
 Sheet aperto → `overflow: hidden` sul `body`; ripristino alla chiusura.
 
+### Carrello (solo desktop ≥1024px)
+Il contenuto delle sezioni è spostato a destra (`.container` con `padding-left`
+extra = gutter + 4.5rem), liberando una **corsia a sinistra**. Lì una **barra
+fissa** (`.pv-rail`) con un **carrello** (`.pv-rail__car`, stessa icona torta/
+dollaro) che scende seguendo lo scroll: JS calcola il progresso scroll e imposta
+`car.style.top` (rAF-throttled), fermandosi sopra il bottone chat (nessuna
+collisione). Navbar e hero non usano `.container` → non spostati. Sotto 1024px:
+niente corsia né barra (decorativo, `pointer-events:none`).
+
 ## Wizard — lista step
 
 Step condizionali marcati. Step effettivi: Landing ≈ 5, Vetrina/WordPress ≈ 6,

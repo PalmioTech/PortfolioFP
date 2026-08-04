@@ -1581,6 +1581,42 @@
     try { nudgeSeen = sessionStorage.getItem('pv-nudge-shown'); } catch (e) { nudgeSeen = null; }
     if (!nudgeSeen) nudgeTimer = window.setTimeout(showNudge, 4000);
 
+    /* --- "carrello": l'icona scende lungo una barra a sx seguendo lo scroll (desktop) --- */
+    var rail = document.createElement('div');
+    rail.className = 'pv-rail';
+    rail.setAttribute('aria-hidden', 'true');
+    var car = document.createElement('div');
+    car.className = 'pv-rail__car';
+    car.innerHTML = btn.innerHTML; // stessa icona torta/dollaro
+    rail.appendChild(car);
+    document.body.appendChild(rail);
+
+    var railScheduled = false;
+    function positionCar() {
+      railScheduled = false;
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      var top = 92, bottom = window.innerHeight - 150; // resta sopra il bottone chat
+      if (bottom < top) bottom = top;
+      car.style.top = (top + (bottom - top) * p) + 'px';
+    }
+    function onRailScroll() {
+      if (!railScheduled) { railScheduled = true; requestAnimationFrame(positionCar); }
+    }
+    var railMq = window.matchMedia('(min-width: 1024px)');
+    function railSetup() {
+      window.removeEventListener('scroll', onRailScroll);
+      window.removeEventListener('resize', positionCar);
+      if (railMq.matches) {
+        positionCar();
+        window.addEventListener('scroll', onRailScroll, { passive: true });
+        window.addEventListener('resize', positionCar);
+      }
+    }
+    railSetup();
+    if (railMq.addEventListener) railMq.addEventListener('change', railSetup);
+    else if (railMq.addListener) railMq.addListener(railSetup);
+
     /* --- wizard config --- */
     var STEPS = [
       { id:'tipo', title:'Che tipo di sito ti serve?', type:'radio', required:true,
