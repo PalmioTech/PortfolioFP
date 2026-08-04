@@ -4617,3 +4617,16 @@ body.pv-lock { overflow: hidden; }
   margin:0 auto 1.25rem; line-height:1.6; }
 .pv-restart { margin-top:1rem; background:none; border:none; color:var(--color-text-muted);
   font-size:0.85rem; text-decoration:underline; cursor:pointer; }
+
+.pv-cta-slot { display:flex; flex-direction:column; gap:0.6rem; margin-top:0.5rem; }
+.pv-cta-main { width:100%; }
+.pv-cta-brief { width:100%; text-align:center; text-decoration:none; }
+.pv-lead { display:flex; flex-direction:column; gap:0.6rem; margin-top:0.4rem; }
+.pv-lead[hidden] { display:none; }
+.pv-input { padding:0.75rem 1rem; border-radius:10px; border:1px solid rgba(255,255,255,0.15);
+  background:rgba(255,255,255,0.03); color:var(--color-text); font-size:0.95rem; }
+.pv-input:focus { outline:none; border-color:var(--color-accent); }
+.pv-hp { position:absolute; left:-9999px; width:1px; height:1px; opacity:0; }
+.pv-lead__msg { font-size:0.85rem; margin:0; min-height:1.1em; }
+.pv-lead__msg.is-success { color:var(--color-secondary, #C6FF00); }
+.pv-lead__msg.is-error   { color:var(--color-accent); }

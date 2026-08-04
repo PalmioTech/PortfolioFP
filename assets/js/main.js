@@ -1759,7 +1759,82 @@
       mountCta();  // definita nel Task 5; stub qui sotto finché non c'è
     }
 
-    function mountCta() { /* Task 5 */ }
+    function buildSummary() {
+      var q = lastQuote;
+      var lines = ['— Preventivo automatico dal sito —'];
+      lines.push('Tipo: ' + labelOf('tipo', answers.tipo));
+      if (answers.pagine)   lines.push('Pagine: ' + labelOf('pagine', answers.pagine));
+      if (answers.funzioni && answers.funzioni.length)
+        lines.push('Funzioni: ' + answers.funzioni.map(function (f) { return labelOf('funzioni', f); }).join(', '));
+      if (answers.testi)    lines.push('Testi: ' + labelOf('contenuti', answers.testi, 'testi'));
+      if (answers.media)    lines.push('Foto & video: ' + labelOf('contenuti', answers.media, 'media'));
+      if (answers.prodotti) lines.push('Prodotti: ' + labelOf('prodotti', answers.prodotti));
+      if (answers.urgenza)  lines.push('Urgenza: ' + labelOf('urgenza', answers.urgenza));
+      if (answers.manutenzione) lines.push('Manutenzione: ' + labelOf('manutenzione', answers.manutenzione));
+      if (q && !q.custom) {
+        lines.push('Stima: Da ' + formatEuro(q.low) + '€ a ' + formatEuro(q.high) + '€');
+        if (q.maintenance) lines.push('Manutenzione annua: da ' + formatEuro(q.maintenance) + '€/anno');
+      } else {
+        lines.push('Stima: progetto su misura');
+      }
+      return lines.join('\n');
+    }
+
+    function mountCta() {
+      var slot = els.body.querySelector('.pv-cta-slot');
+      if (!slot) return;
+      slot.innerHTML =
+        '<button type="button" class="pv-btn pv-btn--next pv-cta-main" data-pv="ask">Richiedi il preventivo reale</button>' +
+        '<a class="pv-btn pv-btn--ghost pv-cta-brief" href="/assets/docs/brief-progetto-fpdeveloper.pdf" target="_blank" rel="noopener">Scarica il brief</a>' +
+        '<form class="pv-lead" hidden novalidate>' +
+          '<input type="hidden" name="access_key" value="2c7f91ae-9b42-4cc0-bddd-8dad87342094">' +
+          '<input type="hidden" name="subject" value="Preventivo automatico dal sito">' +
+          '<input type="hidden" name="from_name" value="FPdeveloper — preventivatore">' +
+          '<input type="hidden" name="message" value="">' +
+          '<input type="checkbox" name="botcheck" class="pv-hp" tabindex="-1" autocomplete="off" aria-hidden="true">' +
+          '<input type="text"  name="name"  class="pv-input" placeholder="Nome (facoltativo)" autocomplete="name">' +
+          '<input type="email" name="email" class="pv-input" placeholder="La tua email" required autocomplete="email">' +
+          '<button type="submit" class="pv-btn pv-btn--next">Invia</button>' +
+          '<p class="pv-lead__msg" role="status" aria-live="polite"></p>' +
+        '</form>';
+
+      var askBtn = slot.querySelector('[data-pv="ask"]');
+      var form   = slot.querySelector('.pv-lead');
+      var msg    = slot.querySelector('.pv-lead__msg');
+
+      askBtn.addEventListener('click', function () {
+        form.hidden = false;
+        form.querySelector('input[name="message"]').value = buildSummary();
+        askBtn.hidden = true;
+        form.querySelector('input[name="email"]').focus();
+      });
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        var email = form.querySelector('input[name="email"]').value.trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          showLead('Inserisci un’email valida.', 'error'); return;
+        }
+        var submit = form.querySelector('button[type="submit"]');
+        submit.disabled = true; submit.textContent = 'Invio…';
+        try {
+          var res = await fetch('https://api.web3forms.com/submit',
+            { method:'POST', body:new FormData(form) });
+          var data = await res.json();
+          if (data.success) showLead('Inviato! Ti ricontatto presto.', 'success');
+          else showLead(data.message || 'Errore, riprova.', 'error');
+        } catch (_) {
+          showLead('Invio non riuscito. Scrivimi a fede-palma@hotmail.it.', 'error');
+        } finally {
+          submit.disabled = false; submit.textContent = 'Invia';
+        }
+      });
+
+      function showLead(text, kind) {
+        msg.textContent = text;
+        msg.className = 'pv-lead__msg is-' + kind;
+      }
+    }
 
     function startWizard() { answers = {}; stepIndex = 0; renderStep(); }
 
