@@ -3,9 +3,8 @@
 ## Goal
 Sito portfolio di **Federico Palmieri** (brand "FPdeveloper"), sviluppatore web.
 Migliorarlo in continuo: design, copy, SEO, contenuti, e feature client-facing.
-**Task in sospeso (richiesto e poi interrotto): un "preventivatore automatico"**
-— un form/wizard che fa qualche domanda e restituisce un primo prezzo indicativo.
-Vedi **Next steps**.
+Feature client-facing più recente: **preventivatore automatico** (bottone
+ancorato + bottom-sheet wizard), ora live. Vedi **Current progress**.
 
 ## Project facts (leggere prima di toccare)
 - **Stack: vanilla HTML/CSS/JS. NIENTE build, framework, npm.** Tutto il CSS in
@@ -33,6 +32,19 @@ Vedi **Next steps**.
 
 ## Current progress (fatto, tutto già live su main)
 ### Questa sessione (recente → vecchio)
+- **Preventivatore automatico**: bottone pill fisso "Calcola il preventivo"
+  (bottom-center) → **bottom-sheet** wizard, tutto vanilla in **una IIFE in coda a
+  `main.js`** + sezione `PREVENTIVATORE` in `style.css`. Iniettato via JS su tutte
+  le pagine **tranne `contact.html`** (skip su `location.pathname`; le pagine
+  metanapp non caricano `main.js` → già escluse). 7 step condizionali (tipo,
+  pagine, funzioni, contenuti[testi+media], prodotti[solo e-commerce], urgenza,
+  manutenzione); motore prezzi puro (`computeQuote`) → **forbice** "Da X€ a Y€" +
+  riga "manutenzione da 300€/anno" separata; percorso "su misura" per web
+  app/gestionale (niente numero). Output: CTA **"Richiedi il preventivo reale"**
+  (mini-form email → **Web3Forms**, stesso `access_key`/honeypot del form contatti)
+  + **"Scarica il brief"** (PDF). A11y (role=dialog, focus in/out, Esc), reduced-
+  motion, scroll-lock. Self-check del motore gated da `#preventivo-selfcheck`.
+  Spec+piano in `docs/superpowers/{specs,plans}/2026-08-04-preventivatore-*`.
 - **MetanApp**: due pagine statiche on-brand (stesso layout `.legal`):
   - `metanapp/index.html` → `/metanapp/` (supporto/FAQ, URL assistenza store).
   - `metanapp/privacy/index.html` → `/metanapp/privacy/` (privacy, rev. 3 ago 2026:
@@ -129,21 +141,11 @@ Vedi **Next steps**.
   l'arbitro.
 
 ## Next steps
-### 1. PREVENTIVATORE AUTOMATICO (richiesta in sospeso — priorità)
-Costruire un calcolatore di preventivo indicativo, client-side, on-brand, vanilla JS.
-Da progettare prima (usare la skill `superpowers:brainstorming`). Spunti:
-- **Nuova pagina** `/preventivo/` (o sezione), stile del sito; oppure wizard a step.
-- **Input** = le domande chiave (riusare la struttura del brief PDF): tipo di sito
-  (radio), n° pagine, funzioni (e-commerce / multilingua / prenotazioni / area
-  riservata / AI…), contenuti pronti sì/no, urgenza.
-- **Prezzi base** dai servizi (`services.html`): vetrina da 800€, landing da 600€,
-  WordPress da 1.200€, integrazione AI da 900€, gestionale "su preventivo". Applicare
-  moltiplicatori/aggiunte per pagine e funzioni.
-- **Output = una FORBICE** (da X a Y €) con disclaimer "stima indicativa, il
-  preventivo reale arriva dopo il brief", + CTA verso il form contatti / "Scarica il
-  brief". Non dare un numero secco.
-- Vanilla JS in `main.js` (o IIFE dedicata) + CSS in `style.css`. Niente dipendenze.
-- Opzionale: inviare le risposte via Web3Forms insieme alla stima.
+### 1. ✅ PREVENTIVATORE AUTOMATICO — FATTO (questa sessione)
+Implementato come bottone ancorato + bottom-sheet wizard (vedi Current progress).
+Possibili follow-up: tarare i numeri del listino dopo qualche preventivo reale;
+A/B sul copy del pill; eventuale variante "pagina `/preventivo/`" se serve un link
+condivisibile.
 
 ### 2. Aperti minori
 - **iubenda banner**: se dopo "Prova integrazione" non appare, è config del cruscotto
