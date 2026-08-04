@@ -1605,11 +1605,13 @@
       return STEPS.filter(function (s) { return !s.skip || !s.skip(answers); });
     }
 
-    function labelOf(stepId, value) {
+    function labelOf(stepId, value, groupKey) {
       var s = STEPS.filter(function (x) { return x.id === stepId; })[0];
       if (!s) return value;
       var opts = s.options || [];
-      if (s.groups) s.groups.forEach(function (g) { opts = opts.concat(g.options); });
+      if (s.groups) s.groups.forEach(function (g) {
+        if (!groupKey || g.key === groupKey) opts = opts.concat(g.options);
+      });
       var o = opts.filter(function (x) { return x.v === value; })[0];
       return o ? o.label : value;
     }
@@ -1689,6 +1691,14 @@
       if (!t.name) return;
       var step = visibleSteps()[stepIndex];
       if (!step) return;
+      if (t.name === 'tipo') {
+        // tipo drives visibleSteps() (skip predicates), so a full re-render is
+        // needed to recompute progress count + button label ("Vedi la stima"
+        // vs "Avanti") — is-on/syncNext alone can't reflect a changed step count.
+        answers.tipo = t.value;
+        renderStep();
+        return;
+      }
       if (step.type === 'checkbox') {
         var arr = answers[step.id] || [];
         if (t.checked) { if (arr.indexOf(t.value) === -1) arr.push(t.value); }

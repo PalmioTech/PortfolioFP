@@ -4603,6 +4603,6 @@ body.pv-lock { overflow: hidden; }
 .pv-nav { display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-top:1.5rem; }
 .pv-btn { padding:0.7rem 1.4rem; border-radius:var(--radius-full); font-weight:700; font-size:0.9rem;
   border:1px solid transparent; cursor:pointer; }
-.pv-btn--next { background:var(--color-accent); color:#060508; }
+.pv-btn--next { background:var(--color-accent); color:var(--color-bg); }
 .pv-btn--next:disabled { opacity:0.4; cursor:not-allowed; }
 .pv-btn--ghost { background:none; color:var(--color-text); border-color:rgba(255,255,255,0.2); }
