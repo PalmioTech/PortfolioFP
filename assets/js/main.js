@@ -1505,7 +1505,6 @@
     };
 
     var _open = false;
-    function sheetIsOpen() { return _open; }
 
     function openSheet() {
       if (_open) return;
@@ -1532,7 +1531,7 @@
       document.body.classList.remove('pv-lock');
       window.setTimeout(function () {
         if (!_open) { backdrop.hidden = true; sheet.hidden = true; }
-      }, 320);
+      }, 600);
       if (lastFocus && lastFocus.focus) lastFocus.focus();
     }
 
@@ -1695,7 +1694,10 @@
         // tipo drives visibleSteps() (skip predicates), so a full re-render is
         // needed to recompute progress count + button label ("Vedi la stima"
         // vs "Avanti") — is-on/syncNext alone can't reflect a changed step count.
-        answers.tipo = t.value;
+        // Replace (not mutate) answers: switching base type must invalidate every
+        // downstream answer, otherwise stale fields (e.g. pagine from a previous
+        // tipo) leak into computeQuote/buildSummary for the new tipo.
+        answers = { tipo: t.value };
         renderStep();
         return;
       }
@@ -1756,7 +1758,7 @@
       }
       els.body.innerHTML = html;
       els.body.querySelector('[data-pv="restart"]').addEventListener('click', startWizard);
-      mountCta();  // definita nel Task 5; stub qui sotto finché non c'è
+      mountCta();
     }
 
     function buildSummary() {
