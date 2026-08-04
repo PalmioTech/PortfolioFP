@@ -4503,3 +4503,81 @@ body.has-target-cursor * {
 /* NB: no prefers-reduced-motion override here. The scrub is scroll-driven (the
    user controls every frame), and iOS Low Power Mode forces reduced-motion —
    collapsing the pin would freeze the hero on a static photo. Pin always on. */
+
+/* ==========================================================
+   PREVENTIVATORE (quote estimator)
+   ========================================================== */
+.pv-fab {
+  position: fixed;
+  left: 50%;
+  bottom: clamp(1rem, 3vw, 1.75rem);
+  transform: translateX(-50%);
+  z-index: 9998;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.35rem;
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--color-accent);
+  color: #060508;
+  font-family: var(--font-body, inherit);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 8px 30px rgba(255, 53, 0, 0.35);
+  transition: transform var(--dur-base) var(--ease-out),
+              box-shadow var(--dur-base) var(--ease-out);
+}
+.pv-fab:hover { transform: translateX(-50%) translateY(-3px); }
+.pv-fab__icon { width: 20px; height: 20px; }
+
+.pv-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: rgba(6, 5, 8, 0.6);
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+.pv-backdrop.is-open { opacity: 1; }
+
+.pv-sheet {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  z-index: 9999;
+  width: min(560px, 100%);
+  max-height: 85svh;
+  transform: translate(-50%, 100%);
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg, #060508);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: none;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.5);
+  transition: transform var(--dur-slow, 0.4s) var(--ease-out);
+}
+.pv-sheet.is-open { transform: translate(-50%, 0); }
+.pv-sheet__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem 0.75rem;
+}
+.pv-sheet__title { font-size: 1.15rem; margin: 0; }
+.pv-sheet__close {
+  background: none; border: none; color: var(--color-text-muted);
+  font-size: 1.75rem; line-height: 1; cursor: pointer; padding: 0 0.25rem;
+}
+.pv-sheet__close:hover { color: var(--color-text); }
+.pv-sheet__body { padding: 0.5rem 1.5rem 1.75rem; overflow-y: auto; }
+
+body.pv-lock { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pv-sheet, .pv-backdrop, .pv-fab { transition: none; }
+  .pv-sheet { transform: translate(-50%, 0); }
+  .pv-sheet:not(.is-open) { display: none; }
+}

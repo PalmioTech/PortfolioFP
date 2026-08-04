@@ -1421,6 +1421,9 @@
   (function () {
     'use strict';
 
+    // Il form è già su contatti → niente pill lì
+    if (/\/contact\.html$/.test(location.pathname)) return;
+
     /* --- price engine (pure) --- */
     var PRICING = {
       base:      { landing:600, vetrina:800, wordpress:1200, ecommerce:1200, custom:null },
@@ -1454,6 +1457,90 @@
     }
 
     function formatEuro(n) { return n.toLocaleString('it-IT'); }
+
+    /* --- DOM shell --- */
+    var lastFocus = null;
+
+    var btn = document.createElement('button');
+    btn.className = 'pv-fab';
+    btn.type = 'button';
+    btn.setAttribute('aria-haspopup', 'dialog');
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-controls', 'pv-sheet');
+    btn.innerHTML =
+      '<svg class="pv-fab__icon" viewBox="0 0 24 24" fill="none" ' +
+        'stroke="currentColor" stroke-width="1.8" stroke-linecap="round" ' +
+        'stroke-linejoin="round" aria-hidden="true">' +
+        '<rect x="4" y="3" width="16" height="18" rx="2"/>' +
+        '<line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="10" y2="11"/>' +
+        '<line x1="13" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="10" y2="15"/>' +
+        '<line x1="13" y1="15" x2="16" y2="15"/></svg>' +
+      '<span class="pv-fab__label">Calcola il preventivo</span>';
+
+    var backdrop = document.createElement('div');
+    backdrop.className = 'pv-backdrop';
+    backdrop.hidden = true;
+
+    var sheet = document.createElement('div');
+    sheet.className = 'pv-sheet';
+    sheet.id = 'pv-sheet';
+    sheet.setAttribute('role', 'dialog');
+    sheet.setAttribute('aria-modal', 'true');
+    sheet.setAttribute('aria-labelledby', 'pv-sheet-title');
+    sheet.hidden = true;
+    sheet.innerHTML =
+      '<div class="pv-sheet__head">' +
+        '<h2 class="pv-sheet__title" id="pv-sheet-title">Calcola il preventivo</h2>' +
+        '<button class="pv-sheet__close" type="button" aria-label="Chiudi">&times;</button>' +
+      '</div>' +
+      '<div class="pv-sheet__body"></div>';
+
+    document.body.appendChild(btn);
+    document.body.appendChild(backdrop);
+    document.body.appendChild(sheet);
+
+    var els = {
+      btn: btn, backdrop: backdrop, sheet: sheet,
+      body: sheet.querySelector('.pv-sheet__body')
+    };
+
+    var _open = false;
+    function sheetIsOpen() { return _open; }
+
+    function openSheet() {
+      if (_open) return;
+      _open = true;
+      lastFocus = document.activeElement;
+      backdrop.hidden = false; sheet.hidden = false;
+      requestAnimationFrame(function () {
+        backdrop.classList.add('is-open');
+        sheet.classList.add('is-open');
+      });
+      btn.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('pv-lock');
+      var first = sheet.querySelector('button, [href], input, [tabindex]');
+      if (first) first.focus();
+    }
+
+    function closeSheet() {
+      if (!_open) return;
+      _open = false;
+      backdrop.classList.remove('is-open');
+      sheet.classList.remove('is-open');
+      btn.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('pv-lock');
+      window.setTimeout(function () {
+        if (!_open) { backdrop.hidden = true; sheet.hidden = true; }
+      }, 320);
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    btn.addEventListener('click', openSheet);
+    sheet.querySelector('.pv-sheet__close').addEventListener('click', closeSheet);
+    backdrop.addEventListener('click', closeSheet);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && _open) closeSheet();
+    });
 
     /* --- self-check (dev): attivo solo con hash #preventivo-selfcheck --- */
     function runSelfCheck() {
