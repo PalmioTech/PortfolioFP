@@ -150,8 +150,10 @@ high  = roundTo100(tot × 1.35)
 
 `roundTo100(x) = Math.round(x / 100) * 100`
 
-- Output forbice: **"Da {low}€ a {high}€"** (formattazione IT: `toLocaleString('it-IT')`
-  → separatore migliaia `.`).
+- Output al cliente: **"Da {low}€"** — solo la soglia bassa (esca, niente tetto).
+  Formattazione IT (`toLocaleString('it-IT')` → migliaia `.`). *(Il messaggio email
+  a Federico tiene comunque la forbice completa "Da {low}€ a {high}€": `high`/`spread`
+  restano nel motore, non mostrati al cliente.)*
 - Se `tipo === custom`: nessun calcolo → schermata "Progetto su misura — parliamone".
 - Se manutenzione `canone`: sotto la forbice, riga "+ manutenzione da 150€/anno
   (opzionale)".
@@ -162,18 +164,18 @@ E-commerce + 5–8 pagine + multilingua + testi `copywriting` + media `produzion
 + prodotti `cliente` + urgenza `urgente`:
 `somma = 800 + 150 + 200 + 150 + 300 + 0 = 1600` → `tot = 1600 × 1.25 = 2000`
 → low `roundTo100(2000) = 2000`, high `roundTo100(2700) = 2700`
-→ **"Da 2.000€ a 2.700€"**.
+→ mostrato al cliente: **"Da 2.000€"** (email a Federico: "Da 2.000€ a 2.700€").
 
-Landing, tutto minimo, flessibile: `300 × 1.0 = 300` → low `300`,
-high `roundTo100(405) = 400` → **"Da 300€ a 400€"**.
+Landing, tutto minimo, flessibile: `300 × 1.0 = 300` → low `300`
+(high `400` interno) → **"Da 300€"**.
 
 Arrotondamento (verifica bidirezionale) — Vetrina + prenotazioni + media stock,
 urgenza `entro_1_mese`: `somma = 400 + 250 + 100 = 750` → `tot = 750 × 1.05 =
 787.5` → low `roundTo100(787.5) = 800`, high `roundTo100(1063.125) = 1100`
-→ **"Da 800€ a 1.100€"**.
+→ **"Da 800€"** (high 1.100 interno).
 
 Funzioni scontate su landing — Landing + `ai` (delta landing 200, non 350),
-contenuti forniti, flessibile: `300 + 200 = 500` → **"Da 500€ a 700€"**.
+contenuti forniti, flessibile: `300 + 200 = 500` → **"Da 500€"**.
 
 ## Output / CTA
 

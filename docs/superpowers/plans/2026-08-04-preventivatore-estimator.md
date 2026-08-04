@@ -660,7 +660,7 @@ Rimpiazza `function goResult() { els.body.innerHTML = '<p>RESULT</p>'; }` con:
       } else {
         html = '<div class="pv-result">' +
           '<p class="pv-result__eyebrow">Stima indicativa</p>' +
-          '<h3 class="pv-result__range">Da ' + formatEuro(q.low) + '€ a ' + formatEuro(q.high) + '€</h3>' +
+          '<h3 class="pv-result__range">Da ' + formatEuro(q.low) + '€</h3>' +
           (q.maintenance
             ? '<p class="pv-result__maint">+ manutenzione da ' + formatEuro(q.maintenance) + '€/anno (opzionale)</p>'
             : '') +
@@ -701,7 +701,7 @@ Append:
 - [ ] **Step 4: Verifica manuale — numeri corretti**
 
 Preview, apri il pill e componi il **caso B** del self-check: E-commerce · 5–8 · Multilingua · testi "Li scrivi tu" · media "produzione foto + video" · prodotti "Li carico io" · Urgente · manutenzione "canone".
-Expected: **"Da 2.000€ a 2.700€"** + riga "+ manutenzione da 150€/anno (opzionale)".
+Expected: **"Da 2.000€"** (solo soglia bassa) + riga "+ manutenzione da 150€/anno (opzionale)".
 Poi **custom**: scegli "Web app / gestionale su misura" → schermata "Parliamone", nessun numero.
 "Ricomincia" → torna allo step 1 pulito.
 

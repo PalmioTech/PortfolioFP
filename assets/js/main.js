@@ -1751,7 +1751,7 @@
       } else {
         html = '<div class="pv-result">' +
           '<p class="pv-result__eyebrow">Stima indicativa</p>' +
-          '<h3 class="pv-result__range">Da ' + formatEuro(q.low) + '€ a ' + formatEuro(q.high) + '€</h3>' +
+          '<h3 class="pv-result__range">Da ' + formatEuro(q.low) + '€</h3>' +
           (q.maintenance
             ? '<p class="pv-result__maint">+ manutenzione da ' + formatEuro(q.maintenance) + '€/anno (opzionale)</p>'
             : '') +
