@@ -155,11 +155,17 @@ high  = roundTo100(tot × 1.35)
 
 E-commerce + 5–8 pagine + multilingua + testi `copywriting` + media `produzione`
 + prodotti `cliente` + urgenza `urgente`:
-`(1200 + 400 + 500 + 400 + 700 + 0) × 1.25 = 3750`
-→ low `3800`, high `roundTo100(5062.5) = 5100` → **"Da 3.800€ a 5.100€"**.
+`somma = 1200 + 400 + 500 + 400 + 700 + 0 = 3200` → `tot = 3200 × 1.25 = 4000`
+→ low `roundTo100(4000) = 4000`, high `roundTo100(5400) = 5400`
+→ **"Da 4.000€ a 5.400€"**.
 
 Landing, tutto minimo, flessibile: `600 × 1.0 = 600` → low `600`,
 high `roundTo100(810) = 800` → **"Da 600€ a 800€"**.
+
+Arrotondamento (verifica bidirezionale) — Vetrina + prenotazioni + media stock,
+urgenza `entro_1_mese`: `somma = 800 + 600 + 250 = 1650` → `tot = 1650 × 1.05 =
+1732.5` → low `roundTo100(1732.5) = 1700`, high `roundTo100(2338.875) = 2300`
+→ **"Da 1.700€ a 2.300€"**.
 
 ## Output / CTA
 
