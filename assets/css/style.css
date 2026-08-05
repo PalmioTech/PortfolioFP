@@ -4687,3 +4687,9 @@ body.pv-lock { overflow: hidden; }
 .pv-lead__msg { font-size:0.85rem; margin:0; min-height:1.1em; }
 .pv-lead__msg.is-success { color:var(--color-secondary, #C6FF00); }
 .pv-lead__msg.is-error   { color:var(--color-accent); }
+
+/* Desktop: sposta il contenuto delle sezioni a destra, lascia una corsia vuota a
+   sinistra per il bottone chat del preventivo (navbar/hero non usano .container). */
+@media (min-width: 1024px) {
+  .container { padding-left: calc(clamp(1.25rem, 5vw, 4.5rem) + 4.5rem); }
+}
