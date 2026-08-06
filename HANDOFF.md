@@ -52,6 +52,9 @@ ancorato + bottom-sheet wizard), ora live. Vedi **Current progress**.
   richiesta, tenuto solo lo spazio.)
   Spec+piano in `docs/superpowers/{specs,plans}/2026-08-04-preventivatore-*`.
 - **MetanApp**: due pagine statiche on-brand (stesso layout `.legal`):
+  - **Store (ago 2026)**: la web app è **live su Apple App Store**; **Google Play
+    a breve**. (Titolare Federico Palmieri, non Pecas.) TODO possibile: aggiungere
+    badge/link "Scarica su App Store / Google Play" su `metanapp/index.html`.
   - `metanapp/index.html` → `/metanapp/` (supporto/FAQ, URL assistenza store).
   - `metanapp/privacy/index.html` → `/metanapp/privacy/` (privacy, rev. 3 ago 2026:
     Nominatim, download elenco da sito, dati MIMIT/IODL 2.0). Titolare = Federico
