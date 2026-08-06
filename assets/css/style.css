@@ -1828,6 +1828,79 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-accent);
 }
 
+/* Store badges inside a portfolio card (MetanApp) — compact variant */
+.portfolio-card__footer--stores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.pc-store {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  position: relative;
+  padding: 0.4rem 0.7rem;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  text-decoration: none;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.pc-store:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.pc-store__logo {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.pc-store__txt {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.pc-store__txt small {
+  font-size: 0.52rem;
+  color: #fff;
+}
+
+.pc-store__txt strong {
+  font-size: 0.82rem;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.pc-store--soon {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.pc-store--soon:hover {
+  transform: none;
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.pc-store__soon {
+  position: absolute;
+  top: -8px;
+  right: -7px;
+  background: var(--color-accent);
+  color: #060508;
+  font-size: 0.52rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1px 6px;
+  border-radius: 99px;
+}
+
 /* ============================================================
    TESTIMONIALS
    ============================================================ */
