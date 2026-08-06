@@ -44,6 +44,29 @@
       font-size: 0.8rem; color: var(--color-text-dim);
     }
     .legal-foot a { color: var(--color-text-muted); }
+    .store-cta { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 0.25rem 0 1.75rem; }
+    .store-badge {
+      display: inline-flex; align-items: center; gap: 0.6rem; position: relative;
+      padding: 0.55rem 1.05rem; min-width: 178px;
+      background: #000; border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 10px; text-decoration: none;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .store-badge:hover { transform: translateY(-2px); border-color: rgba(255, 255, 255, 0.55); }
+    .legal a.store-badge { text-decoration: none; }
+    .legal a.store-badge:hover { opacity: 1; }
+    .store-badge__logo { width: 26px; height: 26px; flex-shrink: 0; }
+    .store-badge__txt { display: flex; flex-direction: column; line-height: 1.12; }
+    .store-badge__txt small { font-size: 0.62rem; color: #fff; }
+    .store-badge__txt strong { font-size: 1.05rem; color: #fff; font-weight: 600; letter-spacing: -0.01em; }
+    .store-badge--soon { opacity: 0.55; cursor: default; }
+    .store-badge--soon:hover { transform: none; border-color: rgba(255, 255, 255, 0.28); }
+    .store-badge__soon {
+      position: absolute; top: -9px; right: -8px;
+      background: var(--color-accent); color: #060508;
+      font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em;
+      padding: 2px 7px; border-radius: 99px;
+    }
   </style>
 </head>
 <body>
@@ -62,6 +85,27 @@
       pianificare le soste di rifornimento in base alla tua autonomia e aprire
       l'itinerario completo in Apple Mappe o Google Maps.
     </p>
+
+    <div class="store-cta">
+      <a class="store-badge" href="https://apps.apple.com/it/app/metanapp/id6797458428"
+         target="_blank" rel="noopener" aria-label="Scarica MetanApp su App Store">
+        <svg class="store-badge__logo" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#fff" d="M17.57 12.4c-.03-2.7 2.2-3.99 2.3-4.06-1.25-1.84-3.2-2.09-3.9-2.11-1.66-.17-3.24.97-4.08.97-.84 0-2.14-.95-3.52-.92-1.81.03-3.48 1.05-4.41 2.67-1.88 3.27-.48 8.1 1.35 10.76.9 1.3 1.96 2.76 3.36 2.71 1.35-.05 1.86-.87 3.49-.87 1.63 0 2.09.87 3.52.84 1.45-.03 2.37-1.33 3.26-2.63.63-.93.89-1.4 1.39-2.45-3.65-1.39-3.61-4.11-3.61-4.15z"/>
+          <path fill="#fff" d="M15.6 4.5c.74-.9 1.24-2.15 1.1-3.4-1.07.04-2.36.71-3.13 1.61-.68.79-1.28 2.06-1.12 3.28 1.19.09 2.41-.6 3.15-1.49z"/>
+        </svg>
+        <span class="store-badge__txt"><small>Scaricala su</small><strong>App Store</strong></span>
+      </a>
+      <span class="store-badge store-badge--soon" role="img" aria-label="MetanApp presto su Google Play">
+        <svg class="store-badge__logo" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#00A0FF" d="M3.3 2.2c-.2.2-.3.5-.3.9v17.8c0 .4.1.7.3.9l.06.06 9.97-9.97v-.24L3.36 1.66z"/>
+          <path fill="#00E676" d="m16.7 15.6-3.3-3.3v-.24l3.3-3.3.08.05 3.94 2.24c1.12.64 1.12 1.68 0 2.32l-3.94 2.24z"/>
+          <path fill="#FFCE00" d="m16.78 15.55-3.38-3.38-10.1 10.1c.37.39.98.44 1.67.06l11.81-6.72"/>
+          <path fill="#FF3A44" d="M16.78 8.61 4.97 1.9c-.69-.39-1.3-.34-1.67.05l10.1 10.1z"/>
+        </svg>
+        <span class="store-badge__txt"><small>Presto su</small><strong>Google Play</strong></span>
+        <span class="store-badge__soon">Presto</span>
+      </span>
+    </div>
 
     <h2>Caratteristiche principali</h2>
     <ul>
