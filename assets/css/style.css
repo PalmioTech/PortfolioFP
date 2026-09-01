@@ -1875,30 +1875,6 @@ h1, h2, h3, h4, h5, h6 {
   white-space: nowrap;
 }
 
-.pc-store--soon {
-  opacity: 0.55;
-  cursor: default;
-}
-
-.pc-store--soon:hover {
-  transform: none;
-  border-color: rgba(255, 255, 255, 0.28);
-}
-
-.pc-store__soon {
-  position: absolute;
-  top: -8px;
-  right: -7px;
-  background: var(--color-accent);
-  color: #060508;
-  font-size: 0.52rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 1px 6px;
-  border-radius: 99px;
-}
-
 /* ============================================================
    TESTIMONIALS
    ============================================================ */
