@@ -88,3 +88,26 @@ test('applyOverrides sovrascrive titolarita/nota', () => {
   const orig = PLAYERS.giocatori.find(p => p.id === 'sommer-inter');
   assertEqual(orig.titolarita, 'titolare'); // immutato
 });
+test('maxConsigliato Lautaro fresco = 67', () => {
+  const s = Store.initState();
+  const p = Store.playerById(PLAYERS.giocatori, 'lautaro-inter');
+  assertEqual(Advisor.maxConsigliato(s, PLAYERS.giocatori, p), 67);
+});
+test('maxConsigliato Bastoni fresco = 58 (boost mod difesa)', () => {
+  const s = Store.initState();
+  const p = Store.playerById(PLAYERS.giocatori, 'bastoni-inter');
+  assertEqual(Advisor.maxConsigliato(s, PLAYERS.giocatori, p), 58);
+});
+test('maxConsigliato Sommer fresco = 28', () => {
+  const s = Store.initState();
+  const p = Store.playerById(PLAYERS.giocatori, 'sommer-inter');
+  assertEqual(Advisor.maxConsigliato(s, PLAYERS.giocatori, p), 28);
+});
+test('maxConsigliato = 0 se slot ruolo pieni', () => {
+  let s = Store.initState();
+  s = Store.applySale(s, { giocatoreId: 'falcone-lecce', squadraId: 't0', prezzo: 1 });
+  s = Store.applySale(s, { giocatoreId: 'meret-napoli',  squadraId: 't0', prezzo: 1 });
+  s = Store.applySale(s, { giocatoreId: 'sommer-inter',  squadraId: 't0', prezzo: 1 });
+  const p = Store.playerById(PLAYERS.giocatori, 'falcone-lecce');
+  assertEqual(Advisor.maxConsigliato(s, PLAYERS.giocatori, p), 0);
+});
