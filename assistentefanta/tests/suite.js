@@ -66,3 +66,25 @@ test('validateSale ko se prezzo < 1', () => {
   assertEqual(r.ok, false);
   assertEqual(r.reason, 'prezzo minimo 1');
 });
+test('buildQueue: P prima, poi D,C,A; alfabetico dentro ruolo', () => {
+  const q = Store.buildQueue(PLAYERS.giocatori);
+  const roles = ['P','D','C','A'];
+  let last = -1;
+  for (const p of q) { const idx = roles.indexOf(p.ruolo); assert(idx >= last, 'ruoli non ordinati'); last = idx; }
+  const p = q.filter(x => x.ruolo === 'P').map(x => x.nome);
+  assertEqual(p[0], 'Falcone'); assertEqual(p[1], 'Meret'); assertEqual(p[2], 'Sommer');
+});
+test('firstUnsoldIndex salta i venduti', () => {
+  const q = Store.buildQueue(PLAYERS.giocatori);
+  const sold = new Set([q[0].id]);
+  assertEqual(Store.firstUnsoldIndex(q, sold, 0), 1);
+});
+test('applyOverrides sovrascrive titolarita/nota', () => {
+  const ov = { 'sommer-inter': { titolarita: 'ballottaggio', nota: 'acciaccato' } };
+  const eff = Store.applyOverrides(PLAYERS.giocatori, ov);
+  const s = eff.find(p => p.id === 'sommer-inter');
+  assertEqual(s.titolarita, 'ballottaggio');
+  assertEqual(s.nota, 'acciaccato');
+  const orig = PLAYERS.giocatori.find(p => p.id === 'sommer-inter');
+  assertEqual(orig.titolarita, 'titolare'); // immutato
+});

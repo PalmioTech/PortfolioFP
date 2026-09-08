@@ -55,5 +55,20 @@ window.Store = (function () {
     if (!state.vendite.length) return state;
     return Object.assign({}, state, { vendite: state.vendite.slice(0, -1) });
   }
-  return { DEFAULT_CONFIG, ROLES, initState, myId, playerById, teamSpent, teamBudget, teamRosterCountByRole, teamSlotsRemaining, soldIds, validateSale, applySale, undoSale };
+  function applyOverrides(players, overrides) {
+    if (!overrides) return players;
+    return players.map(p => overrides[p.id] ? Object.assign({}, p, overrides[p.id]) : p);
+  }
+  function buildQueue(players) {
+    return players.slice().sort((a, b) => {
+      const r = ROLES.indexOf(a.ruolo) - ROLES.indexOf(b.ruolo);
+      if (r !== 0) return r;
+      return a.nome.localeCompare(b.nome, 'it');
+    });
+  }
+  function firstUnsoldIndex(queue, sold, from) {
+    for (let i = (from || 0); i < queue.length; i++) if (!sold.has(queue[i].id)) return i;
+    return -1;
+  }
+  return { DEFAULT_CONFIG, ROLES, initState, myId, playerById, teamSpent, teamBudget, teamRosterCountByRole, teamSlotsRemaining, soldIds, validateSale, applySale, undoSale, applyOverrides, buildQueue, firstUnsoldIndex };
 })();
