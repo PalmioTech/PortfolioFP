@@ -32,13 +32,34 @@
     <button id="btnImport" type="button">Import</button>
     <input id="fileImport" type="file" accept="application/json" hidden>
     <button id="btnConfig" type="button">⚙︎</button>
+    <button id="btnAI" type="button">💬</button>
     <button id="btnReset" type="button">Reset</button>
   </footer>
   <div id="configPanel" hidden></div>
 </main>
+<div id="aiPanel" hidden>
+  <div id="aiHead">
+    <strong>Assistente AI</strong>
+    <input id="aiKey" type="password" placeholder="API key OpenAI (opzionale)" autocomplete="off">
+    <span id="aiMode"></span>
+    <button id="aiClose" type="button">✕</button>
+  </div>
+  <div id="aiKeyNote">La key resta nel tuo browser (localStorage) e va solo a OpenAI. Vuota = modo copia-incolla con ChatGPT.</div>
+  <div id="aiMessages"></div>
+  <div id="aiQuick">
+    <button id="aiQuickValuta" type="button">Valuta il giocatore</button>
+    <button id="aiQuickManca" type="button">Cosa mi manca</button>
+    <button id="aiQuickMeglio" type="button">Meglio X o Y</button>
+  </div>
+  <div id="aiInputRow">
+    <textarea id="aiInput" rows="2" placeholder="chiedi qualcosa sull'asta…"></textarea>
+    <button id="aiSend" type="button">Invia</button>
+  </div>
+</div>
 <script src="store.js"></script>
 <script src="advisor.js"></script>
 <script src="data/players.js"></script>
 <script src="app.js"></script>
+<script src="ai.js"></script>
 </body>
 </html>

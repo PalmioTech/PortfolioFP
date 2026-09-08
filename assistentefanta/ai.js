@@ -89,5 +89,30 @@ window.AI = (function (Store, Advisor) {
     return (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || '(risposta vuota)';
   }
 
-  return { SYSTEM_PROMPT, AIKEY_LS, buildContext, contextToText, buildUserMessage, messagesFor, callOpenAI };
+  function initChat() {
+    const $ = (id) => document.getElementById(id);
+    const panel = $('aiPanel');
+    if (!panel) return;
+    const keyEl = $('aiKey');
+    try { keyEl.value = localStorage.getItem(AIKEY_LS) || ''; } catch (e) {}
+    function updateMode() {
+      const has = !!(keyEl.value || '').trim();
+      $('aiMode').textContent = has ? 'modo: API automatica' : 'modo: copia-incolla';
+    }
+    updateMode();
+    keyEl.addEventListener('change', () => {
+      try { localStorage.setItem(AIKEY_LS, keyEl.value.trim()); } catch (e) {}
+      updateMode();
+    });
+    $('btnAI').onclick = () => { panel.hidden = !panel.hidden; };
+    $('aiClose').onclick = () => { panel.hidden = true; };
+    // gli handler di invio/quick sono agganciati nei task successivi
+    initChat._send = initChat._send || function () {};
+    $('aiSend').onclick = () => initChat._send($('aiInput').value);
+  }
+  if (typeof document !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', function () { if (document.getElementById('aiPanel')) initChat(); });
+  }
+
+  return { SYSTEM_PROMPT, AIKEY_LS, buildContext, contextToText, buildUserMessage, messagesFor, callOpenAI, initChat };
 })(window.Store, window.Advisor);

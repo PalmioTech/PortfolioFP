@@ -36,3 +36,23 @@ button { cursor:pointer; }
 button, .teamBtn, #qlist li { min-height:40px; } /* target touch tablet */
 @media (max-width:900px){ #cols { grid-template-columns:1fr; } #roster,#rivals { max-height:none; } }
 @media (orientation:landscape) and (max-width:1200px){ #cols { gap:.5rem; padding:.5rem; } }
+
+#aiPanel { position:fixed; right:1rem; bottom:4rem; width:min(94vw,420px); max-height:70vh; display:flex; flex-direction:column; background:var(--card); border:1px solid var(--lime); border-radius:12px; padding:.6rem; z-index:20; }
+#aiPanel[hidden] { display:none; }
+#aiHead { display:flex; align-items:center; gap:.4rem; }
+#aiHead strong { color:var(--lime); }
+#aiHead #aiKey { flex:1; min-width:0; background:#0f0c14; color:var(--fg); border:1px solid #2a2233; border-radius:6px; padding:.3rem; }
+#aiMode { font-size:.75rem; color:var(--muted); white-space:nowrap; }
+#aiKeyNote { font-size:.7rem; color:var(--muted); margin:.3rem 0; }
+#aiMessages { flex:1; overflow:auto; display:flex; flex-direction:column; gap:.4rem; margin:.4rem 0; min-height:6rem; }
+.aiMsg { padding:.4rem .6rem; border-radius:8px; white-space:pre-wrap; font-size:.9rem; }
+.aiMsg.user { background:#241a0e; align-self:flex-end; }
+.aiMsg.assistant { background:#141b12; align-self:flex-start; }
+.aiMsg.err { background:#2a0f0c; color:var(--accent); }
+#aiQuick { display:flex; gap:.3rem; flex-wrap:wrap; }
+#aiQuick button { flex:1; min-height:36px; background:#17131d; color:var(--fg); border:1px solid #2a2233; border-radius:6px; font-size:.8rem; }
+#aiInputRow { display:flex; gap:.4rem; margin-top:.4rem; }
+#aiInput { flex:1; background:#0f0c14; color:var(--fg); border:1px solid #2a2233; border-radius:6px; padding:.4rem; resize:vertical; }
+#aiSend { min-height:40px; padding:0 1rem; background:var(--lime); color:#000; border:0; border-radius:6px; font-weight:700; }
+.aiCopyBox { display:flex; flex-direction:column; gap:.3rem; }
+.aiCopyBox textarea { width:100%; background:#0f0c14; color:var(--fg); border:1px solid #2a2233; border-radius:6px; padding:.4rem; }
