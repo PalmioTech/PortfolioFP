@@ -95,7 +95,7 @@ window.PLAYERS = {
 
 ## 5. Pipeline dati
 
-I dati attuali sono **sample**. Quando arriva il listone ufficiale, segui questi step:
+I dati attuali sono **reali** (listone ufficiale Serie A 2026/27, 531 giocatori: quote dal file, titolarità/ballottaggi/note/infortuni da ricerca online, tier derivato dal FVM per ruolo). Per rigenerarli da un nuovo listone segui questi step:
 
 1. **Ricevi il listone**: CSV o XLSX con colonne `nome, squadra, ruolo, quota`
 
@@ -125,7 +125,7 @@ Tutti editabili durante l'asta dal pannello ⚙︎.
 
 ## 7. Limiti noti
 
-- **Dati sample**: finché non arriva il listone ufficiale, i giocatori sono fittizi
+- **Dati = snapshot pre-asta**: titolarità/ballottaggi/infortuni riflettono la ricerca al 8/9/2026. Possono cambiare (infortuni last-minute, mercato): usa **✎ nota** per override al volo. I test girano su una fixture dedicata (`tests/fixture.js`), indipendente dai dati reali
 - **Taratura moltiplicatori**: i valori di `tierMult` e `modDifesaBoost` sono calibrazioni iniziali. Dopo l'asta, i dati reali permetteranno di perfezionarli
 - **Offline**: l'app funziona senza connessione internet, ma il reperimento di metadati online (titolarità, ballottaggi) rimane manuale
 - **No sincronizzazione**: ogni dispositivo ha la sua sessione locale. Usa Export/Import per sincronizzare tra PC e telefono

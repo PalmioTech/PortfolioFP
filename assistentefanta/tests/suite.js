@@ -14,23 +14,23 @@ test('teamBudget fresh = budget config', () => {
 });
 test('teamSlotsRemaining fresh = slots config', () => {
   const s = Store.initState();
-  const rem = Store.teamSlotsRemaining(s, PLAYERS.giocatori, 't0');
+  const rem = Store.teamSlotsRemaining(s, TEST_PLAYERS, 't0');
   assertEqual(rem.P, 3); assertEqual(rem.D, 8); assertEqual(rem.C, 8); assertEqual(rem.A, 6);
 });
 test('validateSale ok su acquisto valido', () => {
   const s = Store.initState();
-  const r = Store.validateSale(s, PLAYERS.giocatori, { giocatoreId: 'lautaro-inter', squadraId: 't0', prezzo: 67 });
+  const r = Store.validateSale(s, TEST_PLAYERS, { giocatoreId: 'lautaro-inter', squadraId: 't0', prezzo: 67 });
   assertEqual(r.ok, true);
 });
 test('validateSale ko se prezzo > budget', () => {
   const s = Store.initState();
-  const r = Store.validateSale(s, PLAYERS.giocatori, { giocatoreId: 'lautaro-inter', squadraId: 't0', prezzo: 600 });
+  const r = Store.validateSale(s, TEST_PLAYERS, { giocatoreId: 'lautaro-inter', squadraId: 't0', prezzo: 600 });
   assertEqual(r.ok, false);
 });
 test('validateSale ko se già venduto', () => {
   let s = Store.initState();
   s = Store.applySale(s, { giocatoreId: 'lautaro-inter', squadraId: 't1', prezzo: 50 });
-  const r = Store.validateSale(s, PLAYERS.giocatori, { giocatoreId: 'lautaro-inter', squadraId: 't0', prezzo: 10 });
+  const r = Store.validateSale(s, TEST_PLAYERS, { giocatoreId: 'lautaro-inter', squadraId: 't0', prezzo: 10 });
   assertEqual(r.ok, false);
 });
 test('applySale aggiunge vendita con seq incrementale', () => {
@@ -56,18 +56,18 @@ test('validateSale ko se slot ruolo pieno', () => {
   s = Store.applySale(s, { giocatoreId: 'falcone-lecce', squadraId: 't0', prezzo: 1 });
   s = Store.applySale(s, { giocatoreId: 'meret-napoli',  squadraId: 't0', prezzo: 1 });
   // P pieni (2/2); sommer-inter è un P NON venduto → deve essere respinto per slot pieno, non "già venduto"
-  const r = Store.validateSale(s, PLAYERS.giocatori, { giocatoreId: 'sommer-inter', squadraId: 't0', prezzo: 1 });
+  const r = Store.validateSale(s, TEST_PLAYERS, { giocatoreId: 'sommer-inter', squadraId: 't0', prezzo: 1 });
   assertEqual(r.ok, false);
   assertEqual(r.reason, 'slot ruolo pieno');
 });
 test('validateSale ko se prezzo < 1', () => {
   const s = Store.initState();
-  const r = Store.validateSale(s, PLAYERS.giocatori, { giocatoreId: 'lautaro-inter', squadraId: 't0', prezzo: 0 });
+  const r = Store.validateSale(s, TEST_PLAYERS, { giocatoreId: 'lautaro-inter', squadraId: 't0', prezzo: 0 });
   assertEqual(r.ok, false);
   assertEqual(r.reason, 'prezzo minimo 1');
 });
 test('buildQueue: P prima, poi D,C,A; alfabetico dentro ruolo', () => {
-  const q = Store.buildQueue(PLAYERS.giocatori);
+  const q = Store.buildQueue(TEST_PLAYERS);
   const roles = ['P','D','C','A'];
   let last = -1;
   for (const p of q) { const idx = roles.indexOf(p.ruolo); assert(idx >= last, 'ruoli non ordinati'); last = idx; }
@@ -75,58 +75,58 @@ test('buildQueue: P prima, poi D,C,A; alfabetico dentro ruolo', () => {
   assertEqual(p[0], 'Falcone'); assertEqual(p[1], 'Meret'); assertEqual(p[2], 'Sommer');
 });
 test('firstUnsoldIndex salta i venduti', () => {
-  const q = Store.buildQueue(PLAYERS.giocatori);
+  const q = Store.buildQueue(TEST_PLAYERS);
   const sold = new Set([q[0].id]);
   assertEqual(Store.firstUnsoldIndex(q, sold, 0), 1);
 });
 test('applyOverrides sovrascrive titolarita/nota', () => {
   const ov = { 'sommer-inter': { titolarita: 'ballottaggio', nota: 'acciaccato' } };
-  const eff = Store.applyOverrides(PLAYERS.giocatori, ov);
+  const eff = Store.applyOverrides(TEST_PLAYERS, ov);
   const s = eff.find(p => p.id === 'sommer-inter');
   assertEqual(s.titolarita, 'ballottaggio');
   assertEqual(s.nota, 'acciaccato');
-  const orig = PLAYERS.giocatori.find(p => p.id === 'sommer-inter');
+  const orig = TEST_PLAYERS.find(p => p.id === 'sommer-inter');
   assertEqual(orig.titolarita, 'titolare'); // immutato
 });
 test('maxConsigliato Lautaro fresco = 67', () => {
   const s = Store.initState();
-  const p = Store.playerById(PLAYERS.giocatori, 'lautaro-inter');
-  assertEqual(Advisor.maxConsigliato(s, PLAYERS.giocatori, p), 67);
+  const p = Store.playerById(TEST_PLAYERS, 'lautaro-inter');
+  assertEqual(Advisor.maxConsigliato(s, TEST_PLAYERS, p), 67);
 });
 test('maxConsigliato Bastoni fresco = 58 (boost mod difesa)', () => {
   const s = Store.initState();
-  const p = Store.playerById(PLAYERS.giocatori, 'bastoni-inter');
-  assertEqual(Advisor.maxConsigliato(s, PLAYERS.giocatori, p), 58);
+  const p = Store.playerById(TEST_PLAYERS, 'bastoni-inter');
+  assertEqual(Advisor.maxConsigliato(s, TEST_PLAYERS, p), 58);
 });
 test('maxConsigliato Sommer fresco = 28', () => {
   const s = Store.initState();
-  const p = Store.playerById(PLAYERS.giocatori, 'sommer-inter');
-  assertEqual(Advisor.maxConsigliato(s, PLAYERS.giocatori, p), 28);
+  const p = Store.playerById(TEST_PLAYERS, 'sommer-inter');
+  assertEqual(Advisor.maxConsigliato(s, TEST_PLAYERS, p), 28);
 });
 test('maxConsigliato = 0 se slot ruolo pieni', () => {
   let s = Store.initState();
   s = Store.applySale(s, { giocatoreId: 'falcone-lecce', squadraId: 't0', prezzo: 1 });
   s = Store.applySale(s, { giocatoreId: 'meret-napoli',  squadraId: 't0', prezzo: 1 });
   s = Store.applySale(s, { giocatoreId: 'sommer-inter',  squadraId: 't0', prezzo: 1 });
-  const p = Store.playerById(PLAYERS.giocatori, 'falcone-lecce');
-  assertEqual(Advisor.maxConsigliato(s, PLAYERS.giocatori, p), 0);
+  const p = Store.playerById(TEST_PLAYERS, 'falcone-lecce');
+  assertEqual(Advisor.maxConsigliato(s, TEST_PLAYERS, p), 0);
 });
 test('scarsita A fresco: 3 titolari, 14 squadre, alta', () => {
   const s = Store.initState();
-  const sc = Advisor.scarsita(s, PLAYERS.giocatori, 'A');
+  const sc = Advisor.scarsita(s, TEST_PLAYERS, 'A');
   assertEqual(sc.titolari, 3); // Lautaro, Retegui, Thuram
   assertEqual(sc.squadre, 14);
   assertEqual(sc.alta, true);
 });
 test('verdetto Lautaro fresco = PRIORITA (titolare + scarsità alta)', () => {
   const s = Store.initState();
-  const p = Store.playerById(PLAYERS.giocatori, 'lautaro-inter');
-  assertEqual(Advisor.verdetto(s, PLAYERS.giocatori, p), 'PRIORITA');
+  const p = Store.playerById(TEST_PLAYERS, 'lautaro-inter');
+  assertEqual(Advisor.verdetto(s, TEST_PLAYERS, p), 'PRIORITA');
 });
 test('verdetto Colombo fresco = SERVE (ballottaggio, non priorità)', () => {
   const s = Store.initState();
-  const p = Store.playerById(PLAYERS.giocatori, 'colombo-genoa');
-  assertEqual(Advisor.verdetto(s, PLAYERS.giocatori, p), 'SERVE');
+  const p = Store.playerById(TEST_PLAYERS, 'colombo-genoa');
+  assertEqual(Advisor.verdetto(s, TEST_PLAYERS, p), 'SERVE');
 });
 test('verdetto NON_SERVE se slot ruolo A pieni', () => {
   let s = Store.initState();
@@ -134,20 +134,20 @@ test('verdetto NON_SERVE se slot ruolo A pieni', () => {
   ids.forEach(id => { s = Store.applySale(s, { giocatoreId: id, squadraId: 't0', prezzo: 1 }); });
   // 4 su 6 A presi; testiamo un ruolo pieno forzando config a 4 slot A
   s.config = Object.assign({}, s.config, { slots: Object.assign({}, s.config.slots, { A: 4 }) });
-  const p = Store.playerById(PLAYERS.giocatori, 'colombo-genoa');
-  assertEqual(Advisor.verdetto(s, PLAYERS.giocatori, p), 'NON_SERVE');
+  const p = Store.playerById(TEST_PLAYERS, 'colombo-genoa');
+  assertEqual(Advisor.verdetto(s, TEST_PLAYERS, p), 'NON_SERVE');
 });
 test('verdetto NON_SERVE se budget ruolo ~1cr/slot e tier top', () => {
   let s = Store.initState();
   // io spendo 156 su un A → residuo A = 160-156 = 4, slot A res = 5 → 4<=5, tier1 Thuram → NON_SERVE
   s = Store.applySale(s, { giocatoreId: 'lautaro-inter', squadraId: 't0', prezzo: 156 });
-  const p = Store.playerById(PLAYERS.giocatori, 'thuram-inter');
-  assertEqual(Advisor.verdetto(s, PLAYERS.giocatori, p), 'NON_SERVE');
+  const p = Store.playerById(TEST_PLAYERS, 'thuram-inter');
+  assertEqual(Advisor.verdetto(s, TEST_PLAYERS, p), 'NON_SERVE');
 });
 test('advice overpay = rilancio - max', () => {
   const s = Store.initState();
-  const p = Store.playerById(PLAYERS.giocatori, 'lautaro-inter');
-  const a = Advisor.advice(s, PLAYERS.giocatori, p, 80);
+  const p = Store.playerById(TEST_PLAYERS, 'lautaro-inter');
+  const a = Advisor.advice(s, TEST_PLAYERS, p, 80);
   assertEqual(a.max, 67);
   assertEqual(a.overpay, 13);
 });
