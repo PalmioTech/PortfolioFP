@@ -37,5 +37,23 @@ window.Store = (function () {
     for (const r of ROLES) rem[r] = state.config.slots[r] - filled[r];
     return rem;
   }
-  return { DEFAULT_CONFIG, ROLES, initState, myId, playerById, teamSpent, teamBudget, teamRosterCountByRole, teamSlotsRemaining };
+  function soldIds(state) { return new Set(state.vendite.map(v => v.giocatoreId)); }
+  function validateSale(state, players, sale) {
+    const p = playerById(players, sale.giocatoreId);
+    if (!p) return { ok: false, reason: 'giocatore inesistente' };
+    if (soldIds(state).has(sale.giocatoreId)) return { ok: false, reason: 'già venduto' };
+    if (!(sale.prezzo >= 1)) return { ok: false, reason: 'prezzo minimo 1' };
+    if (sale.prezzo > teamBudget(state, sale.squadraId)) return { ok: false, reason: 'budget insufficiente' };
+    if (teamSlotsRemaining(state, players, sale.squadraId)[p.ruolo] <= 0) return { ok: false, reason: 'slot ruolo pieno' };
+    return { ok: true };
+  }
+  function applySale(state, sale) {
+    const seq = state.vendite.length ? state.vendite[state.vendite.length - 1].seq + 1 : 1;
+    return Object.assign({}, state, { vendite: state.vendite.concat([{ giocatoreId: sale.giocatoreId, squadraId: sale.squadraId, prezzo: sale.prezzo, seq }]) });
+  }
+  function undoSale(state) {
+    if (!state.vendite.length) return state;
+    return Object.assign({}, state, { vendite: state.vendite.slice(0, -1) });
+  }
+  return { DEFAULT_CONFIG, ROLES, initState, myId, playerById, teamSpent, teamBudget, teamRosterCountByRole, teamSlotsRemaining, soldIds, validateSale, applySale, undoSale };
 })();

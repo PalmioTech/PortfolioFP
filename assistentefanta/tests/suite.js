@@ -17,3 +17,44 @@ test('teamSlotsRemaining fresh = slots config', () => {
   const rem = Store.teamSlotsRemaining(s, PLAYERS.giocatori, 't0');
   assertEqual(rem.P, 3); assertEqual(rem.D, 8); assertEqual(rem.C, 8); assertEqual(rem.A, 6);
 });
+test('validateSale ok su acquisto valido', () => {
+  const s = Store.initState();
+  const r = Store.validateSale(s, PLAYERS.giocatori, { giocatoreId: 'lautaro-inter', squadraId: 't0', prezzo: 67 });
+  assertEqual(r.ok, true);
+});
+test('validateSale ko se prezzo > budget', () => {
+  const s = Store.initState();
+  const r = Store.validateSale(s, PLAYERS.giocatori, { giocatoreId: 'lautaro-inter', squadraId: 't0', prezzo: 600 });
+  assertEqual(r.ok, false);
+});
+test('validateSale ko se già venduto', () => {
+  let s = Store.initState();
+  s = Store.applySale(s, { giocatoreId: 'lautaro-inter', squadraId: 't1', prezzo: 50 });
+  const r = Store.validateSale(s, PLAYERS.giocatori, { giocatoreId: 'lautaro-inter', squadraId: 't0', prezzo: 10 });
+  assertEqual(r.ok, false);
+});
+test('applySale aggiunge vendita con seq incrementale', () => {
+  let s = Store.initState();
+  s = Store.applySale(s, { giocatoreId: 'sommer-inter', squadraId: 't0', prezzo: 20 });
+  s = Store.applySale(s, { giocatoreId: 'meret-napoli', squadraId: 't2', prezzo: 8 });
+  assertEqual(s.vendite.length, 2);
+  assertEqual(s.vendite[0].seq, 1);
+  assertEqual(s.vendite[1].seq, 2);
+  assertEqual(Store.teamBudget(s, 't0'), 480);
+});
+test('undoSale rimuove ultima; su vuoto non rompe', () => {
+  let s = Store.initState();
+  s = Store.applySale(s, { giocatoreId: 'sommer-inter', squadraId: 't0', prezzo: 20 });
+  s = Store.undoSale(s);
+  assertEqual(s.vendite.length, 0);
+  s = Store.undoSale(s);
+  assertEqual(s.vendite.length, 0);
+});
+test('validateSale ko se slot ruolo pieno', () => {
+  let s = Store.initState();
+  s = Store.applySale(s, { giocatoreId: 'falcone-lecce', squadraId: 't0', prezzo: 1 });
+  s = Store.applySale(s, { giocatoreId: 'meret-napoli',  squadraId: 't0', prezzo: 1 });
+  s = Store.applySale(s, { giocatoreId: 'sommer-inter',  squadraId: 't0', prezzo: 1 });
+  const r = Store.validateSale(s, PLAYERS.giocatori, { giocatoreId: 'falcone-lecce', squadraId: 't0', prezzo: 1 });
+  assertEqual(r.ok, false); // P pieni (3) + già venduto
+});
