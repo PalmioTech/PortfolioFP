@@ -29,7 +29,8 @@ function renderCard() {
     '<div class="verdetto v-' + a.verdetto + '">' + verdettoLabel(a.verdetto) + '</div>' +
     '<div class="max">max consigliato: <strong>' + a.max + '</strong></div>' +
     '<div class="scars">scarsità ' + p.ruolo + ': ' + sc.titolari + ' titolari / ' + sc.squadre + ' squadre' + (sc.alta ? ' · ALTA' : '') + '</div>' +
-    '<button id="btnSold" type="button">VENDUTO</button>';
+    '<button id="btnSold" type="button">VENDUTO</button>' +
+    '<button id="btnOverride" type="button">✎ nota</button>';
 }
 let SALE = { open: false, prezzo: 1 };
 function renderSaleFlow() {
@@ -136,13 +137,30 @@ function jumpTo(id) {
   const i = QUEUE.findIndex(p => p.id === id);
   if (i >= 0) { STATE.cursore.index = i; render(); }
 }
+function onSearch(q) {
+  q = (q || '').trim().toLowerCase();
+  if (!q) return;
+  const hit = QUEUE.find(p => p.nome.toLowerCase().includes(q) || p.squadra.toLowerCase().includes(q));
+  if (hit) jumpTo(hit.id);
+}
+function applyOverride(id, patch) {
+  STATE.overrides = Object.assign({}, STATE.overrides, { [id]: Object.assign({}, STATE.overrides[id], patch) });
+  render();
+}
+function openOverride() {
+  const p = currentPlayer(); if (!p) return;
+  const t = prompt('Titolarità (titolare/ballottaggio/riserva/incerto):', p.titolarita);
+  if (t === null) return;
+  const nota = prompt('Nota:', p.nota || '');
+  applyOverride(p.id, { titolarita: t.trim() || p.titolarita, nota: nota || '' });
+}
 function wireEvents() {
   $('btnPrev').onclick = () => go(-1);
   $('btnNext').onclick = () => go(1);
   $('queue').onclick = (e) => { const li = e.target.closest('li'); if (li) jumpTo(li.dataset.id); };
   $('btnUndo').onclick = doUndo;
   $('card').addEventListener('dblclick', openSale); // doppio click sulla card apre la vendita
-  $('advice').addEventListener('click', (e) => { if (e.target.id === 'btnSold') openSale(); });
+  $('advice').addEventListener('click', (e) => { if (e.target.id === 'btnSold') openSale(); else if (e.target.id === 'btnOverride') openOverride(); });
   $('saleflow').addEventListener('click', (e) => {
     const t = e.target;
     if (t.dataset.add) { SALE.prezzo = Math.max(1, SALE.prezzo + parseInt(t.dataset.add, 10)); renderSaleFlow(); }
@@ -153,6 +171,19 @@ function wireEvents() {
   $('btnImport').onclick = () => $('fileImport').click();
   $('fileImport').onchange = (e) => { if (e.target.files[0]) importState(e.target.files[0]); };
   $('btnReset').onclick = resetState;
+  $('search').addEventListener('input', (e) => onSearch(e.target.value));
+  document.addEventListener('keydown', (e) => {
+    if (/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) {
+      if (e.key === 'Escape') document.activeElement.blur();
+      return;
+    }
+    if (e.key === 'ArrowLeft') go(-1);
+    else if (e.key === 'ArrowRight') go(1);
+    else if (e.key === 'v') openSale();
+    else if (e.key === 'm' && SALE.open) confirmSale(Store.myId(STATE));
+    else if (e.key === 'z') doUndo();
+    else if (e.key === '/') { e.preventDefault(); $('search').focus(); }
+  });
 }
 function boot() { STATE = loadState() || Store.initState(); rebuildQueue(); render(); wireEvents(); }
 document.addEventListener('DOMContentLoaded', boot);
