@@ -107,7 +107,26 @@ function renderRivals() {
   }).join('');
   $('rivals').innerHTML = '<h3>Rivali</h3>' + rows;
 }
-function render() { rebuildQueue(); renderHeader(); renderCard(); renderSaleFlow(); renderQueue(); renderRoster(); renderRivals(); }
+function render() { rebuildQueue(); renderHeader(); renderCard(); renderSaleFlow(); renderQueue(); renderRoster(); renderRivals(); saveState(); }
+
+const LS_KEY = 'assistentefanta:v1';
+function saveState() { try { localStorage.setItem(LS_KEY, JSON.stringify(STATE)); } catch (e) {} }
+function loadState() { try { const s = localStorage.getItem(LS_KEY); return s ? JSON.parse(s) : null; } catch (e) { return null; } }
+function exportState() {
+  const blob = new Blob([JSON.stringify(STATE, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'asta-backup.json'; a.click();
+  URL.revokeObjectURL(url);
+}
+function importState(file) {
+  const reader = new FileReader();
+  reader.onload = () => { try { STATE = JSON.parse(reader.result); render(); } catch (e) { alert('File non valido'); } };
+  reader.readAsText(file);
+}
+function resetState() {
+  if (confirm('Azzerare tutta l\'asta? Operazione non annullabile.')) { STATE = Store.initState(); render(); }
+}
 
 function go(delta) {
   const n = STATE.cursore.index + delta;
@@ -130,6 +149,10 @@ function wireEvents() {
     else if (t.dataset.set) { SALE.prezzo = parseInt(t.dataset.set, 10); renderSaleFlow(); }
     else if (t.dataset.team) { confirmSale(t.dataset.team); }
   });
+  $('btnExport').onclick = exportState;
+  $('btnImport').onclick = () => $('fileImport').click();
+  $('fileImport').onchange = (e) => { if (e.target.files[0]) importState(e.target.files[0]); };
+  $('btnReset').onclick = resetState;
 }
-function boot() { STATE = Store.initState(); rebuildQueue(); render(); wireEvents(); }
+function boot() { STATE = loadState() || Store.initState(); rebuildQueue(); render(); wireEvents(); }
 document.addEventListener('DOMContentLoaded', boot);
