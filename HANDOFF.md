@@ -32,6 +32,25 @@ ancorato + bottom-sheet wizard), ora live. Vedi **Current progress**.
 
 ## Current progress (fatto, tutto già live su main)
 ### Questa sessione (recente → vecchio)
+- **MetanApp — badge store** (set 2026): badge "Scarica su App Store / Google Play"
+  su `metanapp/index.html` (`.store-badge`, full-size) **e** sulla card MetanApp in
+  `portfolio.html` (`.pc-store`, compatta single-line). Loghi Apple/Google **SVG
+  inline**. Google Play era "presto" (pillola `--soon`) → ora **live**
+  (`it.federicopalmieri.metano`): link attivo, pillola e CSS `--soon`/`__soon`
+  **rimossi** (erano morti).
+  - **Fix taglio badge nella card portfolio**: `.portfolio-card` su **desktop** è
+    **`height:340px; overflow:hidden`** (hover: il visual va 340→110, restano ~230px
+    per il body) → desc lunga + 2 badge **venivano tagliati**. Su **mobile no**: lì la
+    card è `height:auto; overflow:visible` (scrollstack). Fix: `.portfolio-card__desc
+    --clamp` con **`max-height:3.3em; overflow:hidden`** (2 righe) + desc accorciata +
+    badge `.pc-store` **single-line** (logo + `<strong>`, senza sottotitolo) + 2 chip.
+    Verificato alla card più stretta reale (~284px, griglia 4-col): ~67px di margine.
+- **LinkedIn (deliverable ESTERNI, non nel repo)**: testi profilo (headline, About,
+  Esperienza Pecas + MetanApp, Featured, Skills) allineati alla copy del sito;
+  descrizione **Servizi ≤500 char**; **cover banner 1584×396** brand FPdeveloper reso
+  via **Chrome headless** da HTML in scratchpad (PNG 3168×792, 2×); **piano editoriale**
+  mensile (presentazione + lancio app iOS→Android). Consegnati in chat/file, niente
+  nel repo. Il banner è in scratchpad (effimero) → rigenerare se serve permanente.
 - **Preventivatore automatico**: bottone tondo stile chat in **basso a sinistra**
   (con **fumetto nudge** "Scopri il tuo preventivo" dopo ~4s, una volta a sessione)
   → **bottom-sheet** wizard, tutto vanilla in **una IIFE in coda a
@@ -127,6 +146,12 @@ ancorato + bottom-sheet wizard), ora live. Vedi **Current progress**.
   perché la pagina è annidata (`/metanapp/privacy/`).
 - Full-width leggibile: bande full-width con gutter dell'hero MA cap di larghezza sui
   blocchi di testo lungo (regola UX line-length 60-75 caratteri).
+- Limitare la desc in una card ad **altezza fissa**: **`max-height` + `overflow:hidden`**
+  (robusto), non `-webkit-line-clamp` (vedi sotto). Badge store **single-line** per
+  stare in una card stretta a 4 colonne (~284px).
+- Rasterizzare HTML→PNG a misura esatta: **Chrome headless** (`--headless=new
+  --window-size=W,H --force-device-scale-factor=2 --screenshot --virtual-time-budget=5000`);
+  carica anche i Google Fonts.
 
 ## What didn't work (NON ripetere)
 - **Browser pane con i PDF**: cacha in modo aggressivo per path (ignora `?query`, e
@@ -141,6 +166,10 @@ ancorato + bottom-sheet wizard), ora live. Vedi **Current progress**.
   Power Mode. Lo scrub deve girare (è scroll-driven).
 - Specificità: un override in `@media` NON batte una regola base a singola classe
   scritta DOPO nel file (le media query non aggiungono specificità).
+- **`-webkit-line-clamp` sulla desc della card**: richiede `display:-webkit-box`, ma
+  qui il display computava **`flow-root`** (override) → clamp inattivo, desc a piena
+  altezza, badge tagliati. Sintomo insidioso: **tagliava su desktop ma non su mobile**
+  (mobile = card `height:auto`). Usare **`max-height`** invece.
 
 ## Environment limits / tooling
 - Deploy live ~30s dopo push. Verifica preferita: `curl -s https://federicopalmieri.it/…`
@@ -165,3 +194,7 @@ condivisibile.
 - Immagini WebP: hero `foto-profilo.png` (1.5MB) e loghi (~700KB) da convertire
   (`cwebp` non installato) → +performance/SEO.
 - Verificare l'anteprima OG (LinkedIn Post Inspector) dopo che il DNS/social cachano.
+- **LinkedIn**: testi profilo + cover banner + piano editoriale già consegnati (esterni).
+  Follow-up possibili: caption complete Android ("ora anche su Google Play" + recap "iOS
+  **e** Android"); salvare il banner in `assets/` se lo si vuole versionato; adattare il
+  piano a Instagram.
