@@ -81,7 +81,33 @@ function renderQueue() {
   const cur = $('qlist').querySelector('.cur');
   if (cur) cur.scrollIntoView({ block: 'nearest' });
 }
-function render() { rebuildQueue(); renderHeader(); renderCard(); renderSaleFlow(); renderQueue(); }
+function playersOfTeam(teamId) {
+  return STATE.vendite.filter(v => v.squadraId === teamId).map(v => {
+    const p = Store.playerById(PLAYERS_EFF, v.giocatoreId);
+    return { nome: p ? p.nome : v.giocatoreId, ruolo: p ? p.ruolo : '?', prezzo: v.prezzo };
+  });
+}
+function renderRoster() {
+  const me = Store.myId(STATE);
+  const rem = Store.teamSlotsRemaining(STATE, PLAYERS_EFF, me);
+  const rows = ['P', 'D', 'C', 'A'].map(r => {
+    const list = playersOfTeam(me).filter(x => x.ruolo === r).map(x => x.nome + ' (' + x.prezzo + ')').join(', ');
+    return '<div class="rrow"><b>' + r + '</b> ' + (STATE.config.slots[r] - rem[r]) + '/' + STATE.config.slots[r] + ' — ' + (list || '<span class=muted>vuoto</span>') + '</div>';
+  }).join('');
+  $('roster').innerHTML = '<h3>La mia rosa</h3>' + rows + '<div class="rbudget">Budget: <b>' + Store.teamBudget(STATE, me) + '</b></div>';
+}
+function renderRivals() {
+  const p = currentPlayer();
+  const ruolo = p ? p.ruolo : null;
+  const rows = STATE.squadre.filter(t => !t.isMe).map(t => {
+    const rem = Store.teamSlotsRemaining(STATE, PLAYERS_EFF, t.id);
+    const compete = ruolo && rem[ruolo] > 0;
+    return '<div class="rivrow' + (compete ? ' compete' : '') + '"><b>' + t.nome + '</b> ' +
+      Store.teamBudget(STATE, t.id) + 'cr · ' + ['P', 'D', 'C', 'A'].map(r => r + rem[r]).join(' ') + '</div>';
+  }).join('');
+  $('rivals').innerHTML = '<h3>Rivali</h3>' + rows;
+}
+function render() { rebuildQueue(); renderHeader(); renderCard(); renderSaleFlow(); renderQueue(); renderRoster(); renderRivals(); }
 
 function go(delta) {
   const n = STATE.cursore.index + delta;

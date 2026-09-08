@@ -24,3 +24,9 @@ button { cursor:pointer; }
 .teamBtn.me { border-color:var(--accent); color:var(--accent); font-weight:700; }
 .price button { margin:0 .1rem; } .err { color:var(--accent); min-height:1.2em; }
 #btnSold { margin-top:.4rem; background:var(--accent); color:#000; border:0; padding:.5rem 1rem; border-radius:6px; font-weight:700; }
+
+#roster, #rivals { font-size:.85rem; border:1px solid #221c29; border-radius:8px; padding:.5rem; max-height:80vh; overflow:auto; }
+#roster h3, #rivals h3 { margin:.2rem 0 .5rem; }
+.rrow, .rivrow { padding:.25rem 0; border-bottom:1px solid #17131d; }
+.rivrow.compete { color:var(--lime); }
+.muted { color:var(--muted); }
