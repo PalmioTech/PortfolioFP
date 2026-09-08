@@ -53,6 +53,7 @@ function advanceAfterSale() {
 }
 function confirmSale(squadraId) {
   const p = currentPlayer();
+  if (!p) { SALE.open = false; return; }
   const sale = { giocatoreId: p.id, squadraId, prezzo: SALE.prezzo };
   const v = Store.validateSale(STATE, PLAYERS_EFF, sale);
   if (!v.ok) { const el = $('saleErr'); if (el) el.textContent = 'Errore: ' + v.reason; return; }
@@ -137,9 +138,22 @@ function exportState() {
   a.href = url; a.download = 'asta-backup.json'; a.click();
   URL.revokeObjectURL(url);
 }
+function isValidState(s) {
+  return !!s && typeof s === 'object'
+    && s.config && typeof s.config === 'object'
+    && Array.isArray(s.squadre) && s.squadre.length === 14
+    && Array.isArray(s.vendite)
+    && s.cursore && typeof s.cursore.index === 'number';
+}
 function importState(file) {
   const reader = new FileReader();
-  reader.onload = () => { try { STATE = JSON.parse(reader.result); render(); } catch (e) { alert('File non valido'); } };
+  reader.onload = () => {
+    let parsed;
+    try { parsed = JSON.parse(reader.result); } catch (e) { alert('File non valido'); return; }
+    if (!isValidState(parsed)) { alert('File non valido: struttura asta non riconosciuta'); return; }
+    STATE = parsed;
+    render();
+  };
   reader.readAsText(file);
 }
 function resetState() {
