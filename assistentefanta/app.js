@@ -108,6 +108,23 @@ function renderRivals() {
   }).join('');
   $('rivals').innerHTML = '<h3>Rivali</h3>' + rows;
 }
+function renderConfig() {
+  const c = STATE.config;
+  const splitRows = ['P', 'D', 'C', 'A'].map(r =>
+    r + ' <input class="cfg" data-grp="split" data-key="' + r + '" type="number" step="0.01" value="' + c.split[r] + '">').join(' ');
+  const tierRows = [1, 2, 3, 4, 5].map(t =>
+    't' + t + ' <input class="cfg" data-grp="tierMult" data-key="' + t + '" type="number" step="0.1" value="' + c.tierMult[t] + '">').join(' ');
+  const boost = ['P', 'D'].map(r =>
+    r + ' <input class="cfg" data-grp="modDifesaBoost" data-key="' + r + '" type="number" step="0.05" value="' + c.modDifesaBoost[r] + '">').join(' ');
+  $('configPanel').innerHTML =
+    '<h3>Config</h3><div>Split budget: ' + splitRows + '</div><div>Tier mult: ' + tierRows + '</div><div>Mod difesa: ' + boost + '</div>' +
+    '<button id="cfgClose" type="button">Chiudi</button>';
+}
+function toggleConfig() {
+  const el = $('configPanel');
+  el.hidden = !el.hidden;
+  if (!el.hidden) renderConfig();
+}
 function render() { rebuildQueue(); renderHeader(); renderCard(); renderSaleFlow(); renderQueue(); renderRoster(); renderRivals(); saveState(); }
 
 const LS_KEY = 'assistentefanta:v1';
@@ -171,6 +188,14 @@ function wireEvents() {
   $('btnImport').onclick = () => $('fileImport').click();
   $('fileImport').onchange = (e) => { if (e.target.files[0]) importState(e.target.files[0]); };
   $('btnReset').onclick = resetState;
+  $('btnConfig').onclick = toggleConfig;
+  $('configPanel').addEventListener('click', (e) => { if (e.target.id === 'cfgClose') toggleConfig(); });
+  $('configPanel').addEventListener('change', (e) => {
+    const t = e.target; if (!t.classList.contains('cfg')) return;
+    const val = parseFloat(t.value); if (isNaN(val)) return;
+    STATE.config[t.dataset.grp][t.dataset.key] = val;
+    render();
+  });
   $('search').addEventListener('input', (e) => onSearch(e.target.value));
   document.addEventListener('keydown', (e) => {
     if (/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) {

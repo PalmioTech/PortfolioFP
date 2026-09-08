@@ -9,7 +9,7 @@ window.Store = (function () {
   const ROLES = ['P', 'D', 'C', 'A'];
 
   function initState(config, teamNames) {
-    const cfg = config || DEFAULT_CONFIG;
+    const cfg = config || JSON.parse(JSON.stringify(DEFAULT_CONFIG));
     const squadre = [];
     for (let i = 0; i < 14; i++) {
       squadre.push({ id: 't' + i, nome: i === 0 ? 'IO' : ((teamNames && teamNames[i]) || ('Sq ' + i)), isMe: i === 0 });
