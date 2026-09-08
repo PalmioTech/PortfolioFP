@@ -18,3 +18,9 @@ button { cursor:pointer; }
 #qlist li { padding:.35rem .6rem; border-bottom:1px solid #17131d; }
 #qlist li.cur { background:#241a0e; border-left:3px solid var(--accent); }
 #qlist li.sold { opacity:.35; text-decoration:line-through; }
+
+.teams { display:grid; grid-template-columns:repeat(4,1fr); gap:.35rem; margin-top:.5rem; }
+.teamBtn { padding:.5rem; border:1px solid #2a2233; background:#17131d; color:var(--fg); border-radius:6px; }
+.teamBtn.me { border-color:var(--accent); color:var(--accent); font-weight:700; }
+.price button { margin:0 .1rem; } .err { color:var(--accent); min-height:1.2em; }
+#btnSold { margin-top:.4rem; background:var(--accent); color:#000; border:0; padding:.5rem 1rem; border-radius:6px; font-weight:700; }

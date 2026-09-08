@@ -28,8 +28,39 @@ function renderCard() {
   $('advice').innerHTML =
     '<div class="verdetto v-' + a.verdetto + '">' + verdettoLabel(a.verdetto) + '</div>' +
     '<div class="max">max consigliato: <strong>' + a.max + '</strong></div>' +
-    '<div class="scars">scarsità ' + p.ruolo + ': ' + sc.titolari + ' titolari / ' + sc.squadre + ' squadre' + (sc.alta ? ' · ALTA' : '') + '</div>';
+    '<div class="scars">scarsità ' + p.ruolo + ': ' + sc.titolari + ' titolari / ' + sc.squadre + ' squadre' + (sc.alta ? ' · ALTA' : '') + '</div>' +
+    '<button id="btnSold" type="button">VENDUTO</button>';
 }
+let SALE = { open: false, prezzo: 1 };
+function renderSaleFlow() {
+  if (!SALE.open || !currentPlayer()) { $('saleflow').innerHTML = ''; return; }
+  const teams = STATE.squadre.map(t =>
+    '<button class="teamBtn' + (t.isMe ? ' me' : '') + '" data-team="' + t.id + '">' + t.nome + ' (' + Store.teamBudget(STATE, t.id) + ')</button>'
+  ).join('');
+  $('saleflow').innerHTML =
+    '<div class="price">Prezzo: <strong id="pz">' + SALE.prezzo + '</strong> ' +
+    '<button data-add="1">+1</button><button data-add="5">+5</button><button data-add="10">+10</button>' +
+    '<button data-add="-1">-1</button><button data-set="1">reset</button></div>' +
+    '<div class="teams">' + teams + '</div>' +
+    '<div class="err" id="saleErr"></div>';
+}
+function openSale() { SALE = { open: true, prezzo: 1 }; renderSaleFlow(); }
+function advanceAfterSale() {
+  const sold = Store.soldIds(STATE);
+  const next = Store.firstUnsoldIndex(QUEUE, sold, STATE.cursore.index);
+  STATE.cursore.index = next >= 0 ? next : STATE.cursore.index;
+}
+function confirmSale(squadraId) {
+  const p = currentPlayer();
+  const sale = { giocatoreId: p.id, squadraId, prezzo: SALE.prezzo };
+  const v = Store.validateSale(STATE, PLAYERS_EFF, sale);
+  if (!v.ok) { const el = $('saleErr'); if (el) el.textContent = 'Errore: ' + v.reason; return; }
+  STATE = Store.applySale(STATE, sale);
+  SALE.open = false;
+  advanceAfterSale();
+  render();
+}
+function doUndo() { STATE = Store.undoSale(STATE); render(); }
 function renderHeader() {
   const p = currentPlayer();
   const me = Store.myId(STATE);
@@ -50,7 +81,7 @@ function renderQueue() {
   const cur = $('qlist').querySelector('.cur');
   if (cur) cur.scrollIntoView({ block: 'nearest' });
 }
-function render() { rebuildQueue(); renderHeader(); renderCard(); renderQueue(); }
+function render() { rebuildQueue(); renderHeader(); renderCard(); renderSaleFlow(); renderQueue(); }
 
 function go(delta) {
   const n = STATE.cursore.index + delta;
@@ -64,6 +95,15 @@ function wireEvents() {
   $('btnPrev').onclick = () => go(-1);
   $('btnNext').onclick = () => go(1);
   $('queue').onclick = (e) => { const li = e.target.closest('li'); if (li) jumpTo(li.dataset.id); };
+  $('btnUndo').onclick = doUndo;
+  $('card').addEventListener('dblclick', openSale); // doppio click sulla card apre la vendita
+  $('advice').addEventListener('click', (e) => { if (e.target.id === 'btnSold') openSale(); });
+  $('saleflow').addEventListener('click', (e) => {
+    const t = e.target;
+    if (t.dataset.add) { SALE.prezzo = Math.max(1, SALE.prezzo + parseInt(t.dataset.add, 10)); renderSaleFlow(); }
+    else if (t.dataset.set) { SALE.prezzo = parseInt(t.dataset.set, 10); renderSaleFlow(); }
+    else if (t.dataset.team) { confirmSale(t.dataset.team); }
+  });
 }
 function boot() { STATE = Store.initState(); rebuildQueue(); render(); wireEvents(); }
 document.addEventListener('DOMContentLoaded', boot);
