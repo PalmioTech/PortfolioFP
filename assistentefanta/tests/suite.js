@@ -52,9 +52,17 @@ test('undoSale rimuove ultima; su vuoto non rompe', () => {
 });
 test('validateSale ko se slot ruolo pieno', () => {
   let s = Store.initState();
+  s.config = Object.assign({}, s.config, { slots: Object.assign({}, s.config.slots, { P: 2 }) });
   s = Store.applySale(s, { giocatoreId: 'falcone-lecce', squadraId: 't0', prezzo: 1 });
   s = Store.applySale(s, { giocatoreId: 'meret-napoli',  squadraId: 't0', prezzo: 1 });
-  s = Store.applySale(s, { giocatoreId: 'sommer-inter',  squadraId: 't0', prezzo: 1 });
-  const r = Store.validateSale(s, PLAYERS.giocatori, { giocatoreId: 'falcone-lecce', squadraId: 't0', prezzo: 1 });
-  assertEqual(r.ok, false); // P pieni (3) + già venduto
+  // P pieni (2/2); sommer-inter è un P NON venduto → deve essere respinto per slot pieno, non "già venduto"
+  const r = Store.validateSale(s, PLAYERS.giocatori, { giocatoreId: 'sommer-inter', squadraId: 't0', prezzo: 1 });
+  assertEqual(r.ok, false);
+  assertEqual(r.reason, 'slot ruolo pieno');
+});
+test('validateSale ko se prezzo < 1', () => {
+  const s = Store.initState();
+  const r = Store.validateSale(s, PLAYERS.giocatori, { giocatoreId: 'lautaro-inter', squadraId: 't0', prezzo: 0 });
+  assertEqual(r.ok, false);
+  assertEqual(r.reason, 'prezzo minimo 1');
 });
