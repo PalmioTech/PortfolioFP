@@ -106,8 +106,42 @@ window.AI = (function (Store, Advisor) {
     });
     $('btnAI').onclick = () => { panel.hidden = !panel.hidden; };
     $('aiClose').onclick = () => { panel.hidden = true; };
-    // gli handler di invio/quick sono agganciati nei task successivi
-    initChat._send = initChat._send || function () {};
+    const msgsEl = $('aiMessages');
+    const history = [];
+    function appendMsg(role, text) {
+      const d = document.createElement('div');
+      d.className = 'aiMsg ' + role;
+      d.textContent = text;
+      msgsEl.appendChild(d);
+      msgsEl.scrollTop = msgsEl.scrollHeight;
+      return d;
+    }
+    function ctxNow() { return buildContext(STATE, PLAYERS_EFF, QUEUE); }
+    function copyPasteFlow(question) {
+      const prompt = buildUserMessage(ctxNow(), question);
+      appendMsg('user', question);
+      const box = document.createElement('div');
+      box.className = 'aiMsg assistant aiCopyBox';
+      const ta = document.createElement('textarea'); ta.readOnly = true; ta.rows = 6; ta.value = prompt;
+      const copy = document.createElement('button'); copy.type = 'button'; copy.textContent = 'copia prompt';
+      copy.onclick = () => { ta.select(); try { document.execCommand('copy'); } catch (e) {} copy.textContent = 'copiato ✓'; };
+      const paste = document.createElement('textarea'); paste.rows = 3; paste.placeholder = 'incolla qui la risposta di ChatGPT…';
+      const add = document.createElement('button'); add.type = 'button'; add.textContent = 'aggiungi risposta';
+      add.onclick = () => { if (paste.value.trim()) { history.push({ role: 'user', content: prompt }); history.push({ role: 'assistant', content: paste.value.trim() }); appendMsg('assistant', paste.value.trim()); box.remove(); } };
+      box.appendChild(ta); box.appendChild(copy); box.appendChild(paste); box.appendChild(add);
+      msgsEl.appendChild(box); msgsEl.scrollTop = msgsEl.scrollHeight;
+    }
+    initChat._send = function (question) {
+      question = (question || '').trim();
+      if (!question) return;
+      $('aiInput').value = '';
+      const key = (keyEl.value || '').trim();
+      if (key) { apiFlow(question, key); } else { copyPasteFlow(question); }
+    };
+    function apiFlow() { /* completato nel Task 4 */ }
+    $('aiQuickValuta').onclick = () => initChat._send('Valuta il giocatore in asta: mi serve per la mia rosa? A che prezzo massimo conviene? Alternative?');
+    $('aiQuickManca').onclick = () => initChat._send('Guardando la mia rosa, gli slot mancanti e il budget, cosa mi manca e su quali ruoli/giocatori dovrei puntare i prossimi crediti?');
+    $('aiQuickMeglio').onclick = () => { $('aiInput').value = 'Meglio X o Y? '; $('aiInput').focus(); };
     $('aiSend').onclick = () => initChat._send($('aiInput').value);
   }
   if (typeof document !== 'undefined') {
