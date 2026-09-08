@@ -138,7 +138,20 @@ window.AI = (function (Store, Advisor) {
       const key = (keyEl.value || '').trim();
       if (key) { apiFlow(question, key); } else { copyPasteFlow(question); }
     };
-    function apiFlow() { /* completato nel Task 4 */ }
+    async function apiFlow(question, key) {
+      appendMsg('user', question);
+      const pending = appendMsg('assistant', 'sto pensando…');
+      const messages = messagesFor(ctxNow(), history, question);
+      try {
+        const ans = await callOpenAI(key, messages);
+        pending.textContent = ans;
+        history.push({ role: 'user', content: messages[messages.length - 1].content });
+        history.push({ role: 'assistant', content: ans });
+      } catch (e) {
+        pending.className = 'aiMsg err';
+        pending.textContent = 'Errore: ' + e.message + ' — controlla la API key o usa il modo copia-incolla (svuota il campo key).';
+      }
+    }
     $('aiQuickValuta').onclick = () => initChat._send('Valuta il giocatore in asta: mi serve per la mia rosa? A che prezzo massimo conviene? Alternative?');
     $('aiQuickManca').onclick = () => initChat._send('Guardando la mia rosa, gli slot mancanti e il budget, cosa mi manca e su quali ruoli/giocatori dovrei puntare i prossimi crediti?');
     $('aiQuickMeglio').onclick = () => { $('aiInput').value = 'Meglio X o Y? '; $('aiInput').focus(); };
