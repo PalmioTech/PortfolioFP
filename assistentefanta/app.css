@@ -6,3 +6,15 @@ body { margin:0; background:var(--bg); color:var(--fg); font-family:system-ui,sa
 #controls { display:flex; gap:.5rem; flex-wrap:wrap; padding:.75rem 1rem; border-top:1px solid #221c29; }
 button { cursor:pointer; }
 @media (max-width:900px){ #cols { grid-template-columns:1fr; } }
+
+#center { display:flex; flex-direction:column; gap:.75rem; }
+#card h2 { margin:.2rem 0; } #card small { color:var(--muted); font-weight:400; }
+.nota { color:var(--lime); font-size:.9rem; }
+.verdetto { font-size:1.4rem; font-weight:700; }
+.v-PRIORITA { color:var(--lime); } .v-SERVE { color:var(--ok); } .v-NON_SERVE { color:var(--muted); }
+.max strong { color:var(--accent); font-size:1.3rem; }
+#queue { max-height:40vh; overflow:auto; border:1px solid #221c29; border-radius:8px; }
+#qlist { list-style:none; margin:0; padding:0; }
+#qlist li { padding:.35rem .6rem; border-bottom:1px solid #17131d; }
+#qlist li.cur { background:#241a0e; border-left:3px solid var(--accent); }
+#qlist li.sold { opacity:.35; text-decoration:line-through; }
