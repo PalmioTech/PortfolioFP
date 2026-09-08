@@ -20,10 +20,10 @@ window.Advisor = (function (Store) {
     if (slotRes <= 0) return 0;
     const residuo = Math.max(0, roleRemainingBudget(state, players, ruolo));
     const mediaSlot = residuo / slotRes;
-    let base = Math.round(mediaSlot * (state.config.tierMult[player.tier] != null ? state.config.tierMult[player.tier] : 1));
-    if ((ruolo === 'P' || ruolo === 'D') && player.affidabilita_difesa === 'alta') base = Math.round(base * state.config.modDifesaBoost[ruolo] + 1e-9);
+    let base = mediaSlot * (state.config.tierMult[player.tier] != null ? state.config.tierMult[player.tier] : 1);
+    if ((ruolo === 'P' || ruolo === 'D') && player.affidabilita_difesa === 'alta') base *= state.config.modDifesaBoost[ruolo];
     const cap = residuo - (slotRes - 1);
-    const max = Math.min(base, cap);
+    const max = Math.round(Math.min(base, cap) + 1e-9);
     return Math.max(1, Math.min(max, residuo));
   }
   return { roleTarget, roleSpentMe, roleRemainingBudget, mySlotsRemaining, maxConsigliato };
