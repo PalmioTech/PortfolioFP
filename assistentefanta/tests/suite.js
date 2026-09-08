@@ -151,3 +151,40 @@ test('advice overpay = rilancio - max', () => {
   assertEqual(a.max, 67);
   assertEqual(a.overpay, 13);
 });
+test('buildContext fresco: inAsta = primo P (Falcone), 13 rivali, budget 500', () => {
+  const s = Store.initState();
+  const q = Store.buildQueue(TEST_PLAYERS);
+  const ctx = AI.buildContext(s, TEST_PLAYERS, q);
+  assertEqual(ctx.inAsta.nome, 'Falcone');
+  assertEqual(ctx.io.budgetResiduo, 500);
+  assertEqual(ctx.rivali.length, 13);
+  assertEqual(ctx.topDisponibiliRuolo.length, 3); // Falcone, Meret, Sommer (i 3 P della fixture)
+});
+test('buildContext dopo vendita: rosa aggiornata, venduto fuori dai disponibili', () => {
+  let s = Store.initState();
+  const q = Store.buildQueue(TEST_PLAYERS);
+  s = Store.applySale(s, { giocatoreId: 'falcone-lecce', squadraId: 't0', prezzo: 5 });
+  const ctx = AI.buildContext(s, TEST_PLAYERS, q);
+  assertEqual(ctx.io.budgetResiduo, 495);
+  assertEqual(ctx.io.rosa.P.length, 1);
+  assert(!ctx.topDisponibiliRuolo.some(x => x.nome === 'Falcone'), 'Falcone venduto non tra i disponibili');
+});
+test('buildUserMessage contiene giocatore in asta, stato e domanda', () => {
+  const s = Store.initState();
+  const q = Store.buildQueue(TEST_PLAYERS);
+  const ctx = AI.buildContext(s, TEST_PLAYERS, q);
+  const msg = AI.buildUserMessage(ctx, 'meglio lui o aspetto?');
+  assert(msg.includes('Falcone'), 'contiene giocatore in asta');
+  assert(msg.includes('meglio lui o aspetto?'), 'contiene la domanda');
+  assert(msg.includes('budget') || msg.includes('Budget'), 'contiene lo stato');
+});
+test('messagesFor: system + cronologia + user finale', () => {
+  const s = Store.initState();
+  const q = Store.buildQueue(TEST_PLAYERS);
+  const ctx = AI.buildContext(s, TEST_PLAYERS, q);
+  const msgs = AI.messagesFor(ctx, [{ role: 'user', content: 'ciao' }, { role: 'assistant', content: 'ok' }], 'e adesso?');
+  assertEqual(msgs[0].role, 'system');
+  assertEqual(msgs.length, 4);
+  assertEqual(msgs[3].role, 'user');
+  assert(msgs[3].content.includes('e adesso?'), 'ultimo = domanda');
+});
