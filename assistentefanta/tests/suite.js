@@ -111,3 +111,43 @@ test('maxConsigliato = 0 se slot ruolo pieni', () => {
   const p = Store.playerById(PLAYERS.giocatori, 'falcone-lecce');
   assertEqual(Advisor.maxConsigliato(s, PLAYERS.giocatori, p), 0);
 });
+test('scarsita A fresco: 3 titolari, 14 squadre, alta', () => {
+  const s = Store.initState();
+  const sc = Advisor.scarsita(s, PLAYERS.giocatori, 'A');
+  assertEqual(sc.titolari, 3); // Lautaro, Retegui, Thuram
+  assertEqual(sc.squadre, 14);
+  assertEqual(sc.alta, true);
+});
+test('verdetto Lautaro fresco = PRIORITA (titolare + scarsità alta)', () => {
+  const s = Store.initState();
+  const p = Store.playerById(PLAYERS.giocatori, 'lautaro-inter');
+  assertEqual(Advisor.verdetto(s, PLAYERS.giocatori, p), 'PRIORITA');
+});
+test('verdetto Colombo fresco = SERVE (ballottaggio, non priorità)', () => {
+  const s = Store.initState();
+  const p = Store.playerById(PLAYERS.giocatori, 'colombo-genoa');
+  assertEqual(Advisor.verdetto(s, PLAYERS.giocatori, p), 'SERVE');
+});
+test('verdetto NON_SERVE se slot ruolo A pieni', () => {
+  let s = Store.initState();
+  const ids = ['colombo-genoa','lautaro-inter','retegui-atalanta','thuram-inter'];
+  ids.forEach(id => { s = Store.applySale(s, { giocatoreId: id, squadraId: 't0', prezzo: 1 }); });
+  // 4 su 6 A presi; testiamo un ruolo pieno forzando config a 4 slot A
+  s.config = Object.assign({}, s.config, { slots: Object.assign({}, s.config.slots, { A: 4 }) });
+  const p = Store.playerById(PLAYERS.giocatori, 'colombo-genoa');
+  assertEqual(Advisor.verdetto(s, PLAYERS.giocatori, p), 'NON_SERVE');
+});
+test('verdetto NON_SERVE se budget ruolo ~1cr/slot e tier top', () => {
+  let s = Store.initState();
+  // io spendo 156 su un A → residuo A = 160-156 = 4, slot A res = 5 → 4<=5, tier1 Thuram → NON_SERVE
+  s = Store.applySale(s, { giocatoreId: 'lautaro-inter', squadraId: 't0', prezzo: 156 });
+  const p = Store.playerById(PLAYERS.giocatori, 'thuram-inter');
+  assertEqual(Advisor.verdetto(s, PLAYERS.giocatori, p), 'NON_SERVE');
+});
+test('advice overpay = rilancio - max', () => {
+  const s = Store.initState();
+  const p = Store.playerById(PLAYERS.giocatori, 'lautaro-inter');
+  const a = Advisor.advice(s, PLAYERS.giocatori, p, 80);
+  assertEqual(a.max, 67);
+  assertEqual(a.overpay, 13);
+});
