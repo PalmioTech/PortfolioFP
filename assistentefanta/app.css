@@ -1,0 +1,8 @@
+:root { --bg:#060508; --fg:#f4f2ee; --accent:#FF3500; --lime:#C6FF00; --muted:#9a978f; --card:#141118; --ok:#39d353; --warn:#FF3500; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font-family:system-ui,sans-serif; }
+#hdr { display:flex; gap:1rem; align-items:baseline; padding:.75rem 1rem; border-bottom:1px solid #221c29; }
+#cols { display:grid; grid-template-columns:1fr 2fr 1fr; gap:1rem; padding:1rem; }
+#controls { display:flex; gap:.5rem; flex-wrap:wrap; padding:.75rem 1rem; border-top:1px solid #221c29; }
+button { cursor:pointer; }
+@media (max-width:900px){ #cols { grid-template-columns:1fr; } }

@@ -1,0 +1,3 @@
+window.Store = (function () {
+  return {};
+})();

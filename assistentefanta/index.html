@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Assistente Fanta — Asta Live</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+<main id="app">
+  <header id="hdr">
+    <div id="phase">—</div>
+    <div id="mybudget">—</div>
+    <div id="perslot">—</div>
+  </header>
+  <section id="cols">
+    <aside id="roster"></aside>
+    <div id="center">
+      <div id="card"></div>
+      <div id="advice"></div>
+      <div id="saleflow"></div>
+      <div id="queue"></div>
+    </div>
+    <aside id="rivals"></aside>
+  </section>
+  <footer id="controls">
+    <button id="btnPrev" type="button">◀</button>
+    <button id="btnNext" type="button">▶</button>
+    <button id="btnUndo" type="button">Undo</button>
+    <input id="search" type="search" placeholder="cerca…">
+    <button id="btnExport" type="button">Export</button>
+    <button id="btnImport" type="button">Import</button>
+    <input id="fileImport" type="file" accept="application/json" hidden>
+    <button id="btnConfig" type="button">⚙︎</button>
+    <button id="btnReset" type="button">Reset</button>
+  </footer>
+  <div id="configPanel" hidden></div>
+</main>
+<script src="store.js"></script>
+<script src="advisor.js"></script>
+<script src="data/players.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
