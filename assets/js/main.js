@@ -1398,9 +1398,16 @@
       } else { start(); }
     } else if (FRAMES.length) {
       var n = 0;
+      var tally = function () { if (++n >= FRAMES.length && !active) { ready = true; start(); } };
       FRAMES.forEach(function (u, i) {
         var im = new Image();
-        im.onload = function () { if (++n === FRAMES.length) { ready = true; start(); } };
+        im.onload = function () {
+          // Disegna subito il primo frame (arancione, ~32KB) senza attendere
+          // il caricamento di tutti i 52 frame (1.8MB) — niente flash nero.
+          if (i === 0 && !active) { ready = true; start(); }
+          tally();
+        };
+        im.onerror = tally;   // un frame mancante/lento non blocca il motore
         im.src = u; frames[i] = im;
       });
     } else {

@@ -26,6 +26,8 @@
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/img/logo-transparent.png">
   <link rel="stylesheet" href="assets/css/style.css">
+  <!-- Primo frame arancione dell'hero: fetch prioritario per evitare il flash scuro al load -->
+  <link rel="preload" as="image" href="assets/img/hero-seq/frame-000.webp" fetchpriority="high">
   <script>(function(){var t=localStorage.getItem('fp-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
   <script type="application/ld+json">
   {
@@ -122,7 +124,7 @@
       <!-- Central subject (z-10) — scroll-scrubbed on <canvas>.
            The <img> is the no-JS fallback and the placeholder source. -->
       <div class="hero-cutout hero-cutout--center">
-        <img src="assets/img/foto-profilo.png" alt="Federico Palmieri" class="hero-cutout__img" width="591" height="666">
+        <img src="assets/img/foto-profilo.png" alt="Federico Palmieri" class="hero-cutout__img" width="591" height="666" fetchpriority="high" decoding="async">
         <canvas class="hero-scrub" aria-hidden="true"></canvas>
       </div>
 
