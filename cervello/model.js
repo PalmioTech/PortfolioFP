@@ -28,17 +28,34 @@
     }
   }
 
-  function buildEvent({ categoria, nome, dateISO, giorniPrima, ricorrente }) {
+  // Entrambe le stringhe locali lette come UTC: gli offset si annullano, risultato indipendente dal fuso.
+  function minutiPrima(dateISO, oraISO, avvisaISO) {
+    const ev = new Date(dateISO + 'T' + (oraISO || '00:00') + ':00Z');
+    const av = new Date(avvisaISO + ':00Z');
+    return Math.max(0, Math.min(Math.round((ev - av) / 60000), 40320));
+  }
+
+  function buildEvent({ categoria, nome, dateISO, giorniPrima, ricorrente, oraISO, avvisaISO }) {
     if (!CATEGORIES[categoria]) categoria = 'altro';
     const cat = CATEGORIES[categoria];
     if (typeof giorniPrima !== 'number' || isNaN(giorniPrima)) giorniPrima = cat.giorniPrima;
     const giorni = Math.max(0, Math.min(giorniPrima, 28));
+    const minutes = (avvisaISO && !ricorrente) ? minutiPrima(dateISO, oraISO, avvisaISO) : giorni * 1440;
+    let start, end;
+    if (oraISO) {
+      const fine = new Date(dateISO + 'T' + oraISO + ':00Z').getTime() + 3600000;
+      start = { dateTime: dateISO + 'T' + oraISO + ':00', timeZone: 'Europe/Rome' };
+      end = { dateTime: new Date(fine).toISOString().slice(0, 19), timeZone: 'Europe/Rome' };
+    } else {
+      start = { date: dateISO };
+      end = { date: fmt(new Date(parse(dateISO).getTime() + DAY)) };
+    }
     const ev = {
       summary: cat.icon + ' ' + nome,
-      start: { date: dateISO },
-      end: { date: fmt(new Date(parse(dateISO).getTime() + DAY)) },
-      reminders: { useDefault: false, overrides: [{ method: 'popup', minutes: giorni * 1440 }] },
-      extendedProperties: { private: { app: 'cervello', categoria, giorniPrima: String(giorni) } },
+      start,
+      end,
+      reminders: { useDefault: false, overrides: [{ method: 'popup', minutes }] },
+      extendedProperties: { private: { app: 'cervello', categoria, giorniPrima: String(giorni), ora: oraISO || '', avvisa: avvisaISO || '' } },
     };
     ev.recurrence = ricorrente ? ['RRULE:FREQ=YEARLY'] : null; // null rimuove la serie sul patch
     return ev;
@@ -53,7 +70,9 @@
       id: ev.id,
       categoria: cat,
       nome: s.startsWith(icon) ? s.slice(icon.length) : s,
-      dateISO: ev.start && ev.start.date,
+      dateISO: ev.start && (ev.start.date || (ev.start.dateTime || '').slice(0, 10)),
+      ora: ev.start && ev.start.dateTime ? ev.start.dateTime.slice(11, 16) : (priv.ora || undefined),
+      avvisa: priv.avvisa || undefined,
       ricorrente: !!ev.recurrence,
       giorniPrima: priv.giorniPrima != null ? Number(priv.giorniPrima) : undefined,
     };
@@ -67,7 +86,7 @@
     }).toString();
   }
 
-  const Model = { CATEGORIES, giorniMancanti, prossimaOccorrenza, buildEvent, fromEvent, buildListQuery };
+  const Model = { CATEGORIES, giorniMancanti, prossimaOccorrenza, minutiPrima, buildEvent, fromEvent, buildListQuery };
   g.Model = Model;
   if (typeof module !== 'undefined' && module.exports) module.exports = Model;
 })(typeof window !== 'undefined' ? window : globalThis);
