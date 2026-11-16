@@ -91,3 +91,4 @@ main { max-width:720px; margin:0 auto; padding:1rem 16px 3rem; }
 .btn-danger:hover { color:var(--accent-light); border-color:var(--border-hover); }
 .card { cursor:pointer; }
 @media (max-width:600px) { #form .row { grid-template-columns:1fr; } }
+#form small { color:var(--dim); font-size:.75rem; }

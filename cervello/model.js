@@ -32,19 +32,21 @@
     if (!CATEGORIES[categoria]) categoria = 'altro';
     const cat = CATEGORIES[categoria];
     if (typeof giorniPrima !== 'number' || isNaN(giorniPrima)) giorniPrima = cat.giorniPrima;
+    const giorni = Math.max(0, Math.min(giorniPrima, 28));
     const ev = {
       summary: cat.icon + ' ' + nome,
       start: { date: dateISO },
       end: { date: fmt(new Date(parse(dateISO).getTime() + DAY)) },
-      reminders: { useDefault: false, overrides: [{ method: 'popup', minutes: Math.max(0, Math.min(giorniPrima * 1440, 40320)) }] },
-      extendedProperties: { private: { app: 'cervello', categoria } },
+      reminders: { useDefault: false, overrides: [{ method: 'popup', minutes: giorni * 1440 }] },
+      extendedProperties: { private: { app: 'cervello', categoria, giorniPrima: String(giorni) } },
     };
-    if (ricorrente) ev.recurrence = ['RRULE:FREQ=YEARLY'];
+    ev.recurrence = ricorrente ? ['RRULE:FREQ=YEARLY'] : null; // null rimuove la serie sul patch
     return ev;
   }
 
   function fromEvent(ev) {
-    const cat = ev.extendedProperties && ev.extendedProperties.private && ev.extendedProperties.private.categoria;
+    const priv = (ev.extendedProperties && ev.extendedProperties.private) || {};
+    const cat = priv.categoria;
     const icon = (CATEGORIES[cat] || CATEGORIES.altro).icon + ' ';
     const s = ev.summary || '';
     return {
@@ -53,6 +55,7 @@
       nome: s.startsWith(icon) ? s.slice(icon.length) : s,
       dateISO: ev.start && ev.start.date,
       ricorrente: !!ev.recurrence,
+      giorniPrima: priv.giorniPrima != null ? Number(priv.giorniPrima) : undefined,
     };
   }
 

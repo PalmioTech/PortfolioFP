@@ -40,8 +40,9 @@
     const anno = oggi.slice(0, 4);
     let scadenze;
     try {
-      scadenze = await GCal.list(anno + '-01-01T00:00:00Z');
+      scadenze = await GCal.list('1970-01-01T00:00:00Z');
     } catch (e) {
+      console.error(e);
       list.innerHTML = ''; show('connectBar');
       status(e && e.message === 'TOKEN_SCADUTO' ? 'Sessione scaduta — riconnetti' : 'Errore di lettura — riconnetti', true);
       return;
@@ -75,7 +76,7 @@
     $('fCategoria').value = 'altro';
     $('fNome').value = ''; $('fData').value = '';
     prefill(); fMsg('');
-    $('fElimina').hidden = true; $('fTitolo').textContent = 'Nuova scadenza';
+    $('fNuova').hidden = true; $('fElimina').hidden = true; $('fTitolo').textContent = 'Nuova scadenza';
   }
 
   function prefill() {
@@ -100,9 +101,10 @@
     editId = s.id;
     $('fCategoria').value = C[s.categoria] ? s.categoria : 'altro';
     $('fNome').value = s.nome; $('fData').value = s.dateISO;
-    prefill(); // il promemoria salvato non e' restituito: default categoria
+    prefill();
+    if (s.giorniPrima != null) $('fGiorniPrima').value = s.giorniPrima;
     $('fRicorrente').checked = !!s.ricorrente;
-    $('fElimina').hidden = false; $('fTitolo').textContent = 'Modifica scadenza'; fMsg('');
+    $('fNuova').hidden = false; $('fElimina').hidden = false; $('fTitolo').textContent = 'Modifica scadenza'; fMsg('');
     $('form').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
@@ -113,6 +115,7 @@
     $('fSalva').disabled = $('fElimina').disabled = true;
     try { await fn(); resetForm(); await render(); }
     catch (e) {
+      console.error(e);
       if (e && e.message === 'TOKEN_SCADUTO') { show('connectBar'); status('Sessione scaduta — riconnetti', true); }
       else fMsg('Operazione non riuscita — riprova.');
     } finally { inflight = false; $('fSalva').disabled = $('fElimina').disabled = false; }
@@ -135,6 +138,7 @@
       });
       write(() => editId ? GCal.patch(editId, e) : GCal.insert(e));
     };
+    $('fNuova').onclick = resetForm;
     $('fElimina').onclick = () => {
       if (editId && confirm('Eliminare questa scadenza?')) write(() => GCal.remove(editId));
     };

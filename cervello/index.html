@@ -25,12 +25,13 @@
     <label>Nome<input id="fNome" type="text" required autocomplete="off"></label>
     <div class="row">
       <label>Data<input id="fData" type="date" required></label>
-      <label>Avviso (giorni prima)<input id="fGiorniPrima" type="number" min="0" inputmode="numeric"></label>
+      <label>Avviso (giorni prima)<input id="fGiorniPrima" type="number" min="0" max="28" inputmode="numeric"><small>max 28 giorni, limite promemoria Google</small></label>
     </div>
     <label class="chk"><input id="fRicorrente" type="checkbox"> Si ripete ogni anno</label>
     <p id="fMsg" class="fmsg" role="alert"></p>
     <div class="actions">
       <button id="fSalva" class="btn-primary" type="submit">Salva</button>
+      <button id="fNuova" class="btn-danger" type="button" hidden>Nuova</button>
       <button id="fElimina" class="btn-danger" type="button" hidden>Elimina</button>
     </div>
   </form>

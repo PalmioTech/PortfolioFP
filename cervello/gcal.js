@@ -26,7 +26,6 @@
     });
   }
 
-  const isConnected = () => !!token && Date.now() < expiresAt;
 
   async function req(method, path, body) {
     const headers = { Authorization: 'Bearer ' + token };
@@ -38,7 +37,7 @@
   }
 
   g.GCal = {
-    init, connect, isConnected,
+    init, connect,
     async list(timeMinISO) {
       const d = await req('GET', '?' + Model.buildListQuery({ timeMinISO }));
       return (d.items || []).map(Model.fromEvent);

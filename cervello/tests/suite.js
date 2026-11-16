@@ -21,7 +21,12 @@ test('buildEvent reminder in minuti', () =>
 test('buildEvent ricorrente -> RRULE yearly', () =>
   assertEq(Model.buildEvent({categoria:'compleanno',nome:'X',dateISO:'1990-03-10',giorniPrima:3,ricorrente:true}).recurrence[0], 'RRULE:FREQ=YEARLY'));
 test('buildEvent non ricorrente -> niente recurrence', () =>
-  assertEq(Model.buildEvent({categoria:'altro',nome:'X',dateISO:'2026-11-26',giorniPrima:7,ricorrente:false}).recurrence, undefined));
+  assertEq(Model.buildEvent({categoria:'altro',nome:'X',dateISO:'2026-11-26',giorniPrima:7,ricorrente:false}).recurrence, null));
+test('giorniPrima roundtrip buildEvent -> fromEvent', () => {
+  const ev = Model.buildEvent({categoria:'altro',nome:'X',dateISO:'2026-11-26',giorniPrima:15,ricorrente:false});
+  assertEq(ev.extendedProperties.private.giorniPrima, '15');
+  assertEq(Model.fromEvent(ev).giorniPrima, 15);
+});
 test('buildEvent extendedProperties', () => {
   const p = Model.buildEvent({categoria:'assicurazione',nome:'X',dateISO:'2026-11-26',giorniPrima:20,ricorrente:true}).extendedProperties.private;
   assertEq(p.app, 'cervello'); assertEq(p.categoria, 'assicurazione');
