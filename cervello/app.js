@@ -37,7 +37,6 @@
     if (!list || !empty) return;
     const n = new Date();
     const oggi = n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0');
-    const anno = oggi.slice(0, 4);
     let scadenze;
     try {
       scadenze = await GCal.list('1970-01-01T00:00:00Z');
