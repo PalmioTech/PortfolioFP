@@ -59,8 +59,7 @@
   function buildListQuery({ timeMinISO }) {
     return new URLSearchParams({
       privateExtendedProperty: 'app=cervello',
-      singleEvents: 'true',
-      orderBy: 'startTime',
+      singleEvents: 'false',
       timeMin: timeMinISO,
     }).toString();
   }

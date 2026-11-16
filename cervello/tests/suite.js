@@ -34,7 +34,7 @@ test('fromEvent inverte buildEvent', () => {
 test('buildListQuery codifica il filtro', () => {
   const q = Model.buildListQuery({timeMinISO:'2026-01-01T00:00:00Z'});
   assert(q.includes('privateExtendedProperty=app%3Dcervello'));
-  assert(q.includes('singleEvents=true')); assert(q.includes('orderBy=startTime'));
+  assert(q.includes('singleEvents=false')); assert(!q.includes('orderBy'));
 });
 test("nome con apostrofo resta intatto nel summary", () => {
   const ev = Model.buildEvent({categoria:'assicurazione',nome:"L'assicurazione",dateISO:'2026-11-26',giorniPrima:20,ricorrente:true});
