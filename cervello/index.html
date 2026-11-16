@@ -25,7 +25,11 @@
     <label>Nome<input id="fNome" type="text" required autocomplete="off"></label>
     <div class="row">
       <label>Data<input id="fData" type="date" required></label>
+      <label>Ora (opz.)<input id="fOra" type="time"></label>
       <label>Avviso (giorni prima)<input id="fGiorniPrima" type="number" min="0" max="28" inputmode="numeric"><small>max 28 giorni, limite promemoria Google</small></label>
+    </div>
+    <div id="avvisaRow">
+      <label>Avvisami (opz.)<input id="fAvvisa" type="datetime-local"><small>promemoria a un momento preciso — solo per scadenze non ricorrenti</small></label>
     </div>
     <label class="chk"><input id="fRicorrente" type="checkbox"> Si ripete ogni anno</label>
     <p id="fMsg" class="fmsg" role="alert"></p>

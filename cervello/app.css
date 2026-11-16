@@ -78,10 +78,11 @@ main { max-width:720px; margin:0 auto; padding:1rem 16px 3rem; }
 #form[hidden] { display:none; }
 #form h2 { margin:0; font-family:var(--font-display); font-size:1.1rem; }
 #form label { display:flex; flex-direction:column; gap:6px; font-size:.8rem; color:var(--muted); min-width:0; }
-#form select, #form input[type=text], #form input[type=date], #form input[type=number] {
+#form select, #form input[type=text], #form input[type=date], #form input[type=time], #form input[type=datetime-local], #form input[type=number] {
   width:100%; padding:11px 14px; font:inherit; font-size:16px; color:var(--fg);
   background:var(--surface-3); border:1px solid var(--border); border-radius:var(--radius-md); color-scheme:dark;
 }
+#avvisaRow[hidden] { display:none; }
 #form select:focus, #form input:focus { outline:none; border-color:var(--border-hover); }
 #form .row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
 #form label.chk { flex-direction:row; align-items:center; gap:10px; font-size:.95rem; color:var(--fg); }

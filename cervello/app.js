@@ -55,7 +55,7 @@
     list.innerHTML = rows.map(({ s, d, g }) => {
       const cat = Model.CATEGORIES[s.categoria] || Model.CATEGORIES.altro;
       return '<article role="button" tabindex="0" class="card c-' + cat.colore + '"><span class="ico" aria-hidden="true">' + cat.icon + '</span>' +
-        '<div class="body"><div class="nome">' + esc(s.nome) + '</div><div class="data">' + esc(d) + '</div></div>' +
+        '<div class="body"><div class="nome">' + esc(s.nome) + '</div><div class="data">' + esc(s.ora ? d + ' · ' + s.ora : d) + '</div></div>' +
         '<div class="giorni">' + etichetta(g) + '</div></article>';
     }).join('');
     list.querySelectorAll('.card').forEach((el, i) => { 
@@ -74,6 +74,7 @@
     editId = null;
     $('fCategoria').value = 'altro';
     $('fNome').value = ''; $('fData').value = '';
+    $('fOra').value = ''; $('fAvvisa').value = '';
     prefill(); fMsg('');
     $('fNuova').hidden = true; $('fElimina').hidden = true; $('fTitolo').textContent = 'Nuova scadenza';
   }
@@ -82,7 +83,10 @@
     const c = C[$('fCategoria').value] || C.altro;
     $('fGiorniPrima').value = c.giorniPrima;
     $('fRicorrente').checked = !!c.ricorrente;
+    toggleAvvisa();
   }
+
+  function toggleAvvisa() { $('avvisaRow').hidden = $('fRicorrente').checked; }
 
   function onCategoria() {
     prefill();
@@ -103,6 +107,8 @@
     prefill();
     if (s.giorniPrima != null) $('fGiorniPrima').value = s.giorniPrima;
     $('fRicorrente').checked = !!s.ricorrente;
+    $('fOra').value = s.ora || ''; $('fAvvisa').value = s.avvisa || '';
+    toggleAvvisa();
     $('fNuova').hidden = false; $('fElimina').hidden = false; $('fTitolo').textContent = 'Modifica scadenza'; fMsg('');
     $('form').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
@@ -129,14 +135,17 @@
       ev.preventDefault();
       const nome = $('fNome').value.trim(), dateISO = $('fData').value;
       if (!nome || !dateISO) { fMsg('Inserisci nome e data.'); return; }
+      const oraISO = $('fOra').value, avvisaISO = $('fAvvisa').value, ric = $('fRicorrente').checked;
+      if (avvisaISO && !ric && !(Model.minutiPrima(dateISO, oraISO, avvisaISO) > 0)) { fMsg("L'avviso deve essere prima dell'appuntamento."); return; }
       fMsg('');
       const e = Model.buildEvent({
         categoria: sel.value, nome, dateISO,
         giorniPrima: Math.max(0, Number($('fGiorniPrima').value) || 0),
-        ricorrente: $('fRicorrente').checked
+        ricorrente: ric, oraISO, avvisaISO
       });
       write(() => editId ? GCal.patch(editId, e) : GCal.insert(e));
     };
+    $('fRicorrente').onchange = toggleAvvisa;
     $('fNuova').onclick = resetForm;
     $('fElimina').onclick = () => {
       if (editId && confirm('Eliminare questa scadenza?')) write(() => GCal.remove(editId));
