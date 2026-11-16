@@ -1,9 +1,28 @@
 <!doctype html>
-<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Cervello</title></head>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Cervello</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Space+Mono:wght@400;700&family=Syne:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="app.css"></head>
 <body>
-<main><h1>Cervello</h1></main>
+<header id="hdr"><h1>Cervello</h1><span class="sub">Le mie scadenze</span></header>
+<main>
+  <section id="setup" hidden>
+    <h2>Configura Google</h2>
+    <p>Incolla il Client ID OAuth di Google per iniziare.</p>
+    <input id="clientIdInput" type="text" placeholder="xxxx.apps.googleusercontent.com" autocomplete="off" aria-label="Client ID OAuth">
+    <button id="btnSalva" class="btn-primary" type="button">Salva</button>
+  </section>
+  <section id="connectBar" hidden>
+    <button id="btnConnetti" class="btn-primary" type="button">Connetti Google</button>
+    <span id="status" role="status"></span>
+  </section>
+  <section id="list"></section>
+  <p id="empty" hidden>Nessuna scadenza. Tutto tranquillo.</p>
+</main>
 <script src="config.js"></script>
 <script src="model.js"></script>
 <script src="https://accounts.google.com/gsi/client" async></script>
 <script src="gcal.js"></script>
+<script src="app.js"></script>
 </body></html>
