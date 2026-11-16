@@ -15,9 +15,10 @@
     el.classList.toggle('err', !!err);
   }
 
-  // una sola region visibile: setup | connectBar | list | empty
+  // una sola region visibile: setup | connectBar | list | empty (timeline e tabs li gestisce paintView)
   function show(which) {
-    ['setup', 'connectBar', 'list', 'empty'].forEach((id) => { const el = $(id); if (el) el.hidden = id !== which; });
+    ['setup', 'connectBar', 'list', 'empty', 'timeline'].forEach((id) => { const el = $(id); if (el) el.hidden = id !== which; });
+    const tabs = $('viewTabs'); if (tabs) tabs.hidden = true;
     const f = $('form'); if (f) f.hidden = which === 'setup' || which === 'connectBar';
   }
 
@@ -31,6 +32,9 @@
     if (g < 0) return 'scaduta da ' + (-g) + (g === -1 ? ' giorno' : ' giorni');
     return 'mancano ' + g + ' giorni';
   }
+
+  let lastRows = [];
+  let view = 'lista';
 
   async function render() {
     const list = $('list'), empty = $('empty');
@@ -47,21 +51,57 @@
       return;
     }
     status('Connesso');
-    const rows = scadenze.map((s) => {
+    lastRows = scadenze.map((s) => {
       const d = s.ricorrente ? Model.prossimaOccorrenza(s.dateISO, oggi) : s.dateISO;
       return { s, d, g: Model.giorniMancanti(d, oggi) };
     }).sort((a, b) => a.g - b.g);
-    show(rows.length ? 'list' : 'empty');
+    if (!lastRows.length) { show('empty'); return; }
+    show('list');
+    paintView();
+  }
+
+  // commuta lista/timeline sui dati già caricati (lastRows), preservando la vista scelta
+  function paintView() {
+    const tabs = $('viewTabs'); if (tabs) tabs.hidden = false;
+    $('tabLista').classList.toggle('is-on', view === 'lista');
+    $('tabTimeline').classList.toggle('is-on', view === 'timeline');
+    if (view === 'timeline') { $('list').hidden = true; $('timeline').hidden = false; renderTimeline(lastRows); }
+    else { $('timeline').hidden = true; $('list').hidden = false; renderList(lastRows); }
+  }
+
+  function wireEdit(el, s) {
+    el.onclick = () => edit(s);
+    el.onkeydown = (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); edit(s); } };
+  }
+
+  function renderList(rows) {
+    const list = $('list');
     list.innerHTML = rows.map(({ s, d, g }) => {
       const cat = Model.CATEGORIES[s.categoria] || Model.CATEGORIES.altro;
       return '<article role="button" tabindex="0" class="card c-' + cat.colore + '"><span class="ico" aria-hidden="true">' + cat.icon + '</span>' +
         '<div class="body"><div class="nome">' + esc(s.nome) + '</div><div class="data">' + esc(s.ora ? d + ' · ' + s.ora : d) + '</div></div>' +
         '<div class="giorni">' + etichetta(g) + '</div></article>';
     }).join('');
-    list.querySelectorAll('.card').forEach((el, i) => { 
-      el.onclick = () => edit(rows[i].s);
-      el.onkeydown = (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); edit(rows[i].s); } };
+    list.querySelectorAll('.card').forEach((el, i) => wireEdit(el, rows[i].s));
+  }
+
+  // timeline verticale: ordine per urgenza, salti >45gg segnati come "+ N mesi"
+  function renderTimeline(rows) {
+    const tl = $('timeline'); if (!tl) return;
+    let h = '<div class="tl">';
+    rows.forEach(({ s, d, g }, i) => {
+      if (i > 0) {
+        const diff = g - rows[i - 1].g;
+        if (diff > 45) { const m = Math.round(diff / 30); h += '<div class="tl-gap"><span>+ ' + m + ' ' + (m === 1 ? 'mese' : 'mesi') + '</span></div>'; }
+      }
+      const cat = Model.CATEGORIES[s.categoria] || Model.CATEGORIES.altro;
+      h += '<div class="tl-item c-' + cat.colore + '" role="button" tabindex="0"><span class="tl-dot" aria-hidden="true"></span>' +
+        '<div class="tl-main"><div class="tl-nome">' + esc(s.nome) + '</div><div class="tl-meta">' + esc(s.ora ? d + ' · ' + s.ora : d) + '</div></div>' +
+        '<div class="tl-giorni">' + etichetta(g) + '</div></div>';
     });
+    h += '</div>';
+    tl.innerHTML = h;
+    tl.querySelectorAll('.tl-item').forEach((el, i) => wireEdit(el, rows[i].s));
   }
 
   // ---- form CRUD ----
@@ -150,6 +190,9 @@
     $('fElimina').onclick = () => {
       if (editId && confirm('Eliminare questa scadenza?')) write(() => GCal.remove(editId));
     };
+    const tabL = $('tabLista'), tabT = $('tabTimeline');
+    if (tabL) tabL.onclick = () => { view = 'lista'; paintView(); };
+    if (tabT) tabT.onclick = () => { view = 'timeline'; paintView(); };
     resetForm();
   }
 

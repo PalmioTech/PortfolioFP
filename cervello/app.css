@@ -68,6 +68,26 @@ main { max-width:720px; margin:0 auto; padding:1rem 16px 3rem; }
 
 #empty { text-align:center; color:var(--muted); padding:2.5rem 0; font-family:var(--font-display); }
 
+/* ---- toggle vista ---- */
+#viewTabs { display:inline-flex; gap:4px; margin:0 0 1rem; background:var(--surface-3); border:1px solid var(--border); border-radius:var(--radius-full); padding:4px; }
+.vtab { font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); background:transparent; border:none; padding:.4rem .95rem; border-radius:var(--radius-full); cursor:pointer; transition:color var(--dur) var(--ease), background var(--dur) var(--ease); }
+.vtab.is-on { color:#fff; background:linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%); }
+.vtab:hover:not(.is-on) { color:var(--fg); }
+
+/* ---- timeline verticale ---- */
+.tl { position:relative; }
+.tl::before { content:''; position:absolute; left:7px; top:12px; bottom:12px; width:2px; background:var(--border); }
+.tl-item { --c:var(--muted); position:relative; display:flex; align-items:center; gap:.9rem; padding:.7rem 0 .7rem 2rem; cursor:pointer; }
+.tl-item.c-accent { --c:var(--accent); } .tl-item.c-lime { --c:var(--lime); } .tl-item.c-muted { --c:var(--muted); }
+.tl-dot { position:absolute; left:1px; top:50%; transform:translateY(-50%); width:14px; height:14px; border-radius:50%; background:var(--c); border:3px solid var(--bg); box-shadow:0 0 0 1px var(--border); }
+.tl-main { flex:1; min-width:0; }
+.tl-nome { font-family:var(--font-display); font-weight:700; font-size:1rem; overflow-wrap:anywhere; }
+.tl-meta { font-size:.8rem; color:var(--muted); }
+.tl-giorni { font-family:var(--font-mono); font-size:.72rem; color:var(--c); text-align:right; flex:none; max-width:7rem; }
+.tl-gap { position:relative; padding:.35rem 0 .35rem 2rem; min-height:1.4rem; }
+.tl-gap span { font-family:var(--font-mono); font-size:.66rem; text-transform:uppercase; letter-spacing:.1em; color:var(--dim); }
+@media (max-width:600px) { .tl-item { flex-wrap:wrap; } .tl-giorni { text-align:left; width:100%; max-width:none; padding-left:0; } }
+
 @media (max-width:600px) {
   .card { flex-wrap:wrap; }
   .giorni { text-align:left; max-width:none; width:100%; padding-left:2.4rem; }
