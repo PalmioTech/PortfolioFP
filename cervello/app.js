@@ -176,20 +176,25 @@
       };
       return;
     }
-    // GIS e' async: init solo quando google.accounts.oauth2 esiste
-    status('Caricamento Google…');
+    status('Caricamento…');
+    // Token valido salvato (entro ~1h) → avvio immediato, nessun popup, non serve nemmeno attendere GIS.
+    const cached = GCal.hasToken();
+    if (cached) { status(''); render(); }
+    // GIS e' async: init solo quando google.accounts.oauth2 esiste (serve per rinnovo silenzioso su 401 / primo Connetti)
     let tries = 0;
     const t = setInterval(() => {
       if (window.google && google.accounts && google.accounts.oauth2) {
         clearInterval(t);
         try {
-          GCal.init(id); status('Caricamento…');
-          Promise.race([GCal.connect({ prompt: '' }), new Promise((_, r) => setTimeout(() => r(new Error('TIMEOUT')), 4000))]).then(() => { status(''); return render(); }).catch(() => { status(''); showConnect(); });
+          GCal.init(id);
+          if (!cached) {
+            Promise.race([GCal.connect({ prompt: '' }), new Promise((_, r) => setTimeout(() => r(new Error('TIMEOUT')), 8000))]).then(() => { status(''); return render(); }).catch(() => { status(''); showConnect(); });
+          }
         }
-        catch (e) { status('Errore di inizializzazione', true); }
+        catch (e) { if (!cached) status('Errore di inizializzazione', true); }
       } else if (++tries > 100) { // ~10s
         clearInterval(t);
-        status('Impossibile caricare Google — ricarica la pagina', true);
+        if (!cached) status('Impossibile caricare Google — ricarica la pagina', true);
       }
     }, 100);
   }
