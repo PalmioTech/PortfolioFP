@@ -51,7 +51,7 @@ main { max-width:720px; margin:0 auto; padding:1rem 16px 3rem; }
 #setup button { align-self:flex-start; }
 
 #connectBar { display:flex; gap:.9rem; align-items:center; flex-wrap:wrap; margin-bottom:1rem; }
-#status { font-family:var(--font-mono); font-size:.75rem; color:var(--muted); }
+#status { margin:0 0 .8rem; min-height:1.2em; font-family:var(--font-mono); font-size:.75rem; color:var(--muted); }
 #status.err { color:var(--accent-light); }
 
 #list { display:flex; flex-direction:column; gap:.7rem; }

@@ -15,6 +15,11 @@
     el.classList.toggle('err', !!err);
   }
 
+  // una sola region visibile: setup | connectBar | list | empty
+  function show(which) {
+    ['setup', 'connectBar', 'list', 'empty'].forEach((id) => { const el = $(id); if (el) el.hidden = id !== which; });
+  }
+
   function esc(s) {
     return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
@@ -29,13 +34,14 @@
   async function render() {
     const list = $('list'), empty = $('empty');
     if (!list || !empty) return;
-    const oggi = new Date().toISOString().slice(0, 10);
+    const n = new Date();
+    const oggi = n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0');
     const anno = oggi.slice(0, 4);
     let scadenze;
     try {
       scadenze = await GCal.list(anno + '-01-01T00:00:00Z');
     } catch (e) {
-      list.innerHTML = ''; empty.hidden = true;
+      list.innerHTML = ''; show('connectBar');
       status(e && e.message === 'TOKEN_SCADUTO' ? 'Sessione scaduta — riconnetti' : 'Errore di lettura — riconnetti', true);
       return;
     }
@@ -44,7 +50,7 @@
       const d = s.ricorrente ? Model.prossimaOccorrenza(s.dateISO, oggi) : s.dateISO;
       return { s, d, g: Model.giorniMancanti(d, oggi) };
     }).sort((a, b) => a.g - b.g);
-    empty.hidden = rows.length > 0;
+    show(rows.length ? 'list' : 'empty');
     list.innerHTML = rows.map(({ s, d, g }) => {
       const cat = Model.CATEGORIES[s.categoria] || Model.CATEGORIES.altro;
       return '<article class="card c-' + cat.colore + '"><span class="ico" aria-hidden="true">' + cat.icon + '</span>' +
@@ -54,8 +60,8 @@
   }
 
   function showConnect() {
-    const bar = $('connectBar'), btn = $('btnConnetti');
-    if (bar) bar.hidden = false;
+    const btn = $('btnConnetti');
+    show('connectBar');
     if (btn) btn.onclick = async () => {
       try { await GCal.connect(); await render(); }
       catch (e) { status('Connessione non riuscita — riprova', true); }
@@ -65,11 +71,11 @@
   function boot() {
     const id = clientId();
     if (!id) {
-      const setup = $('setup');
-      if (setup) setup.hidden = false;
+      show('setup');
       const btn = $('btnSalva');
       if (btn) btn.onclick = () => {
-        const v = ($('clientIdInput').value || '').trim();
+        const inp = $('clientIdInput');
+        const v = ((inp && inp.value) || '').trim();
         if (!v) return;
         try { localStorage.setItem(KEY, v); } catch (e) {}
         location.reload();
