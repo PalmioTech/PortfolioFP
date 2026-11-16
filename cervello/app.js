@@ -184,7 +184,7 @@
         clearInterval(t);
         try {
           GCal.init(id); status('Caricamento…');
-          GCal.connect({ prompt: '' }).then(() => { status(''); return render(); }).catch(() => { status(''); showConnect(); });
+          Promise.race([GCal.connect({ prompt: '' }), new Promise((_, r) => setTimeout(() => r(new Error('TIMEOUT')), 4000))]).then(() => { status(''); return render(); }).catch(() => { status(''); showConnect(); });
         }
         catch (e) { status('Errore di inizializzazione', true); }
       } else if (++tries > 100) { // ~10s

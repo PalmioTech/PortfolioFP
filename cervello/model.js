@@ -55,7 +55,7 @@
       start,
       end,
       reminders: { useDefault: false, overrides: [{ method: 'popup', minutes }] },
-      extendedProperties: { private: { app: 'cervello', categoria, giorniPrima: String(giorni), ora: oraISO || '', avvisa: avvisaISO || '' } },
+      extendedProperties: { private: { app: 'cervello', categoria, giorniPrima: String(giorni), ora: oraISO || '', avvisa: (ricorrente ? '' : avvisaISO) || '' } },
     };
     ev.recurrence = ricorrente ? ['RRULE:FREQ=YEARLY'] : null; // null rimuove la serie sul patch
     return ev;
