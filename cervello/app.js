@@ -18,8 +18,17 @@
   // una sola region visibile: setup | connectBar | list | empty (timeline e tabs li gestisce paintView)
   function show(which) {
     ['setup', 'connectBar', 'list', 'empty', 'timeline'].forEach((id) => { const el = $(id); if (el) el.hidden = id !== which; });
-    const tabs = $('viewTabs'); if (tabs) tabs.hidden = true;
-    const f = $('form'); if (f) f.hidden = which === 'setup' || which === 'connectBar';
+    const tb = $('toolbar'); if (tb) tb.hidden = true;
+  }
+
+  function openModal() {
+    const m = $('modal'); if (!m) return;
+    m.hidden = false; document.body.classList.add('modal-open');
+    const nome = $('fNome'); if (nome) nome.focus();
+  }
+  function closeModal() {
+    const m = $('modal'); if (m) m.hidden = true;
+    document.body.classList.remove('modal-open');
   }
 
   function esc(s) {
@@ -55,14 +64,15 @@
       const d = s.ricorrente ? Model.prossimaOccorrenza(s.dateISO, oggi) : s.dateISO;
       return { s, d, g: Model.giorniMancanti(d, oggi) };
     }).sort((a, b) => a.g - b.g);
-    if (!lastRows.length) { show('empty'); return; }
+    if (!lastRows.length) { show('empty'); const tb = $('toolbar'); if (tb) tb.hidden = false; $('viewTabs').hidden = true; return; }
     show('list');
     paintView();
   }
 
   // commuta lista/timeline sui dati già caricati (lastRows), preservando la vista scelta
   function paintView() {
-    const tabs = $('viewTabs'); if (tabs) tabs.hidden = false;
+    $('toolbar').hidden = false;
+    $('viewTabs').hidden = false;
     $('tabLista').classList.toggle('is-on', view === 'lista');
     $('tabTimeline').classList.toggle('is-on', view === 'timeline');
     if (view === 'timeline') { $('list').hidden = true; $('timeline').hidden = false; renderTimeline(lastRows); }
@@ -70,8 +80,8 @@
   }
 
   function wireEdit(el, s) {
-    el.onclick = () => edit(s);
-    el.onkeydown = (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); edit(s); } };
+    el.onclick = () => { edit(s); openModal(); };
+    el.onkeydown = (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); edit(s); openModal(); } };
   }
 
   function renderList(rows) {
@@ -150,7 +160,6 @@
     $('fOra').value = s.ora || ''; $('fAvvisa').value = s.avvisa || '';
     toggleAvvisa();
     $('fNuova').hidden = false; $('fElimina').hidden = false; $('fTitolo').textContent = 'Modifica scadenza'; fMsg('');
-    $('form').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   let inflight = false;
@@ -158,7 +167,7 @@
     if (inflight) return;
     inflight = true;
     $('fSalva').disabled = $('fElimina').disabled = true;
-    try { await fn(); resetForm(); await render(); }
+    try { await fn(); closeModal(); resetForm(); await render(); }
     catch (e) {
       console.error(e);
       if (e && e.message === 'TOKEN_SCADUTO') { show('connectBar'); status('Sessione scaduta — riconnetti', true); }
@@ -193,6 +202,10 @@
     const tabL = $('tabLista'), tabT = $('tabTimeline');
     if (tabL) tabL.onclick = () => { view = 'lista'; paintView(); };
     if (tabT) tabT.onclick = () => { view = 'timeline'; paintView(); };
+    const add = $('btnAdd'); if (add) add.onclick = () => { resetForm(); openModal(); };
+    const close = $('fClose'); if (close) close.onclick = closeModal;
+    const back = $('modalBack'); if (back) back.onclick = closeModal;
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { const m = $('modal'); if (m && !m.hidden) closeModal(); } });
     resetForm();
   }
 
