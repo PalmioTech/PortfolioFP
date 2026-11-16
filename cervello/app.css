@@ -72,3 +72,22 @@ main { max-width:720px; margin:0 auto; padding:1rem 16px 3rem; }
   .card { flex-wrap:wrap; }
   .giorni { text-align:left; max-width:none; width:100%; padding-left:2.4rem; }
 }
+
+/* ---- form scadenze ---- */
+#form { margin:32px 0 48px; padding:20px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); display:flex; flex-direction:column; gap:16px; }
+#form[hidden] { display:none; }
+#form h2 { margin:0; font-family:var(--font-display); font-size:1.1rem; }
+#form label { display:flex; flex-direction:column; gap:6px; font-size:.8rem; color:var(--muted); min-width:0; }
+#form select, #form input[type=text], #form input[type=date], #form input[type=number] {
+  width:100%; padding:11px 14px; font:inherit; font-size:16px; color:var(--fg);
+  background:var(--surface-3); border:1px solid var(--border); border-radius:var(--radius-md); color-scheme:dark;
+}
+#form select:focus, #form input:focus { outline:none; border-color:var(--border-hover); }
+#form .row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+#form label.chk { flex-direction:row; align-items:center; gap:10px; font-size:.95rem; color:var(--fg); }
+#form .fmsg { margin:0; min-height:1.2em; font-size:.85rem; color:var(--accent-light); }
+#form .actions { display:flex; gap:12px; flex-wrap:wrap; }
+.btn-danger { padding:10px 22px; font:inherit; font-weight:600; color:var(--muted); background:transparent; border:1px solid var(--border); border-radius:var(--radius-full); cursor:pointer; transition:color var(--dur) var(--ease), border-color var(--dur) var(--ease); }
+.btn-danger:hover { color:var(--accent-light); border-color:var(--border-hover); }
+.card { cursor:pointer; }
+@media (max-width:600px) { #form .row { grid-template-columns:1fr; } }

@@ -19,6 +19,21 @@
   </section>
   <section id="list" hidden></section>
   <p id="empty" hidden>Nessuna scadenza. Tutto tranquillo.</p>
+  <form id="form" hidden novalidate>
+    <h2 id="fTitolo">Nuova scadenza</h2>
+    <label>Categoria<select id="fCategoria"></select></label>
+    <label>Nome<input id="fNome" type="text" required autocomplete="off"></label>
+    <div class="row">
+      <label>Data<input id="fData" type="date" required></label>
+      <label>Avviso (giorni prima)<input id="fGiorniPrima" type="number" min="0" inputmode="numeric"></label>
+    </div>
+    <label class="chk"><input id="fRicorrente" type="checkbox"> Si ripete ogni anno</label>
+    <p id="fMsg" class="fmsg" role="alert"></p>
+    <div class="actions">
+      <button id="fSalva" class="btn-primary" type="submit">Salva</button>
+      <button id="fElimina" class="btn-danger" type="button" hidden>Elimina</button>
+    </div>
+  </form>
 </main>
 <script src="config.js"></script>
 <script src="model.js"></script>

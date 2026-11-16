@@ -44,6 +44,8 @@ test('reminder certificato 28gg = limite Google', () =>
   assertEq(Model.buildEvent({categoria:'certificato',nome:'X',dateISO:'2026-11-26',giorniPrima:28,ricorrente:true}).reminders.overrides[0].minutes, 40320));
 test('reminder clamp a 40320 con 30gg', () =>
   assertEq(Model.buildEvent({categoria:'certificato',nome:'X',dateISO:'2026-11-26',giorniPrima:30,ricorrente:true}).reminders.overrides[0].minutes, 40320));
+test('reminder giorniPrima negativo -> 0 minuti', () =>
+  assertEq(Model.buildEvent({categoria:'altro',nome:'X',dateISO:'2026-11-26',giorniPrima:-3,ricorrente:false}).reminders.overrides[0].minutes, 0));
 test('buildEvent giorniPrima mancante -> default categoria', () =>
   assertEq(Model.buildEvent({categoria:'assicurazione',nome:'X',dateISO:'2026-11-26',ricorrente:true}).reminders.overrides[0].minutes, 20*1440));
 test('buildEvent categoria sconosciuta -> altro', () =>

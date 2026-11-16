@@ -36,7 +36,7 @@
       summary: cat.icon + ' ' + nome,
       start: { date: dateISO },
       end: { date: fmt(new Date(parse(dateISO).getTime() + DAY)) },
-      reminders: { useDefault: false, overrides: [{ method: 'popup', minutes: Math.min(giorniPrima * 1440, 40320) }] },
+      reminders: { useDefault: false, overrides: [{ method: 'popup', minutes: Math.max(0, Math.min(giorniPrima * 1440, 40320)) }] },
       extendedProperties: { private: { app: 'cervello', categoria } },
     };
     if (ricorrente) ev.recurrence = ['RRULE:FREQ=YEARLY'];
