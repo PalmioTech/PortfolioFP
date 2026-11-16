@@ -52,13 +52,16 @@
       return { s, d, g: Model.giorniMancanti(d, oggi) };
     }).sort((a, b) => a.g - b.g);
     show(rows.length ? 'list' : 'empty');
-    list.innerHTML = rows.map(({ s, d, g }, i) => {
+    list.innerHTML = rows.map(({ s, d, g }) => {
       const cat = Model.CATEGORIES[s.categoria] || Model.CATEGORIES.altro;
-      return '<article class="card c-' + cat.colore + '"><span class="ico" aria-hidden="true">' + cat.icon + '</span>' +
+      return '<article role="button" tabindex="0" class="card c-' + cat.colore + '"><span class="ico" aria-hidden="true">' + cat.icon + '</span>' +
         '<div class="body"><div class="nome">' + esc(s.nome) + '</div><div class="data">' + esc(d) + '</div></div>' +
         '<div class="giorni">' + etichetta(g) + '</div></article>';
     }).join('');
-    list.querySelectorAll('.card').forEach((el, i) => { el.onclick = () => edit(rows[i].s); });
+    list.querySelectorAll('.card').forEach((el, i) => { 
+      el.onclick = () => edit(rows[i].s);
+      el.onkeydown = (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); edit(rows[i].s); } };
+    });
   }
 
   // ---- form CRUD ----
@@ -103,12 +106,16 @@
     $('form').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  let inflight = false;
   async function write(fn) {
+    if (inflight) return;
+    inflight = true;
+    $('fSalva').disabled = $('fElimina').disabled = true;
     try { await fn(); resetForm(); await render(); }
     catch (e) {
-      show('connectBar');
-      status(e && e.message === 'TOKEN_SCADUTO' ? 'Sessione scaduta — riconnetti' : 'Operazione non riuscita — riconnetti', true);
-    }
+      if (e && e.message === 'TOKEN_SCADUTO') { show('connectBar'); status('Sessione scaduta — riconnetti', true); }
+      else fMsg('Operazione non riuscita — riprova.');
+    } finally { inflight = false; $('fSalva').disabled = $('fElimina').disabled = false; }
   }
 
   function initForm() {
