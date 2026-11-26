@@ -2914,14 +2914,19 @@ body.has-target-cursor * {
 body.has-target-cursor [class*="iubenda-cs"],
 body.has-target-cursor [class*="iubenda-cs"] *,
 body.has-target-cursor [id*="iubenda-cs"],
-body.has-target-cursor [id*="iubenda-cs"] * {
+body.has-target-cursor [id*="iubenda-cs"] *,
+body.has-target-cursor [id*="iubenda-pp"],
+body.has-target-cursor [id*="iubenda-pp"] * {
   cursor: auto !important;
 }
 body.has-target-cursor [class*="iubenda-cs"] a,
 body.has-target-cursor [class*="iubenda-cs"] button,
 body.has-target-cursor [class*="iubenda-cs"] [role="button"],
 body.has-target-cursor a[class*="iubenda-cs"],
-body.has-target-cursor button[class*="iubenda-cs"] {
+body.has-target-cursor button[class*="iubenda-cs"],
+body.has-target-cursor [id*="iubenda-pp"] a,
+body.has-target-cursor [id*="iubenda-pp"] button,
+body.has-target-cursor [id*="iubenda-pp"] [role="button"] {
   cursor: pointer !important;
 }
 
