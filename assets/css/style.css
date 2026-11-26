@@ -2908,6 +2908,23 @@ body.has-target-cursor * {
   .target-cursor { display: none; }
 }
 
+/* Cursore reale visibile sugli overlay iubenda (banner cookie + preferenze):
+   il cursore custom resta sotto l'alto z-index di iubenda, quindi lì serve il mouse di sistema.
+   La specificità (body.has-target-cursor + [class*=iubenda-cs]) batte la regola cursor:none sopra. */
+body.has-target-cursor [class*="iubenda-cs"],
+body.has-target-cursor [class*="iubenda-cs"] *,
+body.has-target-cursor [id*="iubenda-cs"],
+body.has-target-cursor [id*="iubenda-cs"] * {
+  cursor: auto !important;
+}
+body.has-target-cursor [class*="iubenda-cs"] a,
+body.has-target-cursor [class*="iubenda-cs"] button,
+body.has-target-cursor [class*="iubenda-cs"] [role="button"],
+body.has-target-cursor a[class*="iubenda-cs"],
+body.has-target-cursor button[class*="iubenda-cs"] {
+  cursor: pointer !important;
+}
+
 /* ============================================================
    UTILITIES
    ============================================================ */
